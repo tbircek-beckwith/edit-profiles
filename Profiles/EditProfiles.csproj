@@ -65,9 +65,17 @@
     <AssemblyOriginatorKeyFile>EditProfilesDefaultSigning.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -85,33 +93,38 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\PasswordBoxBindingBehavior.cs" />
     <Compile Include="Data\MyCommons.cs" />
     <Compile Include="Data\OCCModuleNames.cs" />
     <Compile Include="Data\ProgIDNames.cs" />
-    <Compile Include="DelegateCommands\DelegateCommand.cs" />
-    <Compile Include="DelegateCommands\EraseDelegateCommand.cs" />
-    <Compile Include="DelegateCommands\SaveDelegateCommand.cs" />
-    <Compile Include="Factories\ErrorHandler.cs" />
-    <Compile Include="Factories\ExecuteParameters.cs" />
-    <Compile Include="Factories\FindAndReplace.cs" />
-    <Compile Include="Factories\GenerateNewFileName.cs" />
-    <Compile Include="Factories\OpenFile.cs" />
-    <Compile Include="Factories\ProcessKiller.cs" />
-    <Compile Include="Factories\RepeatStrings.cs" />
-    <Compile Include="Factories\SaveOmicronFiles.cs" />
-    <Compile Include="Factories\ScanDocuments.cs" />
-    <Compile Include="Factories\StartProcess.cs" />
-    <Compile Include="Factories\ViewFactory.cs" />
-    <Compile Include="Factories\ViewInfrastructure.cs" />
-    <Compile Include="Interfaces\IRestrictedMainFormInterface.cs" />
+    <Compile Include="Commands\DefaultCommand.cs" />
+    <Compile Include="Commands\EraseCommand.cs" />
+    <Compile Include="Commands\SaveCommand.cs" />
+    <Compile Include="Commands\UpdateCommand.cs" />
+    <Compile Include="Behaviors\DispatchService.cs" />
+    <Compile Include="Operations\ErrorHandler.cs" />
+    <Compile Include="Operations\ExecuteParameters.cs" />
+    <Compile Include="Operations\FindAndReplace.cs" />
+    <Compile Include="Operations\GenerateNewFileName.cs" />
+    <Compile Include="Operations\OpenFile.cs" />
+    <Compile Include="Operations\ProcessKiller.cs" />
+    <Compile Include="Operations\RepeatStrings.cs" />
+    <Compile Include="Operations\SaveOmicronFiles.cs" />
+    <Compile Include="Operations\ScanDocuments.cs" />
+    <Compile Include="Operations\SecurePasswordToString.cs" />
+    <Compile Include="Operations\StartProcess.cs" />
+    <Compile Include="Behaviors\TextBoxBehavior.cs" />
+    <Compile Include="Operations\ViewFactory.cs" />
+    <Compile Include="Data\ViewInfrastructure.cs" />
     <Compile Include="Interfaces\ISaveFileOperation.cs" />
+    <Compile Include="Interfaces\ISecurePassword.cs" />
     <Compile Include="Interfaces\IStartProcessInterface.cs" />
     <Compile Include="Properties\MyResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MyResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="DelegateCommands\FindReplaceDelegateCommand.cs" />
+    <Compile Include="Commands\FindReplaceCommand.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -139,6 +152,7 @@
     </Compile>
     <None Include="app.config" />
     <None Include="EditProfilesDefaultSigning.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -146,7 +160,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Factories\ReadMe.txt" />
+    <Resource Include="Operations\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="ViewModel\ReadMe.txt" />

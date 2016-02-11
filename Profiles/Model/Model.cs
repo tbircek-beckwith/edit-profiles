@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Windows.Controls;
 
-namespace EditProfiles
+namespace EditProfiles.MainModel
 {
     /// <summary>
     /// Contains data, not behavior.
@@ -59,17 +56,36 @@ namespace EditProfiles
         /// <summary>
         /// OverviewRichTextBoxText
         /// </summary>
-        public string OverviewTextBoxText { get; set; }
+        public string FileProgressBar { get; set; }
+        
+        /// <summary>
+        /// Sets and gets ModuleProcessBar.
+        /// </summary>
+        public string ModuleProgressBar { get; set; }
 
         /// <summary>
-        /// FindReplaceButtonEnabled
+        /// File ProgressBar Value
         /// </summary>
-        public bool FindReplaceButtonEnabled { get; set; }
+        public int FileProgressBarValue { get; set; }
 
         /// <summary>
-        /// OverviewRichTextBoxText
+        /// Module ProgressBar Value
         /// </summary>
-        public string ProcessFiles { get; set; }
+        public int ModuleProgressBarValue { get; set; }
 
+        /// <summary>
+        /// Module ProgressBar Max Value
+        /// </summary>
+        public int ModuleProgressBarMax { get; set; }
+
+        /// <summary>
+        /// File ProgressBar Max Value
+        /// </summary>
+        public int FileProgressBarMax { get; set; }
+
+        /// <summary>
+        /// Textbox to show process
+        /// </summary>
+        public TextBox TextBoxResults { get; set; }
     }
 }

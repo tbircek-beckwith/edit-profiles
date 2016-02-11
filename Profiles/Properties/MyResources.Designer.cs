@@ -89,7 +89,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Profile Test.
+        ///   Looks up a localized string similar to Test Profile Test\ShortFiles.
         /// </summary>
         internal static string Strings_Debug_InitialDirectory {
             get {
@@ -112,6 +112,15 @@ namespace EditProfiles.Properties {
         internal static string Strings_Debug_TextBoxReplace {
             get {
                 return ResourceManager.GetString("Strings_Debug_TextBoxReplace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unspecified.
+        /// </summary>
+        internal static string Strings_DefaultTextBoxValues {
+            get {
+                return ResourceManager.GetString("Strings_DefaultTextBoxValues", resourceCulture);
             }
         }
         
@@ -152,6 +161,33 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to change protection..
+        /// </summary>
+        internal static string Strings_ErrorProtectionCaption {
+            get {
+                return ResourceManager.GetString("Strings_ErrorProtectionCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}{2}{0} Provided password failed to change protection level {0} File Name:  {1}{0}{2}{0}.
+        /// </summary>
+        internal static string Strings_ErrorProtectionLevel {
+            get {
+                return ResourceManager.GetString("Strings_ErrorProtectionLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check your password..
+        /// </summary>
+        internal static string Strings_ErrorProtectionMessage {
+            get {
+                return ResourceManager.GetString("Strings_ErrorProtectionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to occ.
         /// </summary>
         internal static string Strings_FileDialogDefault {
@@ -166,6 +202,15 @@ namespace EditProfiles.Properties {
         internal static string Strings_FileDialogFilter {
             get {
                 return ResourceManager.GetString("Strings_FileDialogFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File: {0} of {1}.
+        /// </summary>
+        internal static string Strings_FileProcessBar {
+            get {
+                return ResourceManager.GetString("Strings_FileProcessBar", resourceCulture);
             }
         }
         
@@ -233,7 +278,16 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NO change required: {0}.
+        ///   Looks up a localized string similar to Module: {0} of {1}.
+        /// </summary>
+        internal static string Strings_ModuleProcessBar {
+            get {
+                return ResourceManager.GetString("Strings_ModuleProcessBar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NO change required:{1}{0}{1}.
         /// </summary>
         internal static string Strings_NoChanges {
             get {
@@ -256,24 +310,6 @@ namespace EditProfiles.Properties {
         internal static string Strings_ParamsChanged {
             get {
                 return ResourceManager.GetString("Strings_ParamsChanged", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Processing {0} of {1}.
-        /// </summary>
-        internal static string Strings_ProcessFiles {
-            get {
-                return ResourceManager.GetString("Strings_ProcessFiles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Processing {0} of {1}.
-        /// </summary>
-        internal static string Strings_ProgressBars {
-            get {
-                return ResourceManager.GetString("Strings_ProgressBars", resourceCulture);
             }
         }
         

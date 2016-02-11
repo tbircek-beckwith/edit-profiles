@@ -16,6 +16,14 @@ namespace EditProfiles.Operations
         void SaveOmicronFiles ( string oldFileName, bool saveAs );
 
         /// <summary>
+        /// Sets specified protection level and saves modified Omicron Test File.
+        /// </summary>
+        /// <param name="oldFileName">Original file name.</param>
+        /// <param name="saveAs">If it is true the file "SaveAs", false the file "Save".</param>
+        /// <param name="protectionLevel">provide a protection level to protect the file.</param>
+        void SaveOmicronFiles ( string oldFileName, bool saveAs, short protectionLevel );
+
+        /// <summary>
         /// Generates a new file name based on the original file name.
         /// </summary>
         /// <param name="fileNameWithPath">A string that contains original file's fullname.</param>

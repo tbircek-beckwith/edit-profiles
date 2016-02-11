@@ -1,6 +1,6 @@
 ﻿using EditProfiles.Operations;
 
-namespace EditProfiles.Values
+namespace EditProfiles.Data
 {
     /// <summary>
     /// Omicron Control Center Module names

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OMICRON.OCCenter;
-using System;
 
 namespace EditProfiles.Operations
 {

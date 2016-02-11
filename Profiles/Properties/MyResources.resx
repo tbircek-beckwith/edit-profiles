@@ -128,7 +128,7 @@
     <value>{1}{0}{2}{0}{3}{0}{1}{0}</value>
   </data>
   <data name="Strings_Debug_InitialDirectory" xml:space="preserve">
-    <value>Test Profile Test</value>
+    <value>Test Profile Test\ShortFiles</value>
   </data>
   <data name="Strings_Debug_TextBoxFind" xml:space="preserve">
     <value>ip17|ip18</value>
@@ -136,8 +136,21 @@
   <data name="Strings_Debug_TextBoxReplace" xml:space="preserve">
     <value>ip22|ip23</value>
   </data>
+  <data name="Strings_DefaultTextBoxValues" xml:space="preserve">
+    <value>Unspecified</value>
+  </data>
   <data name="Strings_ErrorLogFile" xml:space="preserve">
     <value>An error has occurred. Please check "errors.log" file.</value>
+  </data>
+  <data name="Strings_ErrorProtectionCaption" xml:space="preserve">
+    <value>Unable to change protection.</value>
+  </data>
+  <data name="Strings_ErrorProtectionLevel" xml:space="preserve">
+    <value>{0}{2}{0} Provided password failed to change protection level {0} File Name:  {1}{0}{2}{0}</value>
+    <comment>0 = NewLine, 1 = FileName, 2 = Repeat Char '-'</comment>
+  </data>
+  <data name="Strings_ErrorProtectionMessage" xml:space="preserve">
+    <value>Please check your password.</value>
   </data>
   <data name="Strings_Error_FileName" xml:space="preserve">
     <value>errors.log</value>
@@ -153,6 +166,9 @@
   </data>
   <data name="Strings_FileDialogFilter" xml:space="preserve">
     <value>OCC files (*.occ)|*.occ|All files (*.*)|*.*</value>
+  </data>
+  <data name="Strings_FileProcessBar" xml:space="preserve">
+    <value>File: {0} of {1}</value>
   </data>
   <data name="Strings_FolderName" xml:space="preserve">
     <value>ProfileChanger</value>
@@ -175,20 +191,18 @@
   <data name="Strings_ModifedFolderName" xml:space="preserve">
     <value>Modified Files</value>
   </data>
+  <data name="Strings_ModuleProcessBar" xml:space="preserve">
+    <value>Module: {0} of {1}</value>
+  </data>
   <data name="Strings_NoChanges" xml:space="preserve">
-    <value>NO change required: {0}</value>
+    <value>NO change required:{1}{0}{1}</value>
   </data>
   <data name="Strings_OpenFileDialog" xml:space="preserve">
     <value>Please select file(s) to modify. Press and hold CTRL key to select multiple files.</value>
   </data>
   <data name="Strings_ParamsChanged" xml:space="preserve">
     <value>Change required: {2} Find a match:  {0}{2} Replaced with: {1}{2}</value>
-  </data>
-  <data name="Strings_ProcessFiles" xml:space="preserve">
-    <value>Processing {0} of {1}</value>
-  </data>
-  <data name="Strings_ProgressBars" xml:space="preserve">
-    <value>Processing {0} of {1}</value>
+    <comment>0 = Old Parameters, 1 = New Parameters, 2 =NewLine</comment>
   </data>
   <data name="Strings_TestEnd" xml:space="preserve">
     <value>{1}{7}{1} End time: {0}{1}Total test time: {2:d2} day(s), {3:d2} hour(s), {4:d2} min(s), {5:d2} sec(s), {6:d3} millisecond(s){1}{7}</value>

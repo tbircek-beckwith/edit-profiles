@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Windows;
-using System.Threading.Tasks;
-using EditProfiles.Operations;
-using EditProfiles.Properties;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using EditProfiles.Behaviors;
+using EditProfiles.Data;
+using EditProfiles.Operations;
+using EditProfiles.Properties;
 
 namespace EditProfiles
 {
@@ -17,27 +16,71 @@ namespace EditProfiles
     /// </summary>
     public partial class App : Application
     {
-        private void Application_Startup ( object sender, StartupEventArgs e )
+        // private void Application_Startup ( object sender, StartupEventArgs e )
+        /// <summary>
+        /// Start up 
+        /// </summary>
+        /// <param name="e">arguments</param>
+        protected override void OnStartup ( StartupEventArgs e )
         {
-            if ( !Directory.Exists (MyCommons.FileOutputFolder) )
+
+            #region Catch All Unhandled Exceptions
+
+            // Following code found on stackoverflow.com
+            // http://stackoverflow.com/questions/10202987/in-c-sharp-how-to-collect-stack-trace-of-program-crash
+
+            AppDomain currentDomain = default ( AppDomain );
+            currentDomain = AppDomain.CurrentDomain;
+
+            // Handler for unhandled exceptions.
+            currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
+
+            // Handler for exceptions in thread behind forms.
+            Application.Current.DispatcherUnhandledException += GlobalThreadExceptionHandler;
+          
+            #endregion
+
+            #region Create LocalApplication Folder.
+
+            if ( !Directory.Exists ( MyCommons.FileOutputFolder ) )
             {
                 Directory.CreateDirectory ( MyCommons.FileOutputFolder );
             }
 
-            // Verify none of the Omicron modules running,
-            // without it unexpected behaviors would occur.
-            Task.Factory.StartNew ( ( ) =>
+            #endregion
+
+            #region Error Logging.
+
+            // Add textwriter for console.
+            TextWriterTraceListener consoleOut = 
+                new TextWriterTraceListener ( System.Console.Out );
+
+            Debug.Listeners.Add ( consoleOut );
+
+            TextWriterTraceListener fileOut =
+                new TextWriterTraceListener ( File.CreateText ( Path.Combine (
+                                                                            MyCommons.FileOutputFolder,
+                                                                            MyResources.Strings_Error_FileName ) ) );
+            Debug.Listeners.Add ( fileOut );
+
+            #endregion
+
+            #region Application Start Here.
+
+            base.OnStartup ( e );
+
+            //// Verify none of the Omicron modules running,
+            //// without it unexpected behaviors would occur.
+            DispatchService.Invoke ( ( ) =>
                 {
+
                     IStartProcessInterface spi = new ProcessFiles ( );
-                    spi.KillOmicronProcesses ( );
-                }
-                // Allow the user to start right away without waiting to
-                // terminate all running Omicron modules.
-                , MyCommons.CancellationToken );
+                    spi.KillOmicronProcesses ( );       
+                } );
 
-            EditProfiles.ViewFactory factory = new EditProfiles.ViewFactory ( );
+            ViewFactory factory = new ViewFactory ( );
 
-            EditProfiles.ViewInfrastructure infrastructure = factory.Create ( );
+            ViewInfrastructure infrastructure = factory.Create ( );
 
             infrastructure.View.DataContext = infrastructure.ViewModel;
 
@@ -49,21 +92,34 @@ namespace EditProfiles
 
             infrastructure.View.Show ( );
 
+            #endregion
+
         }
 
-        private void Application_Exit ( object sender, ExitEventArgs e )
+        //  private void Application_Exit ( object sender, ExitEventArgs e )
+        /// <summary>
+        /// Exit 
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnExit ( ExitEventArgs e )
         {
+            base.OnExit ( e );
+
             try
             {
                 // terminate any running Omicron related process.
                 IStartProcessInterface spi = new ProcessFiles ( );
                 do
                 {
-
+                    if ( MyCommons.CancellationToken.IsCancellationRequested == true )
+                    {
+                        break;
+                    }
                 } while ( !( Task.Factory.StartNew ( ( ) => spi.KillOmicronProcesses ( ) ) ).Result );
 
+
                 // Log the operations completed so far.
-                if ( true )
+                if ( !string.IsNullOrWhiteSpace ( MyCommons.MyViewModel.DetailsTextBoxText ) )
                 {
                     // write log to the file.
                     File.WriteAllText ( Path.Combine ( MyCommons.FileOutputFolder, Settings.Default.LogFileName ), MyCommons.LogProcess.ToString ( ) );
@@ -93,6 +149,36 @@ namespace EditProfiles
                 }
             }
         }
+
+        #region Catch All Unhandled Exceptions
+
+        // Following code found on stackoverflow.com
+        // http://stackoverflow.com/questions/10202987/in-c-sharp-how-to-collect-stack-trace-of-program-crash
+        private static void GlobalUnhandledExceptionHandler ( object sender, UnhandledExceptionEventArgs e )
+        {
+            Exception ex = default ( Exception );
+            ex = ( Exception ) e.ExceptionObject;
+
+            // Save to the fileOutputFolder and print to Debug window if the project build is in DEBUG.
+            ErrorHandler.Log ( ex );
+            Debug.Flush ( );
+            Trace.Flush ( );
+        }
+
+        // Following code found on stackoverflow.com
+        // http://stackoverflow.com/questions/10202987/in-c-sharp-how-to-collect-stack-trace-of-program-crash
+        private static void GlobalThreadExceptionHandler ( object sender, DispatcherUnhandledExceptionEventArgs e )
+        {
+            Exception ex = default ( Exception );
+            ex = e.Exception;
+
+            // Save to the fileOutputFolder and print to Debug window if the project build is in DEBUG.
+            ErrorHandler.Log ( ex );
+            Debug.Flush ( );
+            Trace.Flush ( );
+        }
+
+        #endregion
 
     }
 }

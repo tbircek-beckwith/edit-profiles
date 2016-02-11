@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
-using EditProfiles.Properties;
-using System.Windows.Input;
-using System.Globalization;
 using System.Diagnostics;
+using System.Globalization;
+using System.Security;
+using System.Windows.Input;
+using EditProfiles.Data;
+using EditProfiles.MainModel;
+using EditProfiles.Properties;
 
 namespace EditProfiles
 {
@@ -76,7 +76,8 @@ namespace EditProfiles
 #if DEBUG
                 return MyResources.Strings_Debug_TextBoxFind;
 #else
-                return this.model.FindWhatTextBoxText;
+                // Return empty string if the user not specified any values  
+                return this.model.FindWhatTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
 #endif
             }
             set
@@ -120,7 +121,8 @@ namespace EditProfiles
 #if DEBUG
                 return MyResources.Strings_Debug_TextBoxReplace;
 #else
-                return this.model.ReplaceWithTextBoxText;
+                // Return empty string if the user not specified any values                
+                return this.model.ReplaceWithTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
 #endif
             }
             set
@@ -210,68 +212,152 @@ namespace EditProfiles
                     MyCommons.LogProcess.Append ( value );
 
                     this.model.DetailsTextBoxText += value;
-
+                                       
                     this.OnPropertyChanged ( "DetailsTextBoxText" );
                 }
             }
         }
-
+        
         /// <summary>
-        /// Sets and gets OverviewRichTextBoxText.
+        /// Sets and gets FileProgressBar.
         /// </summary>
-        public string OverviewTextBoxText
+        public string FileProgressBar
         {
             get
             {
-                return this.model.OverviewTextBoxText;
+                return string.Format ( CultureInfo.InvariantCulture,
+                                       MyResources.Strings_FileProcessBar,
+                                       MyCommons.CurrentFileNumber,
+                                       MyCommons.TotalFileNumber );
             }
             set
             {
-                if ( this.model.OverviewTextBoxText != value )
+                if ( this.model.FileProgressBar != value )
                 {
-                    this.model.OverviewTextBoxText = value;
+                    this.model.FileProgressBar = value;
 
-                    this.OnPropertyChanged ( "OverviewTextBoxText" );
+                    this.OnPropertyChanged ( "FileProgressBar" );
                 }
             }
         }
 
         /// <summary>
-        /// Sets and gets ProcessFiles.
+        /// Sets and gets ModuleProgressBar.
         /// </summary>
-        public string ProcessFiles
+        public string ModuleProgressBar
         {
             get
             {
-                return MyResources.Strings_ProcessFiles;
+                return string.Format ( CultureInfo.InvariantCulture,
+                                       MyResources.Strings_ModuleProcessBar,
+                                       MyCommons.CurrentModuleNumber,
+                                       MyCommons.TotalModuleNumber );
             }
             set
             {
-                if ( this.model.ProcessFiles != value )
+                if ( this.model.ModuleProgressBar != value )
                 {
-                    this.model.ProcessFiles = value;
+                    this.model.ModuleProgressBar = value;
 
-                    this.OnPropertyChanged ( "ProcessFiles" );
+                    this.OnPropertyChanged ( "ModuleProgressBar" );
                 }
             }
         }
 
         /// <summary>
-        /// Sets and gets FindReplaceButtonEnabled.
+        /// Sets and get ModuleProgressBarValue
         /// </summary>
-        public bool FindReplaceButtonEnabled
+        public int ModuleProgressBarValue
         {
             get
             {
-                return this.model.FindReplaceButtonEnabled;
+                return this.model.ModuleProgressBarValue;
             }
             set
             {
-                if ( this.model.FindReplaceButtonEnabled != value )
+                if ( this.model.ModuleProgressBarValue != value )
                 {
-                    this.model.FindReplaceButtonEnabled = value;
+                    this.model.ModuleProgressBarValue = value;
 
-                    this.OnPropertyChanged ( "FindReplaceButtonEnabled" );
+                    this.OnPropertyChanged ( "ModuleProgressBarValue" );
+                }
+            }
+        }
+
+        /// <summary>
+        /// File ProgressBar Max Value
+        /// </summary>
+        public int ModuleProgressBarMax
+        {
+            get
+            {
+                return this.model.ModuleProgressBarMax;
+            }
+            set
+            {
+                if ( this.model.ModuleProgressBarMax != value )
+                {
+                    this.model.ModuleProgressBarMax = value;
+                    this.OnPropertyChanged ( "ModuleProgressBarMax" );
+                }
+            }
+        }
+        /// <summary>
+        /// Sets and get FileProgressBarValue
+        /// </summary>
+        public int FileProgressBarValue
+        {
+            get
+            {
+                return this.model.FileProgressBarValue;
+            }
+            set
+            {
+                if ( this.model.FileProgressBarValue != value )
+                {
+                    this.model.FileProgressBarValue = value;
+
+                    this.OnPropertyChanged ( "FileProgressBarValue" );
+                }
+            }
+        }
+
+        /// <summary>
+        /// File ProgressBar Max Value
+        /// </summary>
+        public int FileProgressBarMax
+        {
+            get
+            {
+                return this.model.FileProgressBarMax;
+            }
+            set
+            {
+                if ( this.model.FileProgressBarMax != value )
+                {
+                    this.model.FileProgressBarMax = value;
+                    this.OnPropertyChanged ( "FileProgressBarMax" );
+                }
+            }
+        }
+
+        private SecureString _password;
+
+        /// <summary>
+        /// Password box string.
+        /// </summary>
+        public SecureString Password
+        {
+            get
+            {
+                return _password;
+            }
+            set
+            {
+                if ( _password != value )
+                {
+                    _password = value;
+                    this.OnPropertyChanged ( "Password" );
                 }
             }
         }
@@ -279,6 +365,11 @@ namespace EditProfiles
         #endregion
 
         #region Public Commands
+
+        /// <summary>
+        /// Handles FindReplace button clicks.
+        /// </summary>
+        public ICommand UpdateCommand { get; private set; }
 
         /// <summary>
         /// Handles FindReplace button clicks.
@@ -307,12 +398,18 @@ namespace EditProfiles
         /// <param name="saveCommand">NOT IN USE at the moment.</param>
         /// <param name="eraseCommand">NOT IN USE at the moment.</param>
         /// <param name="findReplaceCommand">This command handles FindReplace Button Clicks.</param>
-        public ViewModel ( Model model, ICommand saveCommand, ICommand eraseCommand, ICommand findReplaceCommand )
+        /// <param name="updateCommand">This command handles updating process bars and their texts</param>
+        public ViewModel ( Model model,
+                           ICommand saveCommand,
+                           ICommand eraseCommand,
+                           ICommand findReplaceCommand,
+                           ICommand updateCommand )
         {
             this.model = model;
             this.SaveCommand = saveCommand;
             this.EraseCommand = eraseCommand;
             this.FindReplaceCommand = findReplaceCommand;
+            this.UpdateCommand = updateCommand;
         }
 
         /// <summary>
@@ -357,7 +454,7 @@ namespace EditProfiles
         {
             if ( TypeDescriptor.GetProperties ( this )[ propertyName ] == null )
             {
-                Debug.WriteLine ( "Invalid property" );
+                Debug.WriteLine ( string.Format ( CultureInfo.InvariantCulture, "Invalid property: {0}", propertyName ) );
             }
         }
 
@@ -385,11 +482,11 @@ namespace EditProfiles
             {
                 string error = string.Empty;
 
-                //error = ( model as IDataErrorInfo )[ propertyName ];
+                error = ( model as IDataErrorInfo )[ columnName ];
 
-                this.FindReplaceButtonEnabled = !( string.IsNullOrWhiteSpace ( FindWhatTextBoxText ) );
+                // this.FindReplaceButtonEnabled = !( string.IsNullOrWhiteSpace ( FindWhatTextBoxText ) );
 
-                // CommandManager.InvalidateRequerySuggested ( );
+                CommandManager.InvalidateRequerySuggested ( );
 
                 return error;
             }
