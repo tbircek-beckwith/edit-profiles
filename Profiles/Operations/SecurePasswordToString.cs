@@ -9,7 +9,7 @@ namespace EditProfiles.Operations
     /// Handles conversion of the SecureString to string.
     /// For more info: http://briannoyesblog.azurewebsites.net/2015/03/04/wpf-using-passwordbox-in-mvvm/
     /// </summary>
-    public class SecurePasswordToString :ISecurePasswordToString
+    internal class SecurePasswordToString :ISecurePasswordToString
     {
         #region ISecurePasswordToString Members
 
@@ -17,7 +17,9 @@ namespace EditProfiles.Operations
         /// Coverts SecureString to an unsecure string.
         /// </summary>
         /// <param name="secureString">the content of PasswordBox</param>
-        /// <returns></returns>
+        /// <returns>Returns a plain string of the secureString.
+        /// The plain string MUST be DESTROYED after the usage.
+        /// Otherwise, it can be seen in the memory scans.</returns>
         public string ConvertToInsecureString ( SecureString secureString )
         {
             IntPtr passwordBSTR = default ( IntPtr );
@@ -25,8 +27,16 @@ namespace EditProfiles.Operations
 
             try
             {
-                passwordBSTR = Marshal.SecureStringToBSTR ( secureString );
-                insecurePassword = Marshal.PtrToStringBSTR ( passwordBSTR );
+                if ( secureString != null )
+                {
+                    passwordBSTR = Marshal.SecureStringToBSTR ( secureString );
+                    insecurePassword = Marshal.PtrToStringBSTR ( passwordBSTR );
+                }
+                else
+                {
+                    insecurePassword = string.Empty;
+                }
+                
             }
             catch ( ArgumentNullException ae )
             {

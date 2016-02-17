@@ -8,6 +8,7 @@ using EditProfiles.Data;
 using EditProfiles.Operations;
 using EditProfiles.Properties;
 using Microsoft.Win32;
+using EditProfiles.Behaviors;
 
 namespace EditProfiles.Commands
 {
@@ -58,10 +59,12 @@ namespace EditProfiles.Commands
                 stopwatch = new Stopwatch ( );
                 stopwatch.Start ( );
 
-                // Initialize Common Properties.
-                MyCommons.TokenSource = new CancellationTokenSource ( );
-                MyCommons.CancellationToken = MyCommons.TokenSource.Token;
-                MyCommons.LogProcess = new StringBuilder ( );
+                if ( MyCommons.TokenSource == null )
+                {
+                    // Initialize Common Properties.
+                    MyCommons.TokenSource = new CancellationTokenSource ( );
+                    MyCommons.CancellationToken = MyCommons.TokenSource.Token;
+                }
 
                 // Start Processing the user specified files.
                 IStartProcessInterface spi = new ProcessFiles ( );
@@ -78,8 +81,13 @@ namespace EditProfiles.Commands
                                 MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
                             }
 
+                            // Prevents the user to modify texts of FindWhat, ReplaceWith and Password 
+                            // while test running.
+                            this.Enable ( false );
+
                             // Start process.
-                            spi.StartProcessing ( dlg.FileNames, MyCommons.MyViewModel.PasswordTextBoxText, MyCommons.MyViewModel );
+                            // spi.StartProcessing ( dlg.FileNames, MyCommons.MyViewModel.Password, MyCommons.MyViewModel );
+                            spi.StartProcessing ( dlg.FileNames, MyCommons.MyViewModel );
 
                         }
                         catch ( AggregateException ae )
@@ -88,13 +96,34 @@ namespace EditProfiles.Commands
                         }
 
                     }
-                , MyCommons.CancellationToken )
-                .ContinueWith ( value =>
-                    {
-                        // Reset and Activate controls.
-                        ResetControls ( );
-                    } );
+                    , MyCommons.CancellationToken )
+                    .ContinueWith ( value =>
+                        {
+                            // Reset and Activate controls.
+                            this.ResetControls ( );
+                        } );
             }
+            else
+            {
+                // TODO: Add means to prevent visual changes of the button
+                MyCommons.MyViewModel.IsChecked = false;
+
+                // Prevents the user to modify texts of FindWhat, ReplaceWith and Password 
+                // while test running.
+                this.Enable ( true );
+
+                // Reset all controls
+                MyCommons.MyViewModel.EraseCommand.Execute ( null );
+            }
+        }
+
+        /// <summary>
+        /// Disable the controls to prevent the user modifying text inputs.
+        /// </summary>
+        /// <param name="value">True to allow the user modification of the text inputs.</param>
+        private void Enable ( bool value )
+        {
+            MyCommons.MyViewModel.Disable = value;
         }
 
         /// <summary>
@@ -103,20 +132,24 @@ namespace EditProfiles.Commands
         private void ResetControls ( )
         {
             stopwatch.Stop ( );
-            // TODO: Maybe implement EraseCommand Here?
+            
+            // Update DetailsTextBoxText.
             MyCommons.MyViewModel.DetailsTextBoxText =
-                // MyViewModel.DetailsTextBoxText =
-                            ( string.Format (
-                            CultureInfo.InvariantCulture,
-                            MyResources.Strings_TestEnd,
-                            DateTime.Now,
-                            Environment.NewLine,
-                            stopwatch.Elapsed.Days,
-                            stopwatch.Elapsed.Hours,
-                            stopwatch.Elapsed.Minutes,
-                            stopwatch.Elapsed.Seconds,
-                            stopwatch.Elapsed.Milliseconds,
-                            Repeat.StringDuplicate ( '-', 50 ) ) );
+                MyCommons.LogProcess.Append (
+                ( string.Format (
+                CultureInfo.InvariantCulture,
+                MyResources.Strings_TestEnd,
+                DateTime.Now,
+                Environment.NewLine,
+                stopwatch.Elapsed.Days,
+                stopwatch.Elapsed.Hours,
+                stopwatch.Elapsed.Minutes,
+                stopwatch.Elapsed.Seconds,
+                stopwatch.Elapsed.Milliseconds,
+                Repeat.StringDuplicate ( '-', 50 ) ) ) )
+                .ToString ( );
+
+            this.Enable ( true );
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.IO;
 using EditProfiles.Data;
 using EditProfiles.Properties;
+using EditProfiles.Behaviors;
 
 namespace EditProfiles.Operations
 {
@@ -14,43 +15,12 @@ namespace EditProfiles.Operations
 
         private string OldFileName { get; set; }
 
-        private short ProtectionLevel { get; set; }
+        // private short ProtectionLevel { get; set; }
 
         #endregion
-        // TODO: ProtectionLevel must be preserved file saving new file also with same password.
+
         #region IStartProcessInterface Members
-
-        /// <summary>
-        /// Sets specified protection level and saves modified Omicron Test File.
-        /// </summary>
-        /// <param name="oldFileName">Original file name.</param>
-        /// <param name="saveAs">If it is true the file "SaveAs", false the file "Save".</param>
-        /// <param name="protectionLevel">provide a protection level to protect the file.</param>
-        public void SaveOmicronFiles ( string oldFileName, bool saveAs, short protectionLevel )
-        {
-            try
-            {
-                this.ProtectionLevel = protectionLevel;
-
-                if ( this.ProtectionLevel != this.OmicronDocument.Protection )
-                {
-
-                    throw new ArgumentException ( "protectionLevel", MyResources.Strings_ErrorProtectionLevel );
-
-                }
-
-                this.SaveOmicronFiles ( oldFileName, saveAs );
-            }
-            catch ( ArgumentException ae )
-            {
-
-                // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log ( ae, this.OldFileName );
-                return;
-            }
-
-        }
-
+        
         /// <summary>
         /// Saves modified Omicron Test File.
         /// </summary>
@@ -95,7 +65,15 @@ namespace EditProfiles.Operations
                     MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
                 }
 
-                bool protectionChanged = this.OmicronDocument.ChangeProtection ( this.ProtectionLevel, string.Empty, this.FilePassword );
+                // Setting new password to original password so the user can still have same level protection in the modified files.
+                // For more info: http://briannoyesblog.azurewebsites.net/2015/03/04/wpf-using-passwordbox-in-mvvm/
+                ISecurePasswordToString secureToString = new SecurePasswordToString ( );
+                string insecurePassword = secureToString.ConvertToInsecureString ( this.ViewModel.Password );
+
+                bool protectionChanged = this.OmicronDocument.ChangeProtection ( this.ProtectionLevel, string.Empty, insecurePassword );
+
+                // Clear insecurePassword.
+                insecurePassword = string.Empty;
 
                 if ( !protectionChanged )
                 {

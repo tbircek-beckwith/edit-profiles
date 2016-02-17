@@ -3,7 +3,7 @@
 namespace EditProfiles.Commands
 {
     /// <summary>
-    /// NOT IN USE.
+    /// Used to reset all input texts.
     /// </summary>
     public class EraseDelegateCommand
     {
@@ -28,10 +28,14 @@ namespace EditProfiles.Commands
         {
             MyCommons.MyViewModel.FindWhatTextBoxText = string.Empty;
             MyCommons.MyViewModel.ReplaceWithTextBoxText = string.Empty;
-            MyCommons.MyViewModel.PasswordTextBoxText = string.Empty;
             MyCommons.MyViewModel.DetailsTextBoxText = string.Empty;
-           // MyCommons.MyViewModel.OverviewTextBoxText = string.Empty;
+            // MyCommons.MyViewModel.OverviewTextBoxText = string.Empty;
             // MyCommons.MyViewModel.FindReplaceButtonEnabled = false;
+              
+            if ( MyCommons.MyViewModel.Password != null )
+            {
+                MyCommons.MyViewModel.Password.Clear ( );
+            }
         }
 
         /// <summary>

@@ -117,15 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ProfileChanger" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Files\ProfileChanger.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Strings_ButtonFindReplace" xml:space="preserve">
-    <value>_Find &amp; Replace</value>
+    <value>Find &amp; Replace</value>
+  </data>
+  <data name="Strings_ButtonStopTest" xml:space="preserve">
+    <value>Stop</value>
   </data>
   <data name="Strings_CurrentFileName" xml:space="preserve">
     <value>{1}{0}{2}{0}{3}{0}{1}{0}</value>
+    <comment>0 = New Line, 1 = Repeat.StringDuplicate, 2 = Path of File, 3 = MyResources.Strings_TestStart string.</comment>
   </data>
   <data name="Strings_Debug_InitialDirectory" xml:space="preserve">
     <value>Test Profile Test\ShortFiles</value>
@@ -137,7 +137,7 @@
     <value>ip22|ip23</value>
   </data>
   <data name="Strings_DefaultTextBoxValues" xml:space="preserve">
-    <value>Unspecified</value>
+    <value>Not specified</value>
   </data>
   <data name="Strings_ErrorLogFile" xml:space="preserve">
     <value>An error has occurred. Please check "errors.log" file.</value>
@@ -151,6 +151,10 @@
   </data>
   <data name="Strings_ErrorProtectionMessage" xml:space="preserve">
     <value>Please check your password.</value>
+  </data>
+  <data name="Strings_ErrorTraceErrors" xml:space="preserve">
+    <value>{2}Current Time: {0}{2}File name: {3}{2}{1}{2}</value>
+    <comment>0 = DateTime.Now, 1 = Exception, 2 = New Line, 3 = File Name</comment>
   </data>
   <data name="Strings_Error_FileName" xml:space="preserve">
     <value>errors.log</value>
@@ -169,12 +173,23 @@
   </data>
   <data name="Strings_FileProcessBar" xml:space="preserve">
     <value>File: {0} of {1}</value>
+    <comment>0 = Current file order number, 1 = Total number of the files to test</comment>
   </data>
   <data name="Strings_FolderName" xml:space="preserve">
-    <value>ProfileChanger</value>
+    <value>EditProfiles</value>
+  </data>
+  <data name="Strings_FormEndTest" xml:space="preserve">
+    <value>Test completed. Total errors: {0}</value>
+    <comment>0 = Total error numbers.</comment>
+  </data>
+  <data name="Strings_FormStartModuleTest" xml:space="preserve">
+    <value>No test module loaded.</value>
+  </data>
+  <data name="Strings_FormStartTest" xml:space="preserve">
+    <value>Please select file(s).</value>
   </data>
   <data name="Strings_FormTitle" xml:space="preserve">
-    <value>Profile Changer v{0}</value>
+    <value>Edit Profiles v{0}</value>
   </data>
   <data name="Strings_GarbageCollection" xml:space="preserve">
     <value>{0} ({1}) ({2}) Finalized.</value>
@@ -196,13 +211,14 @@
   </data>
   <data name="Strings_NoChanges" xml:space="preserve">
     <value>NO change required:{1}{0}{1}</value>
+    <comment>0 = Parameters, 1 = New Line</comment>
   </data>
   <data name="Strings_OpenFileDialog" xml:space="preserve">
     <value>Please select file(s) to modify. Press and hold CTRL key to select multiple files.</value>
   </data>
   <data name="Strings_ParamsChanged" xml:space="preserve">
     <value>Change required: {2} Find a match:  {0}{2} Replaced with: {1}{2}</value>
-    <comment>0 = Old Parameters, 1 = New Parameters, 2 =NewLine</comment>
+    <comment>0 = Old Parameters, 1 = New Parameters, 2 =New Line</comment>
   </data>
   <data name="Strings_TestEnd" xml:space="preserve">
     <value>{1}{7}{1} End time: {0}{1}Total test time: {2:d2} day(s), {3:d2} hour(s), {4:d2} min(s), {5:d2} sec(s), {6:d3} millisecond(s){1}{7}</value>

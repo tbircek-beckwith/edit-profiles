@@ -31,5 +31,10 @@ namespace EditProfiles.Data
         /// "OMSeq".
         /// </summary>
         public const string OMSeq = "OMSeq";
+
+        /// <summary>
+        /// "QuickCMC".
+        /// </summary>
+        public const string QuickCmc = "QuickCmc";
     }
 }

@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditProfiles", "Profiles\EditProfiles.csproj", "{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EditProfilesSetup", "EditProfilesSetup\EditProfilesSetup.vdproj", "{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +15,8 @@ Global
 		{FA8960F4-41A4-410D-8EBD-A56A4531A14D}.Debug|x86.Build.0 = Debug|x86
 		{FA8960F4-41A4-410D-8EBD-A56A4531A14D}.Release|x86.ActiveCfg = Release|x86
 		{FA8960F4-41A4-410D-8EBD-A56A4531A14D}.Release|x86.Build.0 = Release|x86
+		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Debug|x86.ActiveCfg = Debug
+		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

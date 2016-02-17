@@ -86,35 +86,29 @@ namespace EditProfiles.Operations
                     {
                         case ProgId.Execute:
 
-                            // ExeCute Module. Process it
-                            Task.Factory.StartNew ( ( ) =>
+                            try
+                            {
+
+                                // Polling CancellationToken's status.
+                                // If cancellation requested throw error and exit loop.
+                                if ( MyCommons.CancellationToken.IsCancellationRequested == true )
                                 {
-                                    try
-                                    {
+                                    MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
+                                }
 
-                                        // Polling CancellationToken's status.
-                                        // If cancellation requested throw error and exit loop.
-                                        if ( MyCommons.CancellationToken.IsCancellationRequested == true )
-                                        {
-                                            MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
-                                        }
-
-                                        // Retrieve parameters and save.
-                                        Retrieve ( currentTestModule );
-                                    }
-                                    catch ( AggregateException ae )
-                                    {
-                                        foreach ( Exception ex in ae.InnerExceptions )
-                                        {
-                                            // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                            ErrorHandler.Log ( ex, this.CurrentFileName );
-                                        }
-                                        return;
-                                    }
-                                },
-                                MyCommons.CancellationToken )
-                                .Wait ( );
-
+                                // Retrieve parameters and save.
+                                Retrieve ( currentTestModule );
+                            }
+                            catch ( AggregateException ae )
+                            {
+                                foreach ( Exception ex in ae.InnerExceptions )
+                                {
+                                    // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                    ErrorHandler.Log ( ex, this.CurrentFileName );
+                                }
+                                return;
+                            }
+                            
                             break;
 
                         default:

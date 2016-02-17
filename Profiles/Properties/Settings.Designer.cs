@@ -25,7 +25,7 @@ namespace EditProfiles.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ProfileChanger.log")]
+        [global::System.Configuration.DefaultSettingValueAttribute("EditProfiles.log")]
         public string LogFileName {
             get {
                 return ((string)(this["LogFileName"]));
@@ -43,7 +43,7 @@ namespace EditProfiles.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10000")]
         public int WaitTimeToKillProcess {
             get {
                 return ((int)(this["WaitTimeToKillProcess"]));

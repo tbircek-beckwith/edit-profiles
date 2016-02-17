@@ -7,6 +7,8 @@ using System.Windows.Input;
 using EditProfiles.Data;
 using EditProfiles.MainModel;
 using EditProfiles.Properties;
+using System.Drawing;
+using System.Text;
 
 namespace EditProfiles
 {
@@ -17,9 +19,19 @@ namespace EditProfiles
     /// </summary>
     public class ViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
+        #region Private Variables
+
         private readonly Model model;
 
-        #region Public Properties
+        private const double OPACITY_MAX = 100.0;
+
+        private const double OPACITY_MIN = 0.0;
+
+        private const double PROGRESSBAR_MIN = 0.0;
+
+        #endregion
+
+        #region Program
 
         /// <summary>
         /// Sets and gets ProgramTitle.
@@ -45,6 +57,30 @@ namespace EditProfiles
                 }
             }
         }
+
+        /// <summary>
+        /// Prevents the user interaction while test program is running.
+        /// </summary>
+        public bool Disable
+        {
+            get
+            {
+                return this.model.Disable;
+            }
+            set
+            {
+                if ( this.model.Disable != value )
+                {
+                    this.model.Disable = value;
+
+                    this.OnPropertyChanged ( "Disable" );
+                }
+            }
+        }
+
+        #endregion
+
+        #region FindWhat Label & Textbox
 
         /// <summary>
         /// Sets and gets FindWhatLabelText.
@@ -91,6 +127,10 @@ namespace EditProfiles
             }
         }
 
+        #endregion
+
+        #region ReplaceWith Label & Text
+
         /// <summary>
         /// Sets and gets ReplaceWithLabelText.
         /// </summary>
@@ -136,6 +176,10 @@ namespace EditProfiles
             }
         }
 
+        #endregion
+
+        #region Password
+
         /// <summary>
         /// Sets and gets PasswordLabelText.
         /// </summary>
@@ -156,25 +200,30 @@ namespace EditProfiles
             }
         }
 
+        private SecureString _password;
+
         /// <summary>
-        /// Sets and gets PasswordTextBoxText.
+        /// Password box string.
         /// </summary>
-        public string PasswordTextBoxText
+        public SecureString Password
         {
             get
             {
-                return this.model.PasswordTextBoxText;
+                return _password;
             }
             set
             {
-                if ( this.model.PasswordTextBoxText != value )
+                if ( _password != value )
                 {
-                    this.model.PasswordTextBoxText = value;
-
-                    this.OnPropertyChanged ( "PasswordTextBoxText" );
+                    _password = value;
+                    this.OnPropertyChanged ( "Password" );
                 }
             }
         }
+
+        #endregion
+
+        #region FindReplace ToggleButton
 
         /// <summary>
         /// Sets and gets FindReplaceButtonText.
@@ -197,27 +246,73 @@ namespace EditProfiles
         }
 
         /// <summary>
+        /// Sets and gets FindReplaceButtonText.
+        /// </summary>
+        public string StopTestButtonText
+        {
+            get
+            {
+                return MyResources.Strings_ButtonStopTest;
+            }
+            set
+            {
+                if ( this.model.StopTestButtonText != value )
+                {
+                    this.model.StopTestButtonText = value;
+
+                    this.OnPropertyChanged ( "StopTestButtonText" );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets or gets ToggleButton Checked status.
+        /// </summary>
+        public bool IsChecked
+        {
+            get 
+            {
+                return this.model.IsChecked;
+            }
+            set
+            {
+                if (this.model.IsChecked != value)
+                { 
+                    this.model.IsChecked = value;
+
+                    this.OnPropertyChanged("IsChecked");
+                }
+            }
+        }
+	
+        #endregion
+
+        #region Details Textbox
+
+        /// <summary>
         /// Sets and gets DetailsRichTextBoxText.
         /// </summary>
         public string DetailsTextBoxText
         {
             get
             {
-                return this.model.DetailsTextBoxText;
+                return MyCommons.LogProcess.ToString ( );
             }
             set
             {
-                if ( this.model.DetailsTextBoxText != value )
+                if ( MyCommons.LogProcess.ToString ( ) == value )
                 {
-                    MyCommons.LogProcess.Append ( value );
 
-                    this.model.DetailsTextBoxText += value;
-                                       
+                    // This text set while MyCommons.LogProcess updated.
                     this.OnPropertyChanged ( "DetailsTextBoxText" );
                 }
             }
         }
-        
+
+        #endregion
+
+        #region File ProgressBar
+
         /// <summary>
         /// Sets and gets FileProgressBar.
         /// </summary>
@@ -240,6 +335,135 @@ namespace EditProfiles
                 }
             }
         }
+
+        /// <summary>
+        /// Sets and get FileProgressBarValue
+        /// </summary>
+        public int FileProgressBarValue
+        {
+            get
+            {
+                return this.model.FileProgressBarValue;
+            }
+            set
+            {
+                if ( this.model.FileProgressBarValue != value )
+                {
+                    this.model.FileProgressBarValue = value;
+
+                    this.OnPropertyChanged ( "FileProgressBarValue" );
+                }
+            }
+        }
+
+        /// <summary>
+        /// File ProgressBar Max Value
+        /// </summary>
+        public int FileProgressBarMax
+        {
+            get
+            {
+                return this.model.FileProgressBarMax;
+            }
+            set
+            {
+                if ( this.model.FileProgressBarMax != value )
+                {
+                    if ( value == PROGRESSBAR_MIN )
+                    {
+                        this.FileSideTextOpacity = OPACITY_MAX;
+                        this.FileProgressBarOpacity = OPACITY_MIN;
+                    }
+                    else
+                    {
+                        this.FileSideTextOpacity = OPACITY_MIN;
+                        this.FileProgressBarOpacity = OPACITY_MAX;
+                    }
+
+                    this.model.FileProgressBarMax = value;
+                    this.OnPropertyChanged ( "FileProgressBarMax" );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Show progress bars and texts.
+        /// </summary>
+        public double FileProgressBarOpacity
+        {
+            get
+            {
+                if ( FileProgressBarMax != PROGRESSBAR_MIN )
+                {
+                    this.FileSideTextOpacity = OPACITY_MIN;
+                    return this.model.FileProgressBarOpacity;
+                }
+                else
+                {
+                    this.FileSideTextOpacity = OPACITY_MAX;
+                    return FileProgressBarMax;
+                }
+            }
+            set
+            {
+                if ( this.model.FileProgressBarOpacity != value )
+                {
+                    this.model.FileProgressBarOpacity = value;
+                    this.OnPropertyChanged ( "FileProgressBarOpacity" );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Shows textbox.
+        /// </summary>
+        public double FileSideTextOpacity
+        {
+            get
+            {
+                if ( FileProgressBarMax != PROGRESSBAR_MIN )
+                {
+                    this.FileProgressBarOpacity = OPACITY_MAX;
+                    return this.model.FileSideTextOpacity;
+                }
+                else
+                {
+                    this.FileProgressBarOpacity = OPACITY_MIN;
+                    return OPACITY_MAX;
+                }
+            }
+            set
+            {
+                if ( this.model.FileSideTextOpacity != value )
+                {
+                    this.model.FileSideTextOpacity = value;
+                    this.OnPropertyChanged ( "FileSideTextOpacity" );
+                }
+            }
+        }
+
+        /// <summary>
+        /// Modify test to show start and end messages.
+        /// </summary>
+        public string FileSideCoverText
+        {
+            get
+            {
+                return this.model.FileSideCoverText;
+            }
+            set
+            {
+                if ( this.model.FileSideCoverText != value )
+                {
+                    this.model.FileSideCoverText = value;
+                    this.OnPropertyChanged ( "FileSideCoverText" );
+                }
+            }
+        }
+
+        #endregion
+
+        #region Module ProgressBar
 
         /// <summary>
         /// Sets and gets ModuleProgressBar.
@@ -285,7 +509,7 @@ namespace EditProfiles
         }
 
         /// <summary>
-        /// File ProgressBar Max Value
+        /// Module ProgressBar Max Value
         /// </summary>
         public int ModuleProgressBarMax
         {
@@ -297,67 +521,93 @@ namespace EditProfiles
             {
                 if ( this.model.ModuleProgressBarMax != value )
                 {
+                    if ( value == PROGRESSBAR_MIN )
+                    {
+                        this.ModuleSideTextOpacity = OPACITY_MAX;
+                        this.ModuleProgressBarOpacity = OPACITY_MIN;
+                    }
+                    else
+                    {
+                        this.ModuleSideTextOpacity = OPACITY_MIN;
+                        this.ModuleProgressBarOpacity = OPACITY_MAX;
+                    }
                     this.model.ModuleProgressBarMax = value;
                     this.OnPropertyChanged ( "ModuleProgressBarMax" );
                 }
             }
         }
+
         /// <summary>
-        /// Sets and get FileProgressBarValue
+        /// Show progress bars and texts.
         /// </summary>
-        public int FileProgressBarValue
+        public double ModuleProgressBarOpacity
         {
             get
             {
-                return this.model.FileProgressBarValue;
+                if ( ModuleProgressBarMax != PROGRESSBAR_MIN )
+                {
+                    this.ModuleSideTextOpacity = OPACITY_MIN;
+                    return this.model.ModuleProgressBarOpacity;
+                }
+                else
+                {
+                    this.ModuleSideTextOpacity = OPACITY_MAX;
+                    return ModuleProgressBarMax;
+                }
             }
             set
             {
-                if ( this.model.FileProgressBarValue != value )
+                if ( this.model.ModuleProgressBarOpacity != value )
                 {
-                    this.model.FileProgressBarValue = value;
-
-                    this.OnPropertyChanged ( "FileProgressBarValue" );
+                    this.model.ModuleProgressBarOpacity = value;
+                    this.OnPropertyChanged ( "ModuleProgressBarOpacity" );
                 }
             }
         }
 
         /// <summary>
-        /// File ProgressBar Max Value
+        /// Shows textbox.
         /// </summary>
-        public int FileProgressBarMax
+        public double ModuleSideTextOpacity
         {
             get
             {
-                return this.model.FileProgressBarMax;
+                if ( ModuleProgressBarMax != PROGRESSBAR_MIN )
+                {
+                    this.ModuleProgressBarOpacity = OPACITY_MAX;
+                    return this.model.ModuleSideTextOpacity;
+                }
+                else
+                {
+                    this.ModuleProgressBarOpacity = OPACITY_MIN;
+                    return OPACITY_MAX;
+                }
             }
             set
             {
-                if ( this.model.FileProgressBarMax != value )
+                if ( this.model.ModuleSideTextOpacity != value )
                 {
-                    this.model.FileProgressBarMax = value;
-                    this.OnPropertyChanged ( "FileProgressBarMax" );
+                    this.model.ModuleSideTextOpacity = value;
+                    this.OnPropertyChanged ( "ModuleSideTextOpacity" );
                 }
             }
         }
 
-        private SecureString _password;
-
         /// <summary>
-        /// Password box string.
+        /// Modify test to show start and end messages.
         /// </summary>
-        public SecureString Password
+        public string ModuleSideCoverText
         {
             get
             {
-                return _password;
+                return this.model.ModuleSideCoverText;
             }
             set
             {
-                if ( _password != value )
+                if ( this.model.ModuleSideCoverText != value )
                 {
-                    _password = value;
-                    this.OnPropertyChanged ( "Password" );
+                    this.model.ModuleSideCoverText = value;
+                    this.OnPropertyChanged ( "ModuleSideCoverText" );
                 }
             }
         }
@@ -375,6 +625,11 @@ namespace EditProfiles
         /// Handles FindReplace button clicks.
         /// </summary>
         public ICommand FindReplaceCommand { get; private set; }
+
+        /// <summary>
+        /// Handles Stop button clicks.
+        /// </summary>
+        public ICommand StopCommand { get; private set; }
 
         /// <summary>
         /// NOT IN USE at the moment.
@@ -398,18 +653,21 @@ namespace EditProfiles
         /// <param name="saveCommand">NOT IN USE at the moment.</param>
         /// <param name="eraseCommand">NOT IN USE at the moment.</param>
         /// <param name="findReplaceCommand">This command handles FindReplace Button Clicks.</param>
-        /// <param name="updateCommand">This command handles updating process bars and their texts</param>
+        /// <param name="updateCommand">This command handles updating process bars and their texts.</param>
+        /// <param name="stopCommand">This command handles stopping the program.</param>
         public ViewModel ( Model model,
                            ICommand saveCommand,
                            ICommand eraseCommand,
                            ICommand findReplaceCommand,
-                           ICommand updateCommand )
+                           ICommand updateCommand,
+                           ICommand stopCommand )
         {
             this.model = model;
             this.SaveCommand = saveCommand;
             this.EraseCommand = eraseCommand;
             this.FindReplaceCommand = findReplaceCommand;
             this.UpdateCommand = updateCommand;
+            this.StopCommand = stopCommand;
         }
 
         /// <summary>

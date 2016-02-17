@@ -2,21 +2,17 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:interactive="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-        xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:src="clr-namespace:EditProfiles.Behaviors"
         Title="{Binding Path=ProgramTitle}"
+        Icon="Profilechanger.ico"
         Width="450"
         Height="400">
 
     <Window.Resources>
-        <System:Double x:Key="TextBoxHeight">30.0</System:Double>
-        <System:Double x:Key="TextBlockHeight">20.0</System:Double>
-        <System:Double x:Key="ProgressBarHeight">25.0</System:Double>
-        <System:Double x:Key="TextBlockWidth">40.0</System:Double>
+
     </Window.Resources>
 
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="2*" />
@@ -39,7 +35,9 @@
                      Height="{StaticResource ResourceKey=TextBoxHeight}"
                      Margin="0,0,0,15"
                      Text="{Binding Path=FindWhatTextBoxText, 
-                                    UpdateSourceTrigger=PropertyChanged}" />
+                                    UpdateSourceTrigger=PropertyChanged}"
+                     IsHitTestVisible="{Binding Path=Disable}"
+                     Focusable="{Binding Path=Disable}" />
 
             <TextBlock Height="{StaticResource ResourceKey=TextBlockHeight}"
                        Text="{Binding Path=ReplaceWithLabelText}" />
@@ -48,7 +46,9 @@
                      Height="{StaticResource ResourceKey=TextBoxHeight}"
                      Margin="0,0,0,15"
                      Text="{Binding Path=ReplaceWithTextBoxText, 
-                                    UpdateSourceTrigger=PropertyChanged}" />
+                                    UpdateSourceTrigger=PropertyChanged}"
+                     IsHitTestVisible="{Binding Path=Disable}"
+                     Focusable="{Binding Path=Disable}" />
 
         </StackPanel>
 
@@ -60,20 +60,30 @@
                        Text="{Binding Path=PasswordLabelText}" />
 
             <PasswordBox VerticalContentAlignment="Center"
-                         Height="{StaticResource ResourceKey=TextBoxHeight}">
+                         Height="{StaticResource ResourceKey=TextBoxHeight}"
+                         IsHitTestVisible="{Binding Path=Disable}"
+                         Focusable="{Binding Path=Disable}">
+
                 <interactive:Interaction.Behaviors>
                     <src:PasswordBoxBindingBehavior Password="{Binding Path=Password}" />
                 </interactive:Interaction.Behaviors>
             </PasswordBox>
 
-            <!-- Placeholder -->
-            <TextBlock Height="{StaticResource ResourceKey=TextBlockHeight}"
-                       VerticalAlignment="Center" />
+            <ToggleButton Height="{StaticResource ResourceKey=ToggleButtonHeight}"
+                          Style="{StaticResource ResourceKey=RoundToggleButton}"
+                          Margin="0,15,0,0"
+                          IsChecked="{Binding IsChecked, Mode=TwoWay}">
 
-            <Button Height="{StaticResource ResourceKey=TextBoxHeight}"
-                    Margin="0,15,0,0"
-                    Content="{Binding Path=FindReplaceButtonText}"
-                    Command="{Binding Path=FindReplaceCommand}" />
+                <interactive:Interaction.Triggers>
+                    <interactive:EventTrigger EventName="Checked">
+                        <interactive:InvokeCommandAction Command="{Binding Path=FindReplaceCommand}" />
+                    </interactive:EventTrigger>
+
+                    <interactive:EventTrigger EventName="Unchecked">
+                        <interactive:InvokeCommandAction Command="{Binding Path=StopCommand}" />
+                    </interactive:EventTrigger>
+                </interactive:Interaction.Triggers>
+            </ToggleButton>
 
         </StackPanel>
 
@@ -101,16 +111,17 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
                            Height="{StaticResource ResourceKey=TextBlockHeight}"
-                           Margin="5"
-                           Text="{Binding Path=FileProgressBar}" />
+                           Margin="{StaticResource ResourceKey=Margin}"
+                           Text="{Binding Path=FileProgressBar}"
+                           Opacity="{Binding Path=FileProgressBarOpacity}" />
 
                 <ProgressBar Grid.Column="1"
                              Height="{StaticResource ResourceKey=ProgressBarHeight}"
@@ -119,12 +130,14 @@
                              Minimum="0"
                              Maximum="{Binding Path=FileProgressBarMax}"
                              HorizontalAlignment="Stretch"
-                             Margin="5" />
+                             Margin="{StaticResource ResourceKey=Margin}"
+                             Opacity="{Binding Path=FileProgressBarOpacity}" />
 
                 <TextBlock Grid.Column="2"
                            Height="{StaticResource ResourceKey=TextBlockHeight}"
-                           Margin="5"
-                           Text="{Binding Path=ModuleProgressBar}" />
+                           Margin="{StaticResource ResourceKey=Margin}"
+                           Text="{Binding Path=ModuleProgressBar}"
+                           Opacity="{Binding Path=ModuleProgressBarOpacity}" />
 
                 <ProgressBar Grid.Column="3"
                              Height="{StaticResource ResourceKey=ProgressBarHeight}"
@@ -133,7 +146,19 @@
                              Minimum="0"
                              Maximum="{Binding Path=ModuleProgressBarMax}"
                              HorizontalAlignment="Stretch"
-                             Margin="5" />
+                             Margin="{StaticResource ResourceKey=Margin}"
+                             Opacity="{Binding Path=ModuleProgressBarOpacity}" />
+
+                <TextBlock Grid.ColumnSpan="2"
+                           Margin="{StaticResource ResourceKey=Margin}"
+                           Opacity="{Binding Path=FileSideTextOpacity}"
+                           Text="{Binding Path=FileSideCoverText}" />
+
+                <TextBlock Grid.Column="2"
+                           Grid.ColumnSpan="2"
+                           Margin="{StaticResource ResourceKey=Margin}"
+                           Opacity="{Binding Path=ModuleSideTextOpacity}"
+                           Text="{Binding Path=ModuleSideCoverText}" />
 
             </Grid>
         </Border>

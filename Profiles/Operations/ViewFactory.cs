@@ -2,6 +2,8 @@
 using EditProfiles.Commands;
 using EditProfiles.Data;
 using EditProfiles.MainModel;
+using System.Threading;
+using System.Text;
 
 // FxCop warning: CA1014 : Microsoft.Design : Mark 'EditProfiles.exe' with CLSCompliant(true) because it exposes externally visible types.
 [assembly: CLSCompliant ( true )]
@@ -20,6 +22,8 @@ namespace EditProfiles.Operations
 
         private UpdateCommand updateCommand;
 
+        private StopCommand stopCommand;
+
         /// <summary>
         /// 
         /// </summary>
@@ -31,6 +35,10 @@ namespace EditProfiles.Operations
             this.saveDelegateCommand = new SaveDelegateCommand ( );
             this.findReplaceCommand = new FindReplaceCommand ( );
             this.updateCommand = new UpdateCommand ( );
+            this.stopCommand = new StopCommand ( );
+
+            // Initialize Common Properties.
+            MyCommons.LogProcess = new StringBuilder ( );
 
             // Initilaize new Model.
             Model model = new Model ( );
@@ -40,17 +48,15 @@ namespace EditProfiles.Operations
                                                   this.saveDelegateCommand.Command,
                                                   this.eraseDelegateCommand.Command,
                                                   this.findReplaceCommand.Command,
-                                                  this.updateCommand.Command );
+                                                  this.updateCommand.Command,
+                                                  this.stopCommand.Command );
 
-            // Ini
+            // Initialize mainview.
             EditProfiles.MainWindow view = new EditProfiles.MainWindow ( );
 
             // Here setting Commands ViewModel so the commands can access to the viewModel,
             // otherwise ViewModel would be null and act weirdly.
             // Will use one viewModel and share for all commands.
-            // eraseDelegateCommand.ViewModel = viewModel;
-            //  saveDelegateCommand.ViewModel = viewModel;
-            // findReplaceCommand.ViewModel = viewModel;
             MyCommons.MyViewModel = viewModel;
 
             return new ViewInfrastructure ( view, viewModel, model );

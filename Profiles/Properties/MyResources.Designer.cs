@@ -61,21 +61,20 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon ProfileChanger {
-            get {
-                object obj = ResourceManager.GetObject("ProfileChanger", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Find &amp; Replace.
+        ///   Looks up a localized string similar to Find &amp; Replace.
         /// </summary>
         internal static string Strings_ButtonFindReplace {
             get {
                 return ResourceManager.GetString("Strings_ButtonFindReplace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        internal static string Strings_ButtonStopTest {
+            get {
+                return ResourceManager.GetString("Strings_ButtonStopTest", resourceCulture);
             }
         }
         
@@ -116,7 +115,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unspecified.
+        ///   Looks up a localized string similar to Not specified.
         /// </summary>
         internal static string Strings_DefaultTextBoxValues {
             get {
@@ -188,6 +187,15 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {2}Current Time: {0}{2}File name: {3}{2}{1}{2}.
+        /// </summary>
+        internal static string Strings_ErrorTraceErrors {
+            get {
+                return ResourceManager.GetString("Strings_ErrorTraceErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to occ.
         /// </summary>
         internal static string Strings_FileDialogDefault {
@@ -215,7 +223,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProfileChanger.
+        ///   Looks up a localized string similar to EditProfiles.
         /// </summary>
         internal static string Strings_FolderName {
             get {
@@ -224,7 +232,34 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Profile Changer v{0}.
+        ///   Looks up a localized string similar to Test completed. Total errors: {0}.
+        /// </summary>
+        internal static string Strings_FormEndTest {
+            get {
+                return ResourceManager.GetString("Strings_FormEndTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No test module loaded..
+        /// </summary>
+        internal static string Strings_FormStartModuleTest {
+            get {
+                return ResourceManager.GetString("Strings_FormStartModuleTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select file(s)..
+        /// </summary>
+        internal static string Strings_FormStartTest {
+            get {
+                return ResourceManager.GetString("Strings_FormStartTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Profiles v{0}.
         /// </summary>
         internal static string Strings_FormTitle {
             get {

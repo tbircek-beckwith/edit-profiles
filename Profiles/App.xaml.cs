@@ -65,7 +65,7 @@ namespace EditProfiles
 
             #endregion
 
-            #region Application Start Here.
+            #region Application Starts Here.
 
             base.OnStartup ( e );
 
@@ -89,6 +89,11 @@ namespace EditProfiles
             infrastructure.ViewModel.FindWhatTextBoxText = MyResources.Strings_Debug_TextBoxFind;
 
 #endif
+
+            MyCommons.MyViewModel.FileSideCoverText = MyResources.Strings_FormStartTest;
+            MyCommons.MyViewModel.ModuleSideCoverText = MyResources. Strings_FormStartModuleTest;
+
+            MyCommons.MyViewModel.Disable = true;
 
             infrastructure.View.Show ( );
 
@@ -119,7 +124,7 @@ namespace EditProfiles
 
 
                 // Log the operations completed so far.
-                if ( !string.IsNullOrWhiteSpace ( MyCommons.MyViewModel.DetailsTextBoxText ) )
+                if ( MyCommons.LogProcess.Length > 0 )
                 {
                     // write log to the file.
                     File.WriteAllText ( Path.Combine ( MyCommons.FileOutputFolder, Settings.Default.LogFileName ), MyCommons.LogProcess.ToString ( ) );

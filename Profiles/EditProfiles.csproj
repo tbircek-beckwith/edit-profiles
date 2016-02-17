@@ -64,6 +64,12 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>EditProfilesDefaultSigning.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ProfileChanger.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>EditProfiles.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
@@ -94,6 +100,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behaviors\PasswordBoxBindingBehavior.cs" />
+    <Compile Include="Commands\StopCommand.cs" />
     <Compile Include="Data\MyCommons.cs" />
     <Compile Include="Data\OCCModuleNames.cs" />
     <Compile Include="Data\ProgIDNames.cs" />
@@ -119,12 +126,12 @@
     <Compile Include="Interfaces\ISaveFileOperation.cs" />
     <Compile Include="Interfaces\ISecurePassword.cs" />
     <Compile Include="Interfaces\IStartProcessInterface.cs" />
+    <Compile Include="Commands\FindReplaceCommand.cs" />
     <Compile Include="Properties\MyResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MyResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Commands\FindReplaceCommand.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -191,7 +198,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Files\ProfileChanger.ico" />
+    <EmbeddedResource Include="Assests\ProfileChanger.ico" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\MyResources.resx">
@@ -218,6 +225,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ProfileChanger.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -18,8 +18,11 @@ namespace EditProfiles.Operations
 
         #region Properties
 
+        private short ProtectionLevel { get; set; }
+
         private string CurrentFileName { get; set; }
 
+        [Obsolete ( " Password must be defined by the user in the 'Password' field" )]
         private string Password { get; set; }
 
         private IList<string> FileNames;
@@ -33,7 +36,7 @@ namespace EditProfiles.Operations
 
         #endregion
 
-        #region IStartProcessInterface Members
+        #region Obsolete Methods
 
         /// <summary>
         /// Start processing the user selected Omicron Test Files.
@@ -41,10 +44,11 @@ namespace EditProfiles.Operations
         /// <param name="fileNames">The file names to process.</param>
         /// <param name="password">The password to open files in case there is a protection.</param>
         /// <param name="viewModel">The copy of the current ViewModel for the business logic.</param>
+        [Obsolete ( " Password must be defined by the user in the 'Password' field", true )]
         public void StartProcessing ( IList<string> fileNames, string password, ViewModel viewModel )
         {
             this.FileNames = fileNames;
-            this.Password = password;
+            // this.Password = password;
             this.ViewModel = viewModel;
 
             // Following items are not allowed to be modified after "Find & Replace" button clicked.
@@ -62,15 +66,40 @@ namespace EditProfiles.Operations
         /// </summary>
         /// <param name="fileNames">The file names to process.</param>
         /// <param name="password">The password to open files in case there is a protection.</param>
-        [Obsolete ( "This module will not support WPF functionalities." )]
+        [Obsolete ( "This module will not support WPF functionalities.", true )]
         public void StartProcessing ( IList<string> fileNames, string password )
         {
             this.FileNames = fileNames;
-            this.Password = password;
+            // this.Password = password;
 
             //// Following items are not allowed to be modified after "Find & Replace" button clicked.
             // this.ItemsToFind = MyCommons.MainFormRestrictedAccessTo.ItemsToFind;
             //this.ItemsToReplace = MyCommons.MainFormRestrictedAccessTo.ItemsToReplace;
+
+            this.StartProcessingFiles ( );
+        }
+
+        #endregion                       
+
+        #region IStartProcessInterface Members
+
+
+        /// <summary>
+        /// Start processing the user selected Omicron Test Files.
+        /// </summary>
+        /// <param name="fileNames">The file names to process.</param>
+        /// <param name="viewModel">The copy of the current ViewModel for the business logic.</param>
+        void IStartProcessInterface.StartProcessing ( IList<string> fileNames, ViewModel viewModel )
+        {
+            this.FileNames = fileNames;
+            this.ViewModel = viewModel;
+
+            // Following items are not allowed to be modified after "Find & Replace" button clicked.
+            this.ItemsToFind = this.ViewModel.FindWhatTextBoxText.Split ( '|' );
+            //  this.ItemsToFindList ( this.ViewModel.FindWhatTextBoxText );
+
+            this.ItemsToReplace = this.ViewModel.ReplaceWithTextBoxText.Split ( '|' );
+            //this.ItemsToFindList ( this.ViewModel.ReplaceWithTextBoxText );
 
             this.StartProcessingFiles ( );
         }
@@ -108,7 +137,7 @@ namespace EditProfiles.Operations
                         MyCommons.MyViewModel.UpdateCommand.Execute ( null );
 
                         this.CurrentFileName = currentFile;
-
+                        
                         try
                         {
                             Task.Factory.StartNew ( ( ) =>
@@ -123,22 +152,27 @@ namespace EditProfiles.Operations
                                         }
 
                                         // Update DetailsTextBoxText.
-                                        this.ViewModel.DetailsTextBoxText =
+                                        MyCommons.MyViewModel.DetailsTextBoxText = 
+                                            MyCommons.LogProcess.Append (
+                                            string.Format ( 
+                                            CultureInfo.InvariantCulture,
+                                            MyResources.Strings_CurrentFileName,
+                                            Environment.NewLine,
+                                            Repeat.StringDuplicate ( '-', 50 ),
+                                            Path.GetFileName ( this.CurrentFileName ),
                                             string.Format ( CultureInfo.InvariantCulture,
-                                                            MyResources.Strings_CurrentFileName,
-                                                            Environment.NewLine,
-                                                            Repeat.StringDuplicate ( '-', 50 ),
-                                                            Path.GetFileName ( currentFile ),
-                                                            string.Format ( CultureInfo.InvariantCulture,
-                                            //"Start time: {0}",
-                                                            MyResources.Strings_TestStart,
-                                                            DateTime.Now ) );
+                                            MyResources.Strings_TestStart,
+                                            DateTime.Now ) ) )
+                                            .ToString ( );
+
+
 #if DEBUG
                                         Console.WriteLine ( "StartProcess -------------------------------" );
 #endif
 
                                         // Open Omicron Document.
-                                         this.OmicronDocument = OpenDocument ( currentFile, "" );
+                                        // this.OmicronDocument = OpenDocument ( this.CurrentFileName, "" ); 
+                                        this.OmicronDocument = OpenDocument ( this.CurrentFileName );
 
                                     }
                                     catch ( ArgumentException ae )
@@ -202,8 +236,6 @@ namespace EditProfiles.Operations
 
                                         // Save the new file.
                                         SaveOmicronFiles ( this.OmicronDocument.FullName, true );
-
-                                        // TODO: Save files with their original protection level.
 
                                     }
                                     catch ( AggregateException ae )
@@ -276,7 +308,6 @@ namespace EditProfiles.Operations
                                 {
                                     try
                                     {
-                                        // TODO: Verify this change.
                                         // Garbage Collection.
                                         this.OmicronApplication = null;
                                         this.OmicronDocument = null;
@@ -303,10 +334,16 @@ namespace EditProfiles.Operations
                                 }
                                 , MyCommons.CancellationToken )
                                 .Wait ( );
+
+                            MyCommons.MyViewModel.FileSideCoverText = MyResources.Strings_FormEndTest;
+                            
+                            // Refresh Process bars.
+                            MyCommons.MyViewModel.UpdateCommand.Execute ( null );
+
 #if DEBUG
                             Console.WriteLine ( " File opening completed " );
 #endif
-                        }                        
+                        }
                         catch ( AggregateException ae )
                         {
                             foreach ( Exception ex in ae.InnerExceptions )

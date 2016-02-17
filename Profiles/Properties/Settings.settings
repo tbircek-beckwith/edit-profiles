@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="LogFileName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">ProfileChanger.log</Value>
+      <Value Profile="(Default)">EditProfiles.log</Value>
     </Setting>
     <Setting Name="TestModulesVisibility" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="WaitTimeToKillProcess" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">5000</Value>
+      <Value Profile="(Default)">10000</Value>
     </Setting>
     <Setting Name="ClearTestModules" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>

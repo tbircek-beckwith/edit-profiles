@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using EditProfiles.Properties;
 
 namespace EditProfiles.Operations
 {
@@ -25,30 +26,17 @@ namespace EditProfiles.Operations
 
         // System.Runtime.InteropServices.COMException (0x800706BE):
         // The remote procedure call failed. 
-        // (Exception from HRESULT: 0x800706BE)
+        // (Exception from HRESULT: 0x800706BE ( RPC_E_SERVERFAILED ))
         internal const UInt32 RPC_E_SERVERFAILED = 0x800706BE;
+
+        // System.Runtime.InteropServices.COMException (0x80040154):
+        // The class not registered. (No Omicron Test Suite installed.)
+        // (Exception from HRESULT: 0x80040154 ( REGDB_E_CLASSNOTREG ))
+        internal const UInt32 REGDB_E_CLASSNOTREG = 0x80040154;
 
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Logs the errors.
-        /// </summary>
-        /// <param name="ex">Exception generated.</param>
-        /// <returns>Exception.</returns>
-        internal static Exception Log ( this Exception ex )
-        {
-            // Add a generic error message to the Log file.
-            // MyCommons.MainFormRestrictedAccessTo.LogUpdater = Resources.Strings_ErrorLogFile;            
-
-            // Print to "Debug output"
-            Debug.WriteLine ( string.Format ( CultureInfo.InvariantCulture, "{0} ", ex ), "Errors " );
-
-            // Save to the fileOutputFolder
-            Trace.TraceError ( string.Format ( CultureInfo.InvariantCulture, "{2}Current Time: {0}{2}{1}{2}", DateTime.Now, ex, Environment.NewLine ) );
-
-            return ex;
-        }
 
         /// <summary>
         /// Logs the errors.
@@ -56,10 +44,8 @@ namespace EditProfiles.Operations
         /// <param name="ex">Exception generated.</param>
         /// <param name="fileName">Currently processed Omicron Control Center file name.</param>
         /// <returns>Exception.</returns>
-        internal static Exception Log ( this Exception ex, string fileName )
+        internal static Exception Log ( this Exception ex, string fileName = "Not specified" )
         {
-            //// Add a generic error message to the Log file.
-            //MyCommons.MainFormRestrictedAccessTo.LogUpdater = MyResources.Strings_ErrorLogFile;
 
             // Print Filename to the Debug window.
             Debug.WriteLine ( fileName );
@@ -68,7 +54,7 @@ namespace EditProfiles.Operations
             Debug.WriteLine ( string.Format ( CultureInfo.InvariantCulture, "{0} ", ex ), "Errors " );
 
             // Save to the fileOutputFolder
-            Trace.TraceError ( string.Format ( CultureInfo.InvariantCulture, "{2}Current Time: {0}{2}File name: {3}{2}{1}{2}", DateTime.Now, ex, Environment.NewLine, fileName ) );
+            Trace.TraceError ( string.Format ( CultureInfo.InvariantCulture, MyResources.Strings_ErrorTraceErrors, DateTime.Now, ex, Environment.NewLine, fileName ) );
 
             return ex;
         }

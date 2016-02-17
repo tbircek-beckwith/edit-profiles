@@ -1,11 +1,12 @@
 ﻿using System.Windows;
+using EditProfiles.Data;
 
 namespace EditProfiles.Commands
 {
     /// <summary>
     /// Save Command.
     /// </summary>
-    public class SaveDelegateCommand 
+    public class SaveDelegateCommand
     {
 
         private ViewModel viewModel;
@@ -63,7 +64,7 @@ namespace EditProfiles.Commands
         /// <returns>If there is something to save True otherwise False.</returns>
         public bool CanSave ( object unused )
         {
-            return string.IsNullOrEmpty ( this.ViewModel.DetailsTextBoxText );
+            return MyCommons.LogProcess.Length > 0;
         }
 
         private void OnViewModelPropertyChanged ( object sender, System.ComponentModel.PropertyChangedEventArgs e )

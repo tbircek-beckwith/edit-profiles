@@ -52,7 +52,8 @@ namespace EditProfiles.Operations
                                 TestModuleName.OMExec,
                                 TestModuleName.OMSeq, 
                                 TestModuleName.OMRamp, 
-                                TestModuleName.OMPulse 
+                                TestModuleName.OMPulse,
+                                TestModuleName.QuickCmc
         };
 
         // Omicron test module's names internally.
@@ -123,29 +124,19 @@ namespace EditProfiles.Operations
         {
             try
             {
+
                 foreach ( string moduleName in OmicronModuleList )
                 {
                     foreach ( var process in Process.GetProcessesByName ( moduleName ) )
                     {
-                        Task.Factory.StartNew ( ( ) =>
-                            {
-                                // Polling CancellationToken's status.
-                                // If cancellation requested throw error and exit loop.
-                                if ( MyCommons.CancellationToken.IsCancellationRequested == true )
-                                {
-                                    MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
-                                }
 
-                                if ( !process.HasExited )
-                                {
+                        if ( !process.HasExited )
+                        {
 #if DEBUG
-                                    Console.WriteLine ( "KillOmicronFiles ( ) thread: {0}", Thread.CurrentThread.GetHashCode ( ) );
+                            Console.WriteLine ( "KillOmicronFiles ( ) thread: {0}", Thread.CurrentThread.GetHashCode ( ) );
 #endif
-                                    process.Kill ( );
-                                }
-                            }
-                            , MyCommons.CancellationToken )
-                            .Wait ( );
+                            process.Kill ( );
+                        }                       
                     }
                 }
 
@@ -176,25 +167,15 @@ namespace EditProfiles.Operations
 
                 foreach ( var process in Process.GetProcessesByName ( omicronModuleName ) )
                 {
-                    Task.Factory.StartNew ( ( ) =>
-                       {
-                           // Polling CancellationToken's status.
-                           // If cancellation requested throw error and exit loop.
-                           if ( MyCommons.CancellationToken.IsCancellationRequested == true )
-                           {
-                               MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
-                           }
-
-                           if ( !process.HasExited )
-                           {
+                    
+                    if ( !process.HasExited )
+                    {
 #if DEBUG
-                               Console.WriteLine ( "KillOmicronFiles ( {1} ) thread: {0}", Thread.CurrentThread.GetHashCode ( ), omicronProgId );
+                        Console.WriteLine ( "KillOmicronFiles ( {1} ) thread: {0}", Thread.CurrentThread.GetHashCode ( ), omicronProgId );
 #endif
-                               process.Kill ( );
+                        process.Kill ( );
 
-                           }
-                       }, MyCommons.CancellationToken ).Wait ( );
-
+                    }                    
                 }
 
                 return true;
