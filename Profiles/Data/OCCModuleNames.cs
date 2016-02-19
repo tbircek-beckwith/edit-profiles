@@ -1,40 +1,32 @@
 ﻿using EditProfiles.Operations;
+using System.Collections.Generic;
 
 namespace EditProfiles.Data
 {
     /// <summary>
     /// Omicron Control Center Module names
     /// </summary>
-    public sealed class TestModuleName : ProcessFiles
+    internal sealed class TestModuleName : ProcessFiles
     {
-        /// <summary>
-        /// "OCCenter".
-        /// </summary>
-        public const string OCCenter = "OCCenter";
 
         /// <summary>
-        /// "OMExec".
+        /// Holds supported Omicron Module list
         /// </summary>
-        public const string OMExec = "OMExec";
+        internal static IList<string> OmicronModuleList
+        {
+            get
+            {
+                return new List<string>
+                {
+                    "OCCenter",
+                    "OMExec",
+                    "OMPlsRmp",
+                    "OMRamp",
+                    "OMSeq",
+                    "QuickCmc"
+                };
+            }
+        }
 
-        /// <summary>
-        /// "OMPlsRmp".
-        /// </summary>
-        public const string OMPulse = "OMPlsRmp";
-
-        /// <summary>
-        /// "OMRamp".
-        /// </summary>
-        public const string OMRamp = "OMRamp";
-
-        /// <summary>
-        /// "OMSeq".
-        /// </summary>
-        public const string OMSeq = "OMSeq";
-
-        /// <summary>
-        /// "QuickCMC".
-        /// </summary>
-        public const string QuickCmc = "QuickCmc";
     }
 }

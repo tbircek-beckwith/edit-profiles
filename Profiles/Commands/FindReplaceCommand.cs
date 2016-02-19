@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EditProfiles.Data;
 using EditProfiles.Operations;
 using EditProfiles.Properties;
 using Microsoft.Win32;
-using EditProfiles.Behaviors;
 
 namespace EditProfiles.Commands
 {
@@ -105,7 +103,7 @@ namespace EditProfiles.Commands
             }
             else
             {
-                // TODO: Add means to prevent visual changes of the button
+                // Reverts back 'Start', since the user 'Cancelled' to select file
                 MyCommons.MyViewModel.IsChecked = false;
 
                 // Prevents the user to modify texts of FindWhat, ReplaceWith and Password 
@@ -123,7 +121,7 @@ namespace EditProfiles.Commands
         /// <param name="value">True to allow the user modification of the text inputs.</param>
         private void Enable ( bool value )
         {
-            MyCommons.MyViewModel.Disable = value;
+            MyCommons.MyViewModel.Editable = value;
         }
 
         /// <summary>
@@ -150,6 +148,9 @@ namespace EditProfiles.Commands
                 .ToString ( );
 
             this.Enable ( true );
+
+            // Prepare Toggle Button to restest. 'Start'
+            MyCommons.MyViewModel.IsChecked = false;
         }
 
         /// <summary>

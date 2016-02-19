@@ -229,6 +229,11 @@
   <ItemGroup>
     <Resource Include="ProfileChanger.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ReadMe.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "C:\Program Files\Microsoft Fxcop 10.0\FxCopCmd.exe" /c /f:"$(TargetPath)" /r:"C:\Program Files\Microsoft Fxcop 10.0\Rules"</PostBuildEvent>

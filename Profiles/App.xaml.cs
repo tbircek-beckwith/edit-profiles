@@ -16,7 +16,9 @@ namespace EditProfiles
     /// </summary>
     public partial class App : Application
     {
-        // private void Application_Startup ( object sender, StartupEventArgs e )
+
+        #region Startup 
+
         /// <summary>
         /// Start up 
         /// </summary>
@@ -85,21 +87,25 @@ namespace EditProfiles
             infrastructure.View.DataContext = infrastructure.ViewModel;
 
 #if DEBUG
-            infrastructure.ViewModel.ReplaceWithTextBoxText = MyResources.Strings_Debug_TextBoxReplace;
-            infrastructure.ViewModel.FindWhatTextBoxText = MyResources.Strings_Debug_TextBoxFind;
+            MyCommons.MyViewModel.ReplaceWithTextBoxText = MyResources.Strings_Debug_TextBoxReplace;
+            MyCommons.MyViewModel.FindWhatTextBoxText = MyResources.Strings_Debug_TextBoxFind;
 
 #endif
 
             MyCommons.MyViewModel.FileSideCoverText = MyResources.Strings_FormStartTest;
             MyCommons.MyViewModel.ModuleSideCoverText = MyResources. Strings_FormStartModuleTest;
 
-            MyCommons.MyViewModel.Disable = true;
+            MyCommons.MyViewModel.Editable = true;
 
             infrastructure.View.Show ( );
 
             #endregion
 
         }
+
+        #endregion
+
+        #region Exit
 
         //  private void Application_Exit ( object sender, ExitEventArgs e )
         /// <summary>
@@ -154,6 +160,8 @@ namespace EditProfiles
                 }
             }
         }
+
+        #endregion
 
         #region Catch All Unhandled Exceptions
 

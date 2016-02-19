@@ -7,8 +7,6 @@ using System.Windows.Input;
 using EditProfiles.Data;
 using EditProfiles.MainModel;
 using EditProfiles.Properties;
-using System.Drawing;
-using System.Text;
 
 namespace EditProfiles
 {
@@ -61,19 +59,19 @@ namespace EditProfiles
         /// <summary>
         /// Prevents the user interaction while test program is running.
         /// </summary>
-        public bool Disable
+        public bool Editable
         {
             get
             {
-                return this.model.Disable;
+                return this.model.Editable;
             }
             set
             {
-                if ( this.model.Disable != value )
+                if ( this.model.Editable != value )
                 {
-                    this.model.Disable = value;
+                    this.model.Editable = value;
 
-                    this.OnPropertyChanged ( "Disable" );
+                    this.OnPropertyChanged ( "Editable" );
                 }
             }
         }
@@ -109,12 +107,12 @@ namespace EditProfiles
         {
             get
             {
-#if DEBUG
-                return MyResources.Strings_Debug_TextBoxFind;
-#else
+//#if DEBUG
+//                return MyResources.Strings_Debug_TextBoxFind;
+//#else
                 // Return empty string if the user not specified any values  
                 return this.model.FindWhatTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
-#endif
+//#endif
             }
             set
             {
@@ -158,12 +156,12 @@ namespace EditProfiles
         {
             get
             {
-#if DEBUG
-                return MyResources.Strings_Debug_TextBoxReplace;
-#else
+//#if DEBUG
+//                return MyResources.Strings_Debug_TextBoxReplace;
+//#else
                 // Return empty string if the user not specified any values                
                 return this.model.ReplaceWithTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
-#endif
+//#endif
             }
             set
             {
@@ -693,6 +691,7 @@ namespace EditProfiles
             if ( handler != null )
             {
                 handler ( this, new PropertyChangedEventArgs ( propertyName ) );
+
             }
         }
 

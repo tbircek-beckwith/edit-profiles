@@ -55,16 +55,12 @@ namespace EditProfiles.Operations
                 Console.WriteLine ( "Total TestModule: {0} ", totalModuleNumber );
 #endif
 
-                ParallelOptions parallelingOptions = new ParallelOptions ( );
-                parallelingOptions.MaxDegreeOfParallelism = 1;
-                parallelingOptions.CancellationToken = MyCommons.CancellationToken;
-
                 IAutoTMs testModules = this.OmicronDocument.TestModules;
 
-                // Parallel.For (fromInclusive Int32, toExclusive Int32, parallelOtions, body)
+                // Parallel.For (fromInclusive Int32, toExclusive Int32, parallelOptions, body)
                 // totalModelNumber IS EXCLUSIVE SO MUST ADD 1 TO IT.
                 // Otherwise the last Test Module will never be processed.
-                Parallel.For ( currentPosition, totalModuleNumber + 1, parallelingOptions, ( testModule ) =>
+                Parallel.For ( currentPosition, totalModuleNumber + 1, MyCommons.ParallelingOptions, ( testModule ) =>
                 {
                     // update current module number.
                     MyCommons.CurrentModuleNumber = testModule;
@@ -108,7 +104,7 @@ namespace EditProfiles.Operations
                                 }
                                 return;
                             }
-                            
+
                             break;
 
                         default:

@@ -9,7 +9,7 @@
         Height="400">
 
     <Window.Resources>
-
+       
     </Window.Resources>
 
     <Grid>
@@ -35,9 +35,9 @@
                      Height="{StaticResource ResourceKey=TextBoxHeight}"
                      Margin="0,0,0,15"
                      Text="{Binding Path=FindWhatTextBoxText, 
-                                    UpdateSourceTrigger=PropertyChanged}"
-                     IsHitTestVisible="{Binding Path=Disable}"
-                     Focusable="{Binding Path=Disable}" />
+                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     IsHitTestVisible="{Binding Path=Editable}"
+                     Focusable="{Binding Path=Editable}" />
 
             <TextBlock Height="{StaticResource ResourceKey=TextBlockHeight}"
                        Text="{Binding Path=ReplaceWithLabelText}" />
@@ -46,9 +46,9 @@
                      Height="{StaticResource ResourceKey=TextBoxHeight}"
                      Margin="0,0,0,15"
                      Text="{Binding Path=ReplaceWithTextBoxText, 
-                                    UpdateSourceTrigger=PropertyChanged}"
-                     IsHitTestVisible="{Binding Path=Disable}"
-                     Focusable="{Binding Path=Disable}" />
+                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                     IsHitTestVisible="{Binding Path=Editable}"
+                     Focusable="{Binding Path=Editable}" />
 
         </StackPanel>
 
@@ -61,11 +61,11 @@
 
             <PasswordBox VerticalContentAlignment="Center"
                          Height="{StaticResource ResourceKey=TextBoxHeight}"
-                         IsHitTestVisible="{Binding Path=Disable}"
-                         Focusable="{Binding Path=Disable}">
+                         IsHitTestVisible="{Binding Path=Editable}"
+                         Focusable="{Binding Path=Editable}">
 
                 <interactive:Interaction.Behaviors>
-                    <src:PasswordBoxBindingBehavior Password="{Binding Path=Password}" />
+                    <src:PasswordBoxBindingBehavior Password="{Binding Path=Password, Mode=TwoWay}" />
                 </interactive:Interaction.Behaviors>
             </PasswordBox>
 
@@ -96,7 +96,7 @@
                  HorizontalScrollBarVisibility="Auto"
                  src:TextBoxBehavior.ScrollOnTextChanged="True"
                  TextWrapping="Wrap"
-                 Text="{Binding Path=DetailsTextBoxText}" />
+                 Text="{Binding Path=DetailsTextBoxText, Mode=TwoWay}" />
 
         <Border Margin="5,5,10,5"
                 Grid.Column="0"
@@ -120,8 +120,9 @@
                 <TextBlock Grid.Column="0"
                            Height="{StaticResource ResourceKey=TextBlockHeight}"
                            Margin="{StaticResource ResourceKey=Margin}"
-                           Text="{Binding Path=FileProgressBar}"
-                           Opacity="{Binding Path=FileProgressBarOpacity}" />
+                           Text="{Binding Path=FileProgressBar, Mode=TwoWay}"
+                           Opacity="{Binding Path=FileProgressBarOpacity}" 
+                           VerticalAlignment="Center"/>
 
                 <ProgressBar Grid.Column="1"
                              Height="{StaticResource ResourceKey=ProgressBarHeight}"
@@ -136,8 +137,9 @@
                 <TextBlock Grid.Column="2"
                            Height="{StaticResource ResourceKey=TextBlockHeight}"
                            Margin="{StaticResource ResourceKey=Margin}"
-                           Text="{Binding Path=ModuleProgressBar}"
-                           Opacity="{Binding Path=ModuleProgressBarOpacity}" />
+                           Text="{Binding Path=ModuleProgressBar, Mode=TwoWay}"
+                           Opacity="{Binding Path=ModuleProgressBarOpacity}" 
+                           VerticalAlignment="Center"/>
 
                 <ProgressBar Grid.Column="3"
                              Height="{StaticResource ResourceKey=ProgressBarHeight}"
@@ -152,13 +154,15 @@
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="{StaticResource ResourceKey=Margin}"
                            Opacity="{Binding Path=FileSideTextOpacity}"
-                           Text="{Binding Path=FileSideCoverText}" />
+                           VerticalAlignment="Center"
+                           Text="{Binding Path=FileSideCoverText, Mode=TwoWay}" />
 
                 <TextBlock Grid.Column="2"
                            Grid.ColumnSpan="2"
                            Margin="{StaticResource ResourceKey=Margin}"
                            Opacity="{Binding Path=ModuleSideTextOpacity}"
-                           Text="{Binding Path=ModuleSideCoverText}" />
+                           VerticalAlignment="Center"
+                           Text="{Binding Path=ModuleSideCoverText, Mode=TwoWay}" />
 
             </Grid>
         </Border>

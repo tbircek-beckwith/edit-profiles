@@ -28,6 +28,8 @@ namespace EditProfiles.Operations
 
         private int WaitTime { get; set; }
 
+        private string OmicronProgId { get; set; }
+
         // Verify this value between limits
         private int WaitTimeToKillProcess
         {
@@ -46,26 +48,20 @@ namespace EditProfiles.Operations
             }
         }
 
-        // Module type names Omicron internally refers.
-        private IList<string> OmicronModuleList = new List<string> { 
-                                TestModuleName.OCCenter, 
-                                TestModuleName.OMExec,
-                                TestModuleName.OMSeq, 
-                                TestModuleName.OMRamp, 
-                                TestModuleName.OMPulse,
-                                TestModuleName.QuickCmc
-        };
-
-        // Omicron test module's names internally.
-        private IList<string> OmicronProgIDs = new List<string> { 
-                                ProgId.Dummy, 
-                                ProgId.Execute, 
-                                ProgId.OMSeq, 
-                                ProgId.OMRamp, 
-                                ProgId.OMPulse 
-        };
-
-        private string OmicronProgId { get; set; }
+        private IList<string> OmicronProgIDs
+        {
+            get
+            {
+                return new List<string>
+                 {
+                    ProgId.Dummy, 
+                    ProgId.Execute, 
+                    ProgId.OMSeq, 
+                    ProgId.OMRamp, 
+                    ProgId.OMPulse 
+                 };
+            }
+        }
 
         #endregion
 
@@ -75,6 +71,7 @@ namespace EditProfiles.Operations
         /// Search for Omicron processes by the file names
         /// and terminate all of them.
         /// </summary>
+        [SecurityCritical]
         public bool KillOmicronProcesses ( )
         {
 
@@ -90,6 +87,7 @@ namespace EditProfiles.Operations
         /// and terminate all of them.
         /// </summary>
         /// <param name="omicronProgId">Omicron ProgID value</param>
+        [SecurityCritical]
         public bool KillOmicronProcesses ( string omicronProgId )
         {
             try
@@ -101,7 +99,7 @@ namespace EditProfiles.Operations
                 }
 
                 this.OmicronProgId = omicronProgId;
-                return KillOmicronFiles ( this.OmicronProgId );
+                return this.KillOmicronFiles ( this.OmicronProgId );
             }
             catch ( ArgumentNullException ae )
             {
@@ -125,7 +123,7 @@ namespace EditProfiles.Operations
             try
             {
 
-                foreach ( string moduleName in OmicronModuleList )
+                foreach ( string moduleName in TestModuleName.OmicronModuleList )
                 {
                     foreach ( var process in Process.GetProcessesByName ( moduleName ) )
                     {
@@ -136,7 +134,7 @@ namespace EditProfiles.Operations
                             Console.WriteLine ( "KillOmicronFiles ( ) thread: {0}", Thread.CurrentThread.GetHashCode ( ) );
 #endif
                             process.Kill ( );
-                        }                       
+                        }
                     }
                 }
 
@@ -163,11 +161,13 @@ namespace EditProfiles.Operations
             try
             {
                 // Identify the module that still running.
-                string omicronModuleName = OmicronModuleList.ElementAt ( OmicronProgIDs.IndexOf ( omicronProgId ) ).ToString ( );
+                string omicronModuleName = TestModuleName.OmicronModuleList.ElementAt ( 
+                                                                this.OmicronProgIDs.IndexOf ( omicronProgId ) ).
+                                                                ToString ( );
 
                 foreach ( var process in Process.GetProcessesByName ( omicronModuleName ) )
                 {
-                    
+
                     if ( !process.HasExited )
                     {
 #if DEBUG
@@ -175,7 +175,7 @@ namespace EditProfiles.Operations
 #endif
                         process.Kill ( );
 
-                    }                    
+                    }
                 }
 
                 return true;

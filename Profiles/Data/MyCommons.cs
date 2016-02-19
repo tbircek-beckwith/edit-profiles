@@ -3,24 +3,45 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using EditProfiles.Properties;
+using System.Threading.Tasks;
 
 namespace EditProfiles.Data
 {
     /// <summary>
     /// Holds project wide variables.
     /// </summary>
-    public static class MyCommons // : ProcessFiles
+    internal static class MyCommons // : ProcessFiles
     {
         /// <summary>
-        /// 
+        /// The current view
         /// </summary>
-        public static ViewModel MyViewModel { get; set; }
+        internal static ViewModel MyViewModel { get; set; }
+
+        /// <summary>
+        /// Increment it for faster executions but it is not reliable over value of 1;
+        /// </summary>
+        private const int MaxDegreeOfParallelism = 1;
+
+        /// <summary>
+        /// Paralleling options
+        /// </summary>
+        internal static ParallelOptions ParallelingOptions
+        {
+            get
+            {
+                ParallelOptions parallelingOptions = new ParallelOptions ( );
+                parallelingOptions.MaxDegreeOfParallelism = MyCommons.MaxDegreeOfParallelism;
+                parallelingOptions.CancellationToken = MyCommons.CancellationToken;
+
+                return parallelingOptions;            
+            }
+        }
 
         /// <summary>
         /// Holds log files folder location.
         /// Folder Location: C:\Users\yourName\AppData\Local\ProfileChanger
         /// </summary>
-        public static string FileOutputFolder
+        internal static string FileOutputFolder
         {
             get
             {
@@ -33,36 +54,36 @@ namespace EditProfiles.Data
         /// <summary>
         /// Total file number selected by the user.
         /// </summary>
-        public static int TotalFileNumber { get; set; }
+        internal static int TotalFileNumber { get; set; }
 
         /// <summary>
         /// Currently processing file number.
         /// </summary>
-        public static int CurrentFileNumber { get; set; }
+        internal static int CurrentFileNumber { get; set; }
 
         /// <summary>
         /// Total module number in current file.
         /// </summary>
-        public static int TotalModuleNumber { get; set; }
+        internal static int TotalModuleNumber { get; set; }
 
         /// <summary>
         /// Current processing module number.
         /// </summary>
-        public static int CurrentModuleNumber { get; set; }
+        internal static int CurrentModuleNumber { get; set; }
 
         /// <summary>
         /// Storage for the process of the program.
         /// </summary>
-        public static StringBuilder LogProcess { get; set; }
+        internal static StringBuilder LogProcess { get; set; }
 
         /// <summary>
         /// Cancellation token source.
         /// </summary>
-        public static CancellationTokenSource TokenSource { get; set; }
+        internal static CancellationTokenSource TokenSource { get; set; }
 
         /// <summary>
         /// Cancellation token.
         /// </summary>
-        public static CancellationToken CancellationToken { get; set; }
+        internal static CancellationToken CancellationToken { get; set; }
     }
 }

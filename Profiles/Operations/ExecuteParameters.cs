@@ -68,7 +68,7 @@ namespace EditProfiles.Operations
                 ErrorHandler.Log ( ae, this.CurrentFileName );
 
                 // Terminate Execute Module.
-                KillOmicronProcesses ( ProgId.Execute );
+                KillOmicronProcesses ( this.TestModule.ProgID ); // ProgId.Execute );
                 return string.Empty;
             }
         }
@@ -171,8 +171,8 @@ namespace EditProfiles.Operations
 
 #if DEBUG
             Console.WriteLine ( " Parameters  : {0}", this.ExecuteParameter.ToString ( ) );
-            Console.WriteLine ( " Find what   : {0}", ViewModel.FindWhatTextBoxText ); // MyCommons.MainFormRestrictedAccessTo.ItemsToFindString );
-            Console.WriteLine ( " Replace with: {0}", ViewModel.ReplaceWithTextBoxText ); // MyCommons.MainFormRestrictedAccessTo.ItemsToReplaceString );
+            Console.WriteLine ( " Find what   : {0}", MyCommons.MyViewModel.FindWhatTextBoxText );
+            Console.WriteLine ( " Replace with: {0}", MyCommons.MyViewModel.ReplaceWithTextBoxText );
             Console.WriteLine ( );
 
             if ( !( this.ExecuteDoc.Parameters == this.ExecuteParameter.ToString ( ) ) )
@@ -235,7 +235,7 @@ namespace EditProfiles.Operations
             {
 
                 // Terminate Execute Module in memory.
-                KillOmicronProcesses ( ProgId.Execute );
+                KillOmicronProcesses ( this.TestModule.ProgID ); // ProgId.Execute );
 
             }
 
@@ -248,7 +248,7 @@ namespace EditProfiles.Operations
                 }
 
                 // Terminate Execute Module in memory.
-                KillOmicronProcesses ( ProgId.Execute );
+                KillOmicronProcesses ( this.TestModule.ProgID );  // ProgId.Execute );
 
                 return string.Empty;
             }

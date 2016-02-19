@@ -61,7 +61,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find &amp; Replace.
+        ///   Looks up a localized string similar to Start.
         /// </summary>
         internal static string Strings_ButtonFindReplace {
             get {

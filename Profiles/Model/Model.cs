@@ -21,7 +21,7 @@ namespace EditProfiles.MainModel
         /// <summary>
         /// Prevents the user interaction while test program is running.
         /// </summary>
-        public bool Disable { get; set; }
+        public bool Editable { get; set; }
 
         #endregion
 

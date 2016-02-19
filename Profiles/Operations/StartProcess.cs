@@ -95,12 +95,9 @@ namespace EditProfiles.Operations
             this.ViewModel = viewModel;
 
             // Following items are not allowed to be modified after "Find & Replace" button clicked.
-            this.ItemsToFind = this.ViewModel.FindWhatTextBoxText.Split ( '|' );
-            //  this.ItemsToFindList ( this.ViewModel.FindWhatTextBoxText );
-
+            this.ItemsToFind = this.ViewModel.FindWhatTextBoxText.Split ( '|' );            
             this.ItemsToReplace = this.ViewModel.ReplaceWithTextBoxText.Split ( '|' );
-            //this.ItemsToFindList ( this.ViewModel.ReplaceWithTextBoxText );
-
+            
             this.StartProcessingFiles ( );
         }
 
@@ -122,14 +119,10 @@ namespace EditProfiles.Operations
 
             // Refresh Process bars.
             MyCommons.MyViewModel.UpdateCommand.Execute ( null );
-
-            ParallelOptions parallelingOptions = new ParallelOptions ( );
-            parallelingOptions.MaxDegreeOfParallelism = 1;
-            parallelingOptions.CancellationToken = MyCommons.CancellationToken;
-
+                        
             try
             {
-                Parallel.ForEach ( this.FileNames, parallelingOptions, ( currentFile ) =>
+                Parallel.ForEach ( this.FileNames, MyCommons.ParallelingOptions, ( currentFile ) =>
                     {
                         // Increment current file number;
                         MyCommons.CurrentFileNumber++;
