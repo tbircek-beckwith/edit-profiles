@@ -45,6 +45,8 @@
                                             </RadialGradientBrush>
                                         </Ellipse.Fill>
                                     </Ellipse>
+                                    <!--<Button FontFamily="Segoe UI Symbol"
+                                            Content="&#x26D4;" FontSize="48" />-->
 
                                     <TextBlock Text="{Binding Path=FindReplaceButtonText}"
                                                FontSize="{StaticResource ResourceKey=FontSize}"

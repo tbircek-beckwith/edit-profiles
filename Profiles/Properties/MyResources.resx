@@ -131,10 +131,10 @@
     <value>Test Profile Test\ShortFiles</value>
   </data>
   <data name="Strings_Debug_TextBoxFind" xml:space="preserve">
-    <value>ip17|ip18</value>
+    <value>ip17|ip18|4793,0</value>
   </data>
   <data name="Strings_Debug_TextBoxReplace" xml:space="preserve">
-    <value>ip22|ip23</value>
+    <value>ip22|ip23|4793,1</value>
   </data>
   <data name="Strings_DefaultTextBoxValues" xml:space="preserve">
     <value>Not specified</value>
@@ -210,15 +210,15 @@
     <value>Module: {0} of {1}</value>
   </data>
   <data name="Strings_NoChanges" xml:space="preserve">
-    <value>NO change required:{1}{0}{1}</value>
+    <value>NO change required:{1} {0}{1}</value>
     <comment>0 = Parameters, 1 = New Line</comment>
   </data>
   <data name="Strings_OpenFileDialog" xml:space="preserve">
     <value>Please select file(s) to modify. Press and hold CTRL key to select multiple files.</value>
   </data>
   <data name="Strings_ParamsChanged" xml:space="preserve">
-    <value>Change required: {2} Find a match:  {0}{2} Replaced with: {1}{2}</value>
-    <comment>0 = Old Parameters, 1 = New Parameters, 2 =New Line</comment>
+    <value>Change required: {1} Find a match:  {0}{1} Replaced with: {2}{1}</value>
+    <comment>0 = Old Parameters, 1 = New Line, 2 =New Parameters</comment>
   </data>
   <data name="Strings_TestEnd" xml:space="preserve">
     <value>{1}{7}{1} End time: {0}{1}Total test time: {2:d2} day(s), {3:d2} hour(s), {4:d2} min(s), {5:d2} sec(s), {6:d3} millisecond(s){1}{7}</value>

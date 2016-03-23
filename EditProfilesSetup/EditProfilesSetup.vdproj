@@ -58,13 +58,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E5A0510F6F5F7D2830C1C4ECD7777D4D"
+        "OwnerKey" = "8:_7ED08EEC18167D8325FFFA8FC7BC108D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7ED08EEC18167D8325FFFA8FC7BC108D"
+        "OwnerKey" = "8:_E5A0510F6F5F7D2830C1C4ECD7777D4D"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -219,11 +219,6 @@
             "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7ED08EEC18167D8325FFFA8FC7BC108D"
-                    {
-                    "Name" = "8:System.Windows.Interactivity.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Windows.Interactivity.dll"
             "TargetName" = "8:"
@@ -250,11 +245,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_E5A0510F6F5F7D2830C1C4ECD7777D4D"
-                    {
-                    "Name" = "8:Microsoft.Expression.Interactions.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.Expression.Interactions.dll"
             "TargetName" = "8:"
@@ -330,15 +320,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Edit Profiles"
-        "ProductCode" = "8:{66349581-BC64-429A-95B7-548676A51F85}"
-        "PackageCode" = "8:{4BCBABF3-D1B3-4D63-BB0D-26818D37FDEB}"
+        "ProductCode" = "8:{D2EBD009-950F-4ECC-A62C-7E016F45BBE3}"
+        "PackageCode" = "8:{8A0BA525-D436-4F02-AD01-D47C6D13EA0F}"
         "UpgradeCode" = "8:{02C98ED3-816A-4EED-B786-58E8304FE163}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.1"
         "Manufacturer" = "8:Beckwith Electric Co. Inc."
         "ARPHELPTELEPHONE" = "8:x7671"
         "ARPHELPLINK" = "8:\\\\volta\\Eng_Lab\\Software Updates\\EditProfiles"

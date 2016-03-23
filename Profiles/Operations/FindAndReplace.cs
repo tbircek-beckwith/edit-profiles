@@ -59,13 +59,18 @@ namespace EditProfiles.Operations
         {
             // Decide if any string matches to the user "Find what".
             int numberOfFindings = 0;
+
             foreach ( string item in this.ItemsToFind )
             {
-                // ignores the case of the inputs.
-                if ( this.FindParam.IndexOf ( item, StringComparison.OrdinalIgnoreCase ) > 0 )
+                // if item is blank don't match to anything.
+                if ( !string.IsNullOrWhiteSpace ( item ) )
                 {
-                    // this variable > 0, if there is a match.
-                    numberOfFindings++;
+                    // ignores the case of the inputs.
+                    if ( this.FindParam.IndexOf ( item, StringComparison.OrdinalIgnoreCase ) > -1 )
+                    {
+                        // this variable > 0, if there is a match.
+                        numberOfFindings++;
+                    }
                 }
             }
 

@@ -61,10 +61,14 @@ namespace EditProfiles.Operations
         {
             try
             {
-                // Pattern to search "rev#" and "rev##".
-                Regex rx = new Regex ( @"^[Rrev\d]+$",
+                //
+                // Search pattern for "rev#" and "rev##" like file name entries.
+                // used http://regexr.com to generate following expression.
+                //
+                Regex rx = new Regex ( @"\brev(\d)*\b\w*",
                                 RegexOptions.Compiled |
-                                RegexOptions.IgnoreCase );
+                                RegexOptions.IgnoreCase |
+                                RegexOptions.CultureInvariant );
 
                 this.OriginalFileNameWithPath = Path.GetFullPath ( this.FileNameWithPath )
                                                     .Replace ( ".occ", "" )
@@ -74,16 +78,16 @@ namespace EditProfiles.Operations
                 {
                     if ( rx.IsMatch ( word ) )
                     {
-                        // If the file name contains "rev" followed by a number or a space incement the rev number by one.
+                        // If the file name contains "rev" followed by a number or a space increment the rev number by one.
                         this.NewFileName.Append ( ( "Rev" ) +
-                            ( int.Parse ( word.ToUpperInvariant ( ).Replace ( "REV", "" ),
+                            ( int.Parse ( word.Trim ( ).ToUpperInvariant ( ).Replace ( "REV", "" ),
                             CultureInfo.InvariantCulture ) + 1 ).ToString (
                             CultureInfo.InvariantCulture ) );
 
                     }
-                    else
+                    else if ( !string.IsNullOrWhiteSpace ( word ) )
                     {
-                        this.NewFileName.Append ( word + " " );
+                        this.NewFileName.Append ( word.Trim ( ) + " " );
                     }
                 }
 

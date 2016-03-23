@@ -58,5 +58,14 @@ namespace EditProfiles.Properties {
                 return ((bool)(this["ClearTestModules"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowDetailedOutput {
+            get {
+                return ((bool)(this["ShowDetailedOutput"]));
+            }
+        }
     }
 }

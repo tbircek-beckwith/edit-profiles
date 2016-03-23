@@ -97,7 +97,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ip17|ip18.
+        ///   Looks up a localized string similar to ip17|ip18|4793,0.
         /// </summary>
         internal static string Strings_Debug_TextBoxFind {
             get {
@@ -106,7 +106,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ip22|ip23.
+        ///   Looks up a localized string similar to ip22|ip23|4793,1.
         /// </summary>
         internal static string Strings_Debug_TextBoxReplace {
             get {
@@ -322,7 +322,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NO change required:{1}{0}{1}.
+        ///   Looks up a localized string similar to NO change required:{1} {0}{1}.
         /// </summary>
         internal static string Strings_NoChanges {
             get {
@@ -340,7 +340,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change required: {2} Find a match:  {0}{2} Replaced with: {1}{2}.
+        ///   Looks up a localized string similar to Change required: {1} Find a match:  {0}{1} Replaced with: {2}{1}.
         /// </summary>
         internal static string Strings_ParamsChanged {
             get {
