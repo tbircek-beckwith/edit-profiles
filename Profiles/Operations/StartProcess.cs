@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EditProfiles.Data;
 using EditProfiles.Properties;
 using OMICRON.OCCenter;
+using System.Text.RegularExpressions;
 
 namespace EditProfiles.Operations
 {
@@ -20,6 +21,9 @@ namespace EditProfiles.Operations
 
         private short ProtectionLevel { get; set; }
 
+        /// <summary>
+        /// Holds current file name without folder path.
+        /// </summary>
         private string CurrentFileName { get; set; }
 
         [Obsolete ( " Password must be defined by the user in the 'Password' field" )]
@@ -89,7 +93,7 @@ namespace EditProfiles.Operations
         /// </summary>
         /// <param name="fileNames">The file names to process.</param>
         /// <param name="viewModel">The copy of the current ViewModel for the business logic.</param>
-        void IStartProcessInterface.StartProcessing ( IList<string> fileNames, ViewModel viewModel )
+        public void StartProcessing ( IList<string> fileNames, ViewModel viewModel )
         {
             this.FileNames = fileNames;
             this.ViewModel = viewModel;
@@ -97,6 +101,8 @@ namespace EditProfiles.Operations
             // Following items are not allowed to be modified after "Find & Replace" button clicked.
             this.ItemsToFind = this.ViewModel.FindWhatTextBoxText.Split ( '|' );            
             this.ItemsToReplace = this.ViewModel.ReplaceWithTextBoxText.Split ( '|' );
+
+            this.TestModuleNamesToRemove = ListOfTestModulesToDelete(ItemsToFind);
             
             this.StartProcessingFiles ( );
         }
@@ -130,6 +136,7 @@ namespace EditProfiles.Operations
                         MyCommons.MyViewModel.UpdateCommand.Execute ( null );
 
                         this.CurrentFileName = currentFile;
+                        MyCommons.FileName = Path.GetFileName(CurrentFileName);
                         
                         try
                         {
@@ -147,15 +154,15 @@ namespace EditProfiles.Operations
                                         // Update DetailsTextBoxText.
                                         MyCommons.MyViewModel.DetailsTextBoxText = 
                                             MyCommons.LogProcess.Append (
-                                            string.Format ( 
-                                            CultureInfo.InvariantCulture,
-                                            MyResources.Strings_CurrentFileName,
-                                            Environment.NewLine,
-                                            Repeat.StringDuplicate ( '-', 50 ),
-                                            Path.GetFileName ( this.CurrentFileName ),
-                                            string.Format ( CultureInfo.InvariantCulture,
-                                            MyResources.Strings_TestStart,
-                                            DateTime.Now ) ) )
+                                                String.Format ( 
+                                                        CultureInfo.InvariantCulture,
+                                                        MyResources.Strings_CurrentFileName,
+                                                        Environment.NewLine,
+                                                        Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber),
+                                                        Path.GetFileName ( CurrentFileName ),
+                                                        String.Format ( CultureInfo.InvariantCulture,
+                                                                MyResources.Strings_TestStart,
+                                                                DateTime.Now ) ) )
                                             .ToString ( );
 
 
@@ -165,13 +172,13 @@ namespace EditProfiles.Operations
 
                                         // Open Omicron Document.
                                         // this.OmicronDocument = OpenDocument ( this.CurrentFileName, "" ); 
-                                        this.OmicronDocument = OpenDocument ( this.CurrentFileName );
+                                        this.OmicronDocument = OpenDocument ( CurrentFileName );
 
                                     }
                                     catch ( ArgumentException ae )
                                     {
                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                        ErrorHandler.Log ( ae, this.CurrentFileName );
+                                        ErrorHandler.Log ( ae, CurrentFileName );
                                         return;
                                     }
                                     catch ( AggregateException ae )
@@ -179,7 +186,7 @@ namespace EditProfiles.Operations
                                         foreach ( Exception ex in ae.InnerExceptions )
                                         {
                                             // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                            ErrorHandler.Log ( ex, this.CurrentFileName );
+                                            ErrorHandler.Log ( ex, CurrentFileName );
                                         }
                                         return;
                                     }
@@ -206,7 +213,7 @@ namespace EditProfiles.Operations
                                     foreach ( Exception ex in ae.InnerExceptions )
                                     {
                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                        ErrorHandler.Log ( ex, this.CurrentFileName );
+                                        ErrorHandler.Log ( ex, CurrentFileName );
                                     }
                                     return;
                                 }
@@ -236,7 +243,7 @@ namespace EditProfiles.Operations
                                         foreach ( Exception ex in ae.InnerExceptions )
                                         {
                                             // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                            ErrorHandler.Log ( ex, this.CurrentFileName );
+                                            ErrorHandler.Log ( ex, CurrentFileName );
                                         }
                                         return;
                                     }
@@ -249,21 +256,26 @@ namespace EditProfiles.Operations
 
                                     // Polling CancellationToken's status.
                                     // If cancellation requested throw error and exit loop.
-                                    if ( MyCommons.CancellationToken.IsCancellationRequested == true )
+                                    if (MyCommons.CancellationToken.IsCancellationRequested == true)
                                     {
-                                        MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
+                                        MyCommons.CancellationToken.ThrowIfCancellationRequested();
                                     }
 
                                     // Close Omicron Control Center without saving any changes to the original file.
-                                    this.OmicronDocument.Close ( false );
+                                    this.OmicronDocument.Close(false);
 
                                 }
-                                catch ( AggregateException ae )
+                                catch (System.Runtime.InteropServices.COMException ae)
                                 {
-                                    foreach ( Exception ex in ae.InnerExceptions )
+                                    ErrorHandler.Log(ae, CurrentFileName);
+                                    return;
+                                }
+                                catch (AggregateException ae)
+                                {
+                                    foreach (Exception ex in ae.InnerExceptions)
                                     {
                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                        ErrorHandler.Log ( ex, this.CurrentFileName );
+                                        ErrorHandler.Log(ex, CurrentFileName);
                                     }
                                     return;
                                 }
@@ -275,21 +287,29 @@ namespace EditProfiles.Operations
                                 {
                                     // Polling CancellationToken's status.
                                     // If cancellation requested throw error and exit loop.
-                                    if ( MyCommons.CancellationToken.IsCancellationRequested == true )
+                                    if (MyCommons.CancellationToken.IsCancellationRequested == true)
                                     {
-                                        MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
+                                        MyCommons.CancellationToken.ThrowIfCancellationRequested();
                                     }
 
                                     // Close Omicron Control Center Application
-                                    this.OmicronApplication.Quit ( );
+                                    this.OmicronApplication.Quit();
 
                                 }
-                                catch ( AggregateException ae )
+                                catch (System.Runtime.InteropServices.COMException ae)
                                 {
-                                    foreach ( Exception ex in ae.InnerExceptions )
+                                    ErrorHandler.Log(ae, CurrentFileName);
+                                }
+                                catch (System.ObjectDisposedException ae)
+                                {
+                                    ErrorHandler.Log(ae, CurrentFileName);
+                                }
+                                catch (AggregateException ae)
+                                {
+                                    foreach (Exception ex in ae.InnerExceptions)
                                     {
                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                        ErrorHandler.Log ( ex, this.CurrentFileName );
+                                        ErrorHandler.Log(ex, CurrentFileName);
                                     }
                                     return;
                                 }
@@ -315,12 +335,20 @@ namespace EditProfiles.Operations
                                         // Terminate Omicron Processes.
                                         KillOmicronProcesses ( );
                                     }
+                                    catch (System.Runtime.InteropServices.COMException ae)
+                                    {
+                                        ErrorHandler.Log(ae, CurrentFileName);
+                                    }
+                                    catch (System.ObjectDisposedException ae)
+                                    {
+                                        ErrorHandler.Log(ae, CurrentFileName);
+                                    }
                                     catch ( AggregateException ae )
                                     {
                                         foreach ( Exception ex in ae.InnerExceptions )
                                         {
                                             // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                            ErrorHandler.Log ( ex, this.CurrentFileName );
+                                            ErrorHandler.Log ( ex, CurrentFileName );
                                         }
                                         return;
                                     }
@@ -337,12 +365,20 @@ namespace EditProfiles.Operations
                             Console.WriteLine ( " File opening completed " );
 #endif
                         }
+                        catch (System.Runtime.InteropServices.COMException ae)
+                        {
+                            ErrorHandler.Log(ae, CurrentFileName);
+                        }
+                        catch (System.ObjectDisposedException ae)
+                        {
+                            ErrorHandler.Log(ae, CurrentFileName);
+                        }
                         catch ( AggregateException ae )
                         {
                             foreach ( Exception ex in ae.InnerExceptions )
                             {
                                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                ErrorHandler.Log ( ex, this.CurrentFileName );
+                                ErrorHandler.Log ( ex, CurrentFileName );
                             }
                             return;
                         }
@@ -352,13 +388,13 @@ namespace EditProfiles.Operations
             catch ( OperationCanceledException oe )
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log ( oe, this.CurrentFileName );
+                ErrorHandler.Log ( oe, CurrentFileName );
                 return;
             }
             catch ( COMException ce )
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log ( ce, this.CurrentFileName );
+                ErrorHandler.Log ( ce, CurrentFileName );
                 return;
             }
         }

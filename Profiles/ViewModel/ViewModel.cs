@@ -38,20 +38,20 @@ namespace EditProfiles
         {
             get
             {
-                return string.Format ( CultureInfo.InvariantCulture,
+                return string.Format(CultureInfo.InvariantCulture,
                                      MyResources.Strings_FormTitle,
-                                     typeof ( EditProfiles.MainWindow )
+                                     typeof(EditProfiles.MainWindow)
                                         .Assembly
-                                        .GetName ( )
-                                        .Version );
+                                        .GetName()
+                                        .Version);
             }
             set
             {
-                if ( this.model.ProgramTitle != value )
+                if (this.model.ProgramTitle != value)
                 {
                     this.model.ProgramTitle = value;
 
-                    this.OnPropertyChanged ( "ProgramTitle" );
+                    this.OnPropertyChanged("ProgramTitle");
                 }
             }
         }
@@ -67,11 +67,11 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.Editable != value )
+                if (this.model.Editable != value)
                 {
                     this.model.Editable = value;
 
-                    this.OnPropertyChanged ( "Editable" );
+                    this.OnPropertyChanged("Editable");
                 }
             }
         }
@@ -91,11 +91,11 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.FindWhatLabelText != value )
+                if (this.model.FindWhatLabelText != value)
                 {
                     this.model.FindWhatLabelText = value;
 
-                    this.OnPropertyChanged ( "FindWhatLabelText" );
+                    this.OnPropertyChanged("FindWhatLabelText");
                 }
             }
         }
@@ -107,20 +107,21 @@ namespace EditProfiles
         {
             get
             {
-//#if DEBUG
-//                return MyResources.Strings_Debug_TextBoxFind;
-//#else
+                //#if DEBUG
+                //                return MyResources.Strings_Debug_TextBoxFind;
+                //#else
                 // Return empty string if the user not specified any values  
                 return this.model.FindWhatTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
-//#endif
+                //#endif
             }
             set
             {
-                if ( this.model.FindWhatTextBoxText != value )
+                if (this.model.FindWhatTextBoxText != value)
                 {
                     this.model.FindWhatTextBoxText = value;
 
-                    this.OnPropertyChanged ( "FindWhatTextBoxText" );
+                    this.OnPropertyChanged("FindWhatTextBoxText");
+                    this.OnPropertyChanged("IsEnabled");
                 }
             }
         }
@@ -140,11 +141,11 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.ReplaceWithLabelText != value )
+                if (this.model.ReplaceWithLabelText != value)
                 {
                     this.model.ReplaceWithLabelText = value;
 
-                    this.OnPropertyChanged ( "ReplaceWithLabelText" );
+                    this.OnPropertyChanged("ReplaceWithLabelText");
                 }
             }
         }
@@ -156,20 +157,20 @@ namespace EditProfiles
         {
             get
             {
-//#if DEBUG
-//                return MyResources.Strings_Debug_TextBoxReplace;
-//#else
+                //#if DEBUG
+                //                return MyResources.Strings_Debug_TextBoxReplace;
+                //#else
                 // Return empty string if the user not specified any values                
                 return this.model.ReplaceWithTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
-//#endif
+                //#endif
             }
             set
             {
-                if ( this.model.ReplaceWithTextBoxText != value )
+                if (this.model.ReplaceWithTextBoxText != value)
                 {
                     this.model.ReplaceWithTextBoxText = value;
 
-                    this.OnPropertyChanged ( "ReplaceWithTextBoxText" );
+                    this.OnPropertyChanged("ReplaceWithTextBoxText");
                 }
             }
         }
@@ -189,11 +190,11 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.PasswordLabelText != value )
+                if (this.model.PasswordLabelText != value)
                 {
                     this.model.PasswordLabelText = value;
 
-                    this.OnPropertyChanged ( "PasswordLabelText" );
+                    this.OnPropertyChanged("PasswordLabelText");
                 }
             }
         }
@@ -211,10 +212,10 @@ namespace EditProfiles
             }
             set
             {
-                if ( _password != value )
+                if (_password != value)
                 {
                     _password = value;
-                    this.OnPropertyChanged ( "Password" );
+                    this.OnPropertyChanged("Password");
                 }
             }
         }
@@ -234,11 +235,11 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.FindReplaceButtonText != value )
+                if (this.model.FindReplaceButtonText != value)
                 {
                     this.model.FindReplaceButtonText = value;
 
-                    this.OnPropertyChanged ( "FindReplaceButtonText" );
+                    this.OnPropertyChanged("FindReplaceButtonText");
                 }
             }
         }
@@ -254,11 +255,11 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.StopTestButtonText != value )
+                if (this.model.StopTestButtonText != value)
                 {
                     this.model.StopTestButtonText = value;
 
-                    this.OnPropertyChanged ( "StopTestButtonText" );
+                    this.OnPropertyChanged("StopTestButtonText");
                 }
             }
         }
@@ -268,21 +269,45 @@ namespace EditProfiles
         /// </summary>
         public bool IsChecked
         {
-            get 
+            get
             {
                 return this.model.IsChecked;
             }
             set
             {
-                if (this.model.IsChecked != value)
-                { 
-                    this.model.IsChecked = value;
+                // will prevent if the toggle button is not enabled.
+                // without this if statement there is nothing would stop toggling this button.
+                if (this.model.IsEnabled)
+                {
+                    if (this.model.IsChecked != value)
+                    {
+                        model.IsChecked = value;
 
-                    this.OnPropertyChanged("IsChecked");
+                        OnPropertyChanged("IsChecked");
+                    }
                 }
             }
         }
-	
+
+        /// <summary>
+        /// Sets or gets ToggleButton Enabled status.
+        /// </summary>
+        public bool IsEnabled
+        {
+            get
+            {
+                return this.model.IsEnabled = !(String.IsNullOrWhiteSpace(MyCommons.MyViewModel.FindWhatTextBoxText));
+            }
+            set
+            {
+                if (this.model.IsEnabled != value)
+                {
+                    model.IsEnabled = value;
+
+                    OnPropertyChanged("IsEnabled");
+                }
+            }
+        }
         #endregion
 
         #region Details Textbox
@@ -294,15 +319,15 @@ namespace EditProfiles
         {
             get
             {
-                return MyCommons.LogProcess.ToString ( );
+                return MyCommons.LogProcess.ToString();
             }
             set
             {
-                if ( MyCommons.LogProcess.ToString ( ) == value )
+                if (MyCommons.LogProcess.ToString() == value)
                 {
 
                     // This text set while MyCommons.LogProcess updated.
-                    this.OnPropertyChanged ( "DetailsTextBoxText" );
+                    this.OnPropertyChanged("DetailsTextBoxText");
                 }
             }
         }
@@ -318,18 +343,18 @@ namespace EditProfiles
         {
             get
             {
-                return string.Format ( CultureInfo.InvariantCulture,
+                return string.Format(CultureInfo.InvariantCulture,
                                        MyResources.Strings_FileProcessBar,
                                        MyCommons.CurrentFileNumber,
-                                       MyCommons.TotalFileNumber );
+                                       MyCommons.TotalFileNumber);
             }
             set
             {
-                if ( this.model.FileProgressBar != value )
+                if (this.model.FileProgressBar != value)
                 {
                     this.model.FileProgressBar = value;
 
-                    this.OnPropertyChanged ( "FileProgressBar" );
+                    this.OnPropertyChanged("FileProgressBar");
                 }
             }
         }
@@ -345,11 +370,11 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.FileProgressBarValue != value )
+                if (this.model.FileProgressBarValue != value)
                 {
                     this.model.FileProgressBarValue = value;
 
-                    this.OnPropertyChanged ( "FileProgressBarValue" );
+                    this.OnPropertyChanged("FileProgressBarValue");
                 }
             }
         }
@@ -365,9 +390,9 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.FileProgressBarMax != value )
+                if (this.model.FileProgressBarMax != value)
                 {
-                    if ( value == PROGRESSBAR_MIN )
+                    if (value == PROGRESSBAR_MIN)
                     {
                         this.FileSideTextOpacity = OPACITY_MAX;
                         this.FileProgressBarOpacity = OPACITY_MIN;
@@ -379,7 +404,7 @@ namespace EditProfiles
                     }
 
                     this.model.FileProgressBarMax = value;
-                    this.OnPropertyChanged ( "FileProgressBarMax" );
+                    this.OnPropertyChanged("FileProgressBarMax");
                 }
             }
         }
@@ -391,7 +416,7 @@ namespace EditProfiles
         {
             get
             {
-                if ( FileProgressBarMax != PROGRESSBAR_MIN )
+                if (FileProgressBarMax != PROGRESSBAR_MIN)
                 {
                     this.FileSideTextOpacity = OPACITY_MIN;
                     return this.model.FileProgressBarOpacity;
@@ -404,10 +429,10 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.FileProgressBarOpacity != value )
+                if (this.model.FileProgressBarOpacity != value)
                 {
                     this.model.FileProgressBarOpacity = value;
-                    this.OnPropertyChanged ( "FileProgressBarOpacity" );
+                    this.OnPropertyChanged("FileProgressBarOpacity");
                 }
             }
         }
@@ -419,7 +444,7 @@ namespace EditProfiles
         {
             get
             {
-                if ( FileProgressBarMax != PROGRESSBAR_MIN )
+                if (FileProgressBarMax != PROGRESSBAR_MIN)
                 {
                     this.FileProgressBarOpacity = OPACITY_MAX;
                     return this.model.FileSideTextOpacity;
@@ -432,10 +457,10 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.FileSideTextOpacity != value )
+                if (this.model.FileSideTextOpacity != value)
                 {
                     this.model.FileSideTextOpacity = value;
-                    this.OnPropertyChanged ( "FileSideTextOpacity" );
+                    this.OnPropertyChanged("FileSideTextOpacity");
                 }
             }
         }
@@ -451,10 +476,10 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.FileSideCoverText != value )
+                if (this.model.FileSideCoverText != value)
                 {
                     this.model.FileSideCoverText = value;
-                    this.OnPropertyChanged ( "FileSideCoverText" );
+                    this.OnPropertyChanged("FileSideCoverText");
                 }
             }
         }
@@ -470,18 +495,18 @@ namespace EditProfiles
         {
             get
             {
-                return string.Format ( CultureInfo.InvariantCulture,
+                return string.Format(CultureInfo.InvariantCulture,
                                        MyResources.Strings_ModuleProcessBar,
                                        MyCommons.CurrentModuleNumber,
-                                       MyCommons.TotalModuleNumber );
+                                       MyCommons.TotalModuleNumber);
             }
             set
             {
-                if ( this.model.ModuleProgressBar != value )
+                if (this.model.ModuleProgressBar != value)
                 {
                     this.model.ModuleProgressBar = value;
 
-                    this.OnPropertyChanged ( "ModuleProgressBar" );
+                    this.OnPropertyChanged("ModuleProgressBar");
                 }
             }
         }
@@ -489,7 +514,7 @@ namespace EditProfiles
         /// <summary>
         /// Sets and get ModuleProgressBarValue
         /// </summary>
-        public int ModuleProgressBarValue
+        public long ModuleProgressBarValue
         {
             get
             {
@@ -497,11 +522,11 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.ModuleProgressBarValue != value )
+                if (this.model.ModuleProgressBarValue != value)
                 {
                     this.model.ModuleProgressBarValue = value;
 
-                    this.OnPropertyChanged ( "ModuleProgressBarValue" );
+                    this.OnPropertyChanged("ModuleProgressBarValue");
                 }
             }
         }
@@ -517,9 +542,9 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.ModuleProgressBarMax != value )
+                if (this.model.ModuleProgressBarMax != value)
                 {
-                    if ( value == PROGRESSBAR_MIN )
+                    if (value == PROGRESSBAR_MIN)
                     {
                         this.ModuleSideTextOpacity = OPACITY_MAX;
                         this.ModuleProgressBarOpacity = OPACITY_MIN;
@@ -530,7 +555,7 @@ namespace EditProfiles
                         this.ModuleProgressBarOpacity = OPACITY_MAX;
                     }
                     this.model.ModuleProgressBarMax = value;
-                    this.OnPropertyChanged ( "ModuleProgressBarMax" );
+                    this.OnPropertyChanged("ModuleProgressBarMax");
                 }
             }
         }
@@ -542,7 +567,7 @@ namespace EditProfiles
         {
             get
             {
-                if ( ModuleProgressBarMax != PROGRESSBAR_MIN )
+                if (ModuleProgressBarMax != PROGRESSBAR_MIN)
                 {
                     this.ModuleSideTextOpacity = OPACITY_MIN;
                     return this.model.ModuleProgressBarOpacity;
@@ -555,10 +580,10 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.ModuleProgressBarOpacity != value )
+                if (this.model.ModuleProgressBarOpacity != value)
                 {
                     this.model.ModuleProgressBarOpacity = value;
-                    this.OnPropertyChanged ( "ModuleProgressBarOpacity" );
+                    this.OnPropertyChanged("ModuleProgressBarOpacity");
                 }
             }
         }
@@ -570,7 +595,7 @@ namespace EditProfiles
         {
             get
             {
-                if ( ModuleProgressBarMax != PROGRESSBAR_MIN )
+                if (ModuleProgressBarMax != PROGRESSBAR_MIN)
                 {
                     this.ModuleProgressBarOpacity = OPACITY_MAX;
                     return this.model.ModuleSideTextOpacity;
@@ -583,10 +608,10 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.ModuleSideTextOpacity != value )
+                if (this.model.ModuleSideTextOpacity != value)
                 {
                     this.model.ModuleSideTextOpacity = value;
-                    this.OnPropertyChanged ( "ModuleSideTextOpacity" );
+                    this.OnPropertyChanged("ModuleSideTextOpacity");
                 }
             }
         }
@@ -602,10 +627,10 @@ namespace EditProfiles
             }
             set
             {
-                if ( this.model.ModuleSideCoverText != value )
+                if (this.model.ModuleSideCoverText != value)
                 {
                     this.model.ModuleSideCoverText = value;
-                    this.OnPropertyChanged ( "ModuleSideCoverText" );
+                    this.OnPropertyChanged("ModuleSideCoverText");
                 }
             }
         }
@@ -653,12 +678,12 @@ namespace EditProfiles
         /// <param name="findReplaceCommand">This command handles FindReplace Button Clicks.</param>
         /// <param name="updateCommand">This command handles updating process bars and their texts.</param>
         /// <param name="stopCommand">This command handles stopping the program.</param>
-        public ViewModel ( Model model,
+        public ViewModel(Model model,
                            ICommand saveCommand,
                            ICommand eraseCommand,
                            ICommand findReplaceCommand,
                            ICommand updateCommand,
-                           ICommand stopCommand )
+                           ICommand stopCommand)
         {
             this.model = model;
             this.SaveCommand = saveCommand;
@@ -677,20 +702,20 @@ namespace EditProfiles
         /// Handles the property changes.
         /// </summary>
         /// <param name="propertyName">Property name changed.</param>
-        protected virtual void OnPropertyChanged ( string propertyName )
+        protected virtual void OnPropertyChanged(string propertyName)
         {
 
 #if DEBUG
-            Console.WriteLine ( "OnPropertyChanged ( propertyName: {0} ) just processed.", propertyName );
+            Console.WriteLine("OnPropertyChanged ( propertyName: {0} ) just processed.", propertyName);
 #endif
 
-            this.VerifyPropertyName ( propertyName );
+            this.VerifyPropertyName(propertyName);
 
             var handler = PropertyChanged;
 
-            if ( handler != null )
+            if (handler != null)
             {
-                handler ( this, new PropertyChangedEventArgs ( propertyName ) );
+                handler(this, new PropertyChangedEventArgs(propertyName));
 
             }
         }
@@ -705,13 +730,13 @@ namespace EditProfiles
         /// Allows me see if a property named incorrectly.
         /// </summary>
         /// <param name="propertyName">Property name to verify.</param>
-        [Conditional ( "DEBUG" )]
+        [Conditional("DEBUG")]
         [DebuggerStepThrough]
-        public void VerifyPropertyName ( string propertyName )
+        public void VerifyPropertyName(string propertyName)
         {
-            if ( TypeDescriptor.GetProperties ( this )[ propertyName ] == null )
+            if (TypeDescriptor.GetProperties(this)[propertyName] == null)
             {
-                Debug.WriteLine ( string.Format ( CultureInfo.InvariantCulture, "Invalid property: {0}", propertyName ) );
+                Debug.WriteLine(string.Format(CultureInfo.InvariantCulture, "Invalid property: {0}", propertyName));
             }
         }
 
@@ -724,7 +749,7 @@ namespace EditProfiles
         /// </summary>
         public string Error
         {
-            get { return ( model as IDataErrorInfo ).Error; }
+            get { return (model as IDataErrorInfo).Error; }
         }
 
         /// <summary>
@@ -733,22 +758,23 @@ namespace EditProfiles
         /// </summary>
         /// <param name="columnName">Property name. FxCop very particular to keep this name here.</param>
         /// <returns>Returns a custom string message for property changes.</returns>
-        public string this[ string columnName ]
+        public string this[string columnName]
         {
             get
             {
                 string error = string.Empty;
 
-                error = ( model as IDataErrorInfo )[ columnName ];
+                error = (model as IDataErrorInfo)[columnName];
 
                 // this.FindReplaceButtonEnabled = !( string.IsNullOrWhiteSpace ( FindWhatTextBoxText ) );
 
-                CommandManager.InvalidateRequerySuggested ( );
+                CommandManager.InvalidateRequerySuggested();
 
                 return error;
             }
         }
 
         #endregion
+
     }
 }

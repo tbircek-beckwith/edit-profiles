@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EditProfiles.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="LogFileName" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">EditProfiles.log</Value>
-    </Setting>
     <Setting Name="TestModulesVisibility" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -15,7 +12,19 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ShowDetailedOutput" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AppendFileName" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RepeatChar" Type="System.Char" Scope="Application">
+      <Value Profile="(Default)">-</Value>
+    </Setting>
+    <Setting Name="RepeatNumber" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="CrashLogFileSize" Type="System.Int64" Scope="Application">
+      <Value Profile="(Default)">1000000</Value>
     </Setting>
   </Settings>
 </SettingsFile>

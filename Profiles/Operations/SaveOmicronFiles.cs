@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
+using EditProfiles.Behaviors;
 using EditProfiles.Data;
 using EditProfiles.Properties;
-using EditProfiles.Behaviors;
 
 namespace EditProfiles.Operations
 {
@@ -20,31 +21,43 @@ namespace EditProfiles.Operations
         #endregion
 
         #region IStartProcessInterface Members
-        
+
+        /// <summary>
+        /// Sets specified protection level and saves modified Omicron Test File.
+        /// </summary>
+        /// <param name="oldFileName">Original file name.</param>
+        /// <param name="saveAs">If it is true the file "SaveAs", false the file "Save".</param>
+        /// <param name="protectionLevel">provide a protection level to protect the file.</param>
+        [Obsolete(" Protection Level decided by the original file.", true)]
+        public void SaveOmicronFiles(string oldFileName, bool saveAs, short protectionLevel)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Saves modified Omicron Test File.
         /// </summary>
         /// <param name="oldFileName">Original file name.</param>
         /// <param name="saveAs">If it is true the file "saveAs", false the file "save".</param>
-        public void SaveOmicronFiles ( string oldFileName, bool saveAs )
+        public void SaveOmicronFiles(string oldFileName, bool saveAs)
         {
             try
             {
-                if ( string.IsNullOrWhiteSpace ( oldFileName ) )
+                if (string.IsNullOrWhiteSpace(oldFileName))
                 {
-                    throw new ArgumentNullException ( "oldFileName" );
+                    throw new ArgumentNullException("oldFileName");
                 }
 
-                this.OldFileName = GenerateNewFileName ( oldFileName );
+                this.OldFileName = GenerateNewFileName(oldFileName);
                 this.SaveAs = saveAs;
 
-                this.SaveOmicronFile ( );
+                this.SaveOmicronFile();
 
             }
-            catch ( ArgumentNullException ae )
+            catch (ArgumentNullException ae)
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log ( ae, this.OldFileName );
+                ErrorHandler.Log(ae, this.OldFileName);
                 return;
             }
         }
@@ -53,73 +66,92 @@ namespace EditProfiles.Operations
 
         #region Private Methods
 
-        private void SaveOmicronFile ( )
+        private void SaveOmicronFile()
         {
             try
             {
 
                 // Polling CancellationToken's status.
                 // If cancellation requested throw error and exit loop.
-                if ( MyCommons.CancellationToken.IsCancellationRequested == true )
+                if (MyCommons.CancellationToken.IsCancellationRequested == true)
                 {
-                    MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
+                    MyCommons.CancellationToken.ThrowIfCancellationRequested();
                 }
 
                 // Setting new password to original password so the user can still have same level protection in the modified files.
                 // For more info: http://briannoyesblog.azurewebsites.net/2015/03/04/wpf-using-passwordbox-in-mvvm/
-                ISecurePasswordToString secureToString = new SecurePasswordToString ( );
-                string insecurePassword = secureToString.ConvertToInsecureString ( this.ViewModel.Password );
+                ISecurePasswordToString secureToString = new SecurePasswordToString();
+                string insecurePassword = secureToString.ConvertToInsecureString(this.ViewModel.Password);
 
-                bool protectionChanged = this.OmicronDocument.ChangeProtection ( this.ProtectionLevel, string.Empty, insecurePassword );
+                bool protectionChanged = this.OmicronDocument.ChangeProtection(this.ProtectionLevel, string.Empty, insecurePassword);
 
                 // Clear insecurePassword.
                 insecurePassword = string.Empty;
 
-                if ( !protectionChanged )
+                if (!protectionChanged)
                 {
                     // Bad password or unknown problem the user interaction necessary.
                     // try to fail gracefully.
-                    throw new ArgumentException ( "protectionChanged" );
+                    throw new ArgumentException("protectionChanged");
                 }
                 else
                 {
                     // Depending file exists and saveAs value,
                     // Save the files.
-                    if ( File.Exists ( this.OldFileName ) )
+                    if (File.Exists(this.OldFileName))
                     {
-                        if ( this.SaveAs )
+                        if (this.SaveAs)
                         {
-                            this.OmicronDocument.SaveAs ( this.OldFileName );
+                            this.OmicronDocument.SaveAs(this.OldFileName);
                         }
                         else
                         {
-                            this.OmicronDocument.Save ( );
+                            this.OmicronDocument.Save();
                         }
                     }
                     else
                     {
-                        this.OmicronDocument.SaveAs ( this.OldFileName );
+                        this.OmicronDocument.SaveAs(this.OldFileName);
                     }
+
+                    // Update DetailsTextBoxText.
+                    MyCommons.MyViewModel.DetailsTextBoxText =
+                        MyCommons.LogProcess.Append(
+                            (string.Format(
+                                CultureInfo.InvariantCulture,
+                                MyResources.Strings_TestEnd,
+                                DateTime.Now,
+                                Environment.NewLine,
+                                Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber),
+                                MyCommons.FileName)
+                             ))
+                        .ToString();
                 }
+
             }
-            catch ( ArgumentException ae )
+            catch (System.Runtime.InteropServices.COMException ae)
             {
-                // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log ( ae, this.OldFileName );
+                ErrorHandler.Log(ae, this.OldFileName);
                 return;
             }
-            catch ( NullReferenceException ne )
+            catch (ArgumentException ae)
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log ( ne, this.OldFileName );
+                ErrorHandler.Log(ae, this.OldFileName);
                 return;
             }
-            catch ( AggregateException ae )
+            catch (NullReferenceException ne)
             {
-                foreach ( Exception ex in ae.InnerExceptions )
+                // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                ErrorHandler.Log(ne, this.OldFileName);
+                return;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (Exception ex in ae.InnerExceptions)
                 {
                     // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                    ErrorHandler.Log ( ex, this.OldFileName );
+                    ErrorHandler.Log(ex, this.OldFileName);
                 }
                 return;
             }

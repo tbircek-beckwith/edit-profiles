@@ -7,6 +7,7 @@ using EditProfiles.Data;
 using EditProfiles.Operations;
 using EditProfiles.Properties;
 using Microsoft.Win32;
+// using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace EditProfiles.Commands
 {
@@ -26,92 +27,101 @@ namespace EditProfiles.Commands
         /// <summary>
         /// Provides FindReplace Button command.
         /// </summary>
-        public FindReplaceCommand ( )
+        public FindReplaceCommand()
         {
-            this.Command = new DefaultCommand ( this.ExecuteFindReplace, this.CanExecute );
+            this.Command = new DefaultCommand(this.ExecuteFindReplace, this.CanExecute);
         }
 
         /// <summary>
         /// Actual command that does the work.
         /// </summary>
         /// <param name="unused"></param>
-        public void ExecuteFindReplace ( object unused )
+        public void ExecuteFindReplace(object unused)
         {
-            OpenFileDialog dlg = new OpenFileDialog ( );
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            // CommonOpenFileDialog dlg = new CommonOpenFileDialog();
+            // CommonFileDialogFilter filter = new CommonFileDialogFilter(MyResources.Strings_FileDialogFilter, "*.occ");
+
 
             // Set OpenFileDialog defaults.
             dlg.Title = MyResources.Strings_OpenFileDialog;
             dlg.Filter = MyResources.Strings_FileDialogFilter;
             dlg.DefaultExt = MyResources.Strings_FileDialogDefault;
             dlg.Multiselect = true;
+            // dlg.IsFolderPicker = true;
+
 
 #if DEBUG
-            dlg.InitialDirectory = System.IO.Path.Combine ( Environment.GetFolderPath ( Environment.SpecialFolder.DesktopDirectory ), MyResources.Strings_Debug_InitialDirectory );
+            dlg.InitialDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), MyResources.Strings_Debug_InitialDirectory);
 #else
             dlg.InitialDirectory = Environment.GetFolderPath ( Environment.SpecialFolder.DesktopDirectory );
 #endif
 
-            if ( dlg.ShowDialog ( ) == true )
+            // if (dlg.ShowDialog()== CommonFileDialogResult.Ok)
+            if (dlg.ShowDialog() == true)
             {
                 // initialize stopwatch 
-                stopwatch = new Stopwatch ( );
-                stopwatch.Start ( );
+                stopwatch = new Stopwatch();
+                stopwatch.Start();
 
-                if ( MyCommons.TokenSource == null )
+                if (MyCommons.TokenSource == null)
                 {
                     // Initialize Common Properties.
-                    MyCommons.TokenSource = new CancellationTokenSource ( );
+                    MyCommons.TokenSource = new CancellationTokenSource();
                     MyCommons.CancellationToken = MyCommons.TokenSource.Token;
                 }
 
                 // Start Processing the user specified files.
-                IStartProcessInterface spi = new ProcessFiles ( );
+                IStartProcessInterface spi = new ProcessFiles();
 
-                Task.Factory.StartNew ( ( ) =>
+                Task.Factory.StartNew(() =>
                     {
 
                         try
                         {
                             // Polling Cancellation Token Status.
                             // If cancellation requested throw an error and exit loop.
-                            if ( MyCommons.CancellationToken.IsCancellationRequested == true )
+                            if (MyCommons.CancellationToken.IsCancellationRequested == true)
                             {
-                                MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
+                                MyCommons.CancellationToken.ThrowIfCancellationRequested();
                             }
 
                             // Prevents the user to modify texts of FindWhat, ReplaceWith and Password 
                             // while test running.
-                            this.Enable ( false );
+                            this.Enable(false);
 
                             // Start process.
                             // spi.StartProcessing ( dlg.FileNames, MyCommons.MyViewModel.Password, MyCommons.MyViewModel );
-                            spi.StartProcessing ( dlg.FileNames, MyCommons.MyViewModel );
+                            spi.StartProcessing(dlg.FileNames, MyCommons.MyViewModel);
 
                         }
-                        catch ( AggregateException ae )
+                        catch (AggregateException ae)
                         {
-                            ErrorHandler.Log ( ae );
+                            ErrorHandler.Log(ae);
                         }
 
                     }
-                    , MyCommons.CancellationToken )
-                    .ContinueWith ( value =>
+                    , MyCommons.CancellationToken)
+                    .ContinueWith(value =>
                         {
                             // Reset and Activate controls.
-                            this.ResetControls ( );
-                        } );
+                            this.ResetControls();
+                        });
             }
             else
             {
                 // Reverts back 'Start', since the user 'Cancelled' to select file
                 MyCommons.MyViewModel.IsChecked = false;
 
+                MyCommons.MyViewModel.IsEnabled = false;
+
                 // Prevents the user to modify texts of FindWhat, ReplaceWith and Password 
                 // while test running.
-                this.Enable ( true );
+                this.Enable(true);
 
                 // Reset all controls
-                MyCommons.MyViewModel.EraseCommand.Execute ( null );
+                MyCommons.MyViewModel.EraseCommand.Execute(null);
             }
         }
 
@@ -119,7 +129,7 @@ namespace EditProfiles.Commands
         /// Disable the controls to prevent the user modifying text inputs.
         /// </summary>
         /// <param name="value">True to allow the user modification of the text inputs.</param>
-        private void Enable ( bool value )
+        private void Enable(bool value)
         {
             MyCommons.MyViewModel.Editable = value;
         }
@@ -127,27 +137,23 @@ namespace EditProfiles.Commands
         /// <summary>
         /// Reset Controls.
         /// </summary>
-        private void ResetControls ( )
+        private void ResetControls()
         {
-            stopwatch.Stop ( );
-            
+            stopwatch.Stop();
+
             // Update DetailsTextBoxText.
             MyCommons.MyViewModel.DetailsTextBoxText =
-                MyCommons.LogProcess.Append (
-                ( string.Format (
+                MyCommons.LogProcess.Append(
+                (string.Format(
                 CultureInfo.InvariantCulture,
-                MyResources.Strings_TestEnd,
+                MyResources.Strings_WholeTestEnd,
+                stopwatch.Elapsed,
                 DateTime.Now,
-                Environment.NewLine,
-                stopwatch.Elapsed.Days,
-                stopwatch.Elapsed.Hours,
-                stopwatch.Elapsed.Minutes,
-                stopwatch.Elapsed.Seconds,
-                stopwatch.Elapsed.Milliseconds,
-                Repeat.StringDuplicate ( '-', 50 ) ) ) )
-                .ToString ( );
+                Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber),
+                Environment.NewLine)))
+                .ToString();
 
-            this.Enable ( true );
+            this.Enable(true);
 
             // Prepare Toggle Button to restest. 'Start'
             MyCommons.MyViewModel.IsChecked = false;
@@ -159,9 +165,9 @@ namespace EditProfiles.Commands
         /// </summary>
         /// <param name="unused"></param>
         /// <returns></returns>
-        public bool CanExecute ( object unused )
+        public bool CanExecute(object unused)
         {
-            return !MyCommons.CancellationToken.CanBeCanceled;
+            return !(String.IsNullOrWhiteSpace(MyCommons.MyViewModel.FindWhatTextBoxText));
         }
     }
 }

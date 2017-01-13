@@ -16,7 +16,7 @@ namespace EditProfiles.Operations
         /// <param name="value">String value to be repeated.</param>
         /// <param name="number">Number of repeats.</param>
         /// <returns>Returns a string consisted of string repeated the specified number of times.</returns>
-        public static string StringDuplicate ( this string value, Int32 number )
+        public static string StringDuplicate ( string value, Int32 number )
         {
             return new String ( Enumerable.Range ( 0, number ).SelectMany ( x => value ).ToArray ( ) );
         }
@@ -28,7 +28,7 @@ namespace EditProfiles.Operations
         /// <param name="value">char value to be repeated.</param>
         /// <param name="number">Number of repeats.</param>
         /// <returns>Returns a string consisted of char repeated the specified number of times.</returns>
-        public static string StringDuplicate ( this char value, Int32 number )
+        public static string StringDuplicate ( char value, Int32 number )
         {
             return new String ( value, number );
         }

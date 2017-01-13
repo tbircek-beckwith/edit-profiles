@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
+        "OwnerKey" = "8:_456B54370F574B338A5D42299EF44E56"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_456B54370F574B338A5D42299EF44E56"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -33,19 +39,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7ED08EEC18167D8325FFFA8FC7BC108D"
-        "OwnerKey" = "8:_E5A0510F6F5F7D2830C1C4ECD7777D4D"
+        "MsmKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
+        "OwnerKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7ED08EEC18167D8325FFFA8FC7BC108D"
-        "OwnerKey" = "8:_456B54370F574B338A5D42299EF44E56"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E5A0510F6F5F7D2830C1C4ECD7777D4D"
+        "MsmKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
         "OwnerKey" = "8:_456B54370F574B338A5D42299EF44E56"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -58,13 +58,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7ED08EEC18167D8325FFFA8FC7BC108D"
+        "OwnerKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E5A0510F6F5F7D2830C1C4ECD7777D4D"
+        "OwnerKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -192,6 +192,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1EB3039D4E728C8F27F6223642BE4009"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_1EB3039D4E728C8F27F6223642BE4009"
+                    {
+                    "Name" = "8:Microsoft.Expression.Interactions.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Expression.Interactions.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A79714C7F254D878776CF66232F6648"
             {
             "SourcePath" = "8:..\\Profiles\\ProfileChanger.ico"
@@ -212,41 +243,20 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7ED08EEC18167D8325FFFA8FC7BC108D"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D058B90EF04D859C7BBBFFE29862B2DC"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_D058B90EF04D859C7BBBFFE29862B2DC"
+                    {
+                    "Name" = "8:System.Windows.Interactivity.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Windows.Interactivity.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E5A0510F6F5F7D2830C1C4ECD7777D4D"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:Microsoft.Expression.Interactions.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
@@ -320,18 +330,18 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Edit Profiles"
-        "ProductCode" = "8:{D2EBD009-950F-4ECC-A62C-7E016F45BBE3}"
-        "PackageCode" = "8:{8A0BA525-D436-4F02-AD01-D47C6D13EA0F}"
-        "UpgradeCode" = "8:{02C98ED3-816A-4EED-B786-58E8304FE163}"
+        "ProductCode" = "8:{3FE5F6AC-FBBB-40C4-B2A0-29FA9FF7EEA3}"
+        "PackageCode" = "8:{859F7C31-4106-47D2-BAB3-91039CFEE8D2}"
+        "UpgradeCode" = "8:{47BBA6CC-C7B4-4803-9D53-F71CC01927E4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.1"
+        "ProductVersion" = "8:1.0.2"
         "Manufacturer" = "8:Beckwith Electric Co. Inc."
         "ARPHELPTELEPHONE" = "8:x7671"
-        "ARPHELPLINK" = "8:\\\\volta\\Eng_Lab\\Software Updates\\EditProfiles"
+        "ARPHELPLINK" = "8:"
         "Title" = "8:Edit Profiles"
         "Subject" = "8:Search and modify Omicron ExeCute modules"
         "ARPCONTACT" = "8:Turgay Bircek"

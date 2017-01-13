@@ -84,6 +84,11 @@ namespace EditProfiles.MainModel
         /// </summary>
         public bool IsChecked { get; set; }
 
+        /// <summary>
+        /// availability of the togglebutton 
+        /// </summary>
+        public bool IsEnabled { get; set; } 
+
         #endregion
 
         #region Details Textbox
@@ -139,7 +144,7 @@ namespace EditProfiles.MainModel
         /// <summary>
         /// Module ProgressBar Value
         /// </summary>
-        public int ModuleProgressBarValue { get; set; }
+        public long ModuleProgressBarValue { get; set; }
 
         /// <summary>
         /// Module ProgressBar Max Value

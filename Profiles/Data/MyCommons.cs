@@ -2,8 +2,10 @@
 using System.IO;
 using System.Text;
 using System.Threading;
-using EditProfiles.Properties;
 using System.Threading.Tasks;
+using EditProfiles.Properties;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace EditProfiles.Data
 {
@@ -12,6 +14,16 @@ namespace EditProfiles.Data
     /// </summary>
     internal static class MyCommons // : ProcessFiles
     {
+        /// <summary>
+        /// Trace source.
+        /// </summary>
+        internal static TraceSource EditProfileTraceSource = new TraceSource(MyResources.Strings_TracerName);
+
+        /// <summary>
+        /// holds file name without folder path.
+        /// </summary>
+        internal static string FileName { get; set; }
+
         /// <summary>
         /// The current view
         /// </summary>
@@ -29,25 +41,89 @@ namespace EditProfiles.Data
         {
             get
             {
-                ParallelOptions parallelingOptions = new ParallelOptions ( );
+                ParallelOptions parallelingOptions = new ParallelOptions();
                 parallelingOptions.MaxDegreeOfParallelism = MyCommons.MaxDegreeOfParallelism;
                 parallelingOptions.CancellationToken = MyCommons.CancellationToken;
 
-                return parallelingOptions;            
+                return parallelingOptions;
             }
         }
 
         /// <summary>
-        /// Holds log files folder location.
-        /// Folder Location: C:\Users\yourName\AppData\Local\ProfileChanger
+        /// generate a folder to hold log files.
+        /// path..: C:\Users\yourName\AppData\Local\EditProfiles\versionNumber\Logs\
         /// </summary>
-        internal static string FileOutputFolder
+        internal static string LogFileFolderPath
         {
             get
             {
-                return Path.Combine ( Environment.GetFolderPath (
-                                      Environment.SpecialFolder.LocalApplicationData ),
-                                      MyResources.Strings_FolderName );
+                return Path.Combine(FileOutputFolder, MyResources.Strings_LogFolder);
+            }
+        }
+
+        /// <summary>
+        /// To add crash log file.
+        /// path..: C:\Users\yourName\AppData\Local\EditProfiles\versionNumber\CrashReports\
+        /// </summary>
+        internal static string CrashFileFolderPath
+        {
+            get
+            {
+                return Path.Combine(FileOutputFolder, MyResources.Strings_ErrorFolder);
+            }
+        }
+
+        /// <summary>
+        /// To add log file
+        /// path..: C:\Users\yourName\AppData\Local\EditProfiles\Logs\crash_09_43_34_01_04_2017.log
+        /// </summary>
+        internal static string CrashFileNameWithPath
+        {
+            get
+            {
+                return Path.Combine(CrashFileFolderPath,
+                            String.Format(MyResources.Strings_Error_FileName,
+                                          DateTime.Now.ToString(MyResources.Strings_DateTimeFormat)  // DateTime.Now.ToString("_HH_mm_ss_MM_dd_yyyy")
+                                          )
+                                    );
+            }
+        }
+
+        /// <summary>
+        /// To add log file
+        /// path..: C:\Users\yourName\AppData\Local\EditProfiles\Logs\editprofiles_09_43_34_01_04_2017.log
+        /// </summary>
+        internal static string LogFileNameWithPath
+        {
+            get
+            {
+                return Path.Combine(LogFileFolderPath,
+                            String.Format(MyResources.Strings_LogFileName,
+                                          DateTime.Now.ToString(MyResources.Strings_DateTimeFormat)  // DateTime.Now.ToString("_HH_mm_ss_MM_dd_yyyy")
+                                          )
+                                    );
+            }
+        }
+
+        /// <summary>
+        /// Holds appdata folder location for this app.
+        /// path..: C:\Users\yourName\AppData\Local\ProfileChanger\
+        /// </summary>
+        private static string FileOutputFolder
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(
+                                      Environment.SpecialFolder.LocalApplicationData),
+                                      MyResources.Strings_FolderName
+                    //Path.Combine(MyResources.Strings_FolderName,
+                    //              String.Format(MyResources.Strings_VersionFolder,
+                    //                  typeof(EditProfiles.MainWindow)
+                    //                              .Assembly
+                    //                              .GetName()
+                    //                              .Version)
+                    //             )
+                                    );
             }
         }
 
@@ -69,7 +145,7 @@ namespace EditProfiles.Data
         /// <summary>
         /// Current processing module number.
         /// </summary>
-        internal static int CurrentModuleNumber { get; set; }
+        internal static long CurrentModuleNumber { get; set; }
 
         /// <summary>
         /// Storage for the process of the program.
@@ -85,5 +161,6 @@ namespace EditProfiles.Data
         /// Cancellation token.
         /// </summary>
         internal static CancellationToken CancellationToken { get; set; }
+
     }
 }

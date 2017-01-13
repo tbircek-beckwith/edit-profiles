@@ -9,7 +9,7 @@
         Height="400">
 
     <Window.Resources>
-       
+
     </Window.Resources>
 
     <Grid>
@@ -72,15 +72,17 @@
             <ToggleButton Height="{StaticResource ResourceKey=ToggleButtonHeight}"
                           Style="{StaticResource ResourceKey=RoundToggleButton}"
                           Margin="0,15,0,0"
-                          IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                          IsChecked="{Binding IsChecked, Mode=TwoWay}" >
 
                 <interactive:Interaction.Triggers>
-                    <interactive:EventTrigger EventName="Checked">
+                    <interactive:EventTrigger EventName="Checked" >
                         <interactive:InvokeCommandAction Command="{Binding Path=FindReplaceCommand}" />
+                        <interactive:InvokeCommandAction IsEnabled="{Binding IsEnabled}" />
                     </interactive:EventTrigger>
 
                     <interactive:EventTrigger EventName="Unchecked">
                         <interactive:InvokeCommandAction Command="{Binding Path=StopCommand}" />
+                        <!--<interactive:InvokeCommandAction IsEnabled="{Binding IsEnabled, Mode=TwoWay}" />-->
                     </interactive:EventTrigger>
                 </interactive:Interaction.Triggers>
             </ToggleButton>

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using EditProfiles.Data;
+using EditProfiles.Properties;
 using OMICRON.OCCenter;
 
 namespace EditProfiles.Operations
@@ -27,98 +29,150 @@ namespace EditProfiles.Operations
         /// <summary>
         /// Scans specified Omicron Test Document.
         /// </summary>
-        public void Scan ( )
+        public void Scan()
         {
 
-            this.ScanDocument ( );
+            this.ScanDocument();
         }
 
         #endregion
 
         #region Private Methods
 
-        private void ScanDocument ( )
+        private void ScanDocument()
         {
             try
             {
                 // Omicron Test Module index is between 1 and TestModules.Count
                 int currentPosition = 1;
-                int totalModuleNumber = this.OmicronDocument.TestModules.Count;
+
+                // Local thread variable to hold total module number after deletion.
+                int moduleCounter = 0;
 
                 // Update total module number.
-                MyCommons.TotalModuleNumber = totalModuleNumber;
-                MyCommons.MyViewModel.ModuleProgressBarMax = totalModuleNumber;
-                MyCommons.MyViewModel.UpdateCommand.Execute ( null );
+                MyCommons.TotalModuleNumber = this.OmicronDocument.TestModules.Count;
+                MyCommons.MyViewModel.ModuleProgressBarMax = MyCommons.TotalModuleNumber;
+                MyCommons.MyViewModel.UpdateCommand.Execute(null);
 
 #if DEBUG
-                Console.WriteLine ( "SCANNING thread: {0}", Thread.CurrentThread.GetHashCode ( ) );
-                Console.WriteLine ( "Total TestModule: {0} ", totalModuleNumber );
+                Console.WriteLine("SCANNING thread: {0}", Thread.CurrentThread.GetHashCode());
+                Console.WriteLine("Total TestModule: {0} ", MyCommons.TotalModuleNumber);
 #endif
 
-                IAutoTMs testModules = this.OmicronDocument.TestModules;
+                // All Test Modules in the Omicron test file.
+                TestModules testModules = this.OmicronDocument.TestModules;
 
                 // Parallel.For (fromInclusive Int32, toExclusive Int32, parallelOptions, body)
                 // totalModelNumber IS EXCLUSIVE SO MUST ADD 1 TO IT.
                 // Otherwise the last Test Module will never be processed.
-                Parallel.For ( currentPosition, totalModuleNumber + 1, MyCommons.ParallelingOptions, ( testModule ) =>
+                Parallel.For(currentPosition, MyCommons.TotalModuleNumber + 1, MyCommons.ParallelingOptions, testModule =>
                 {
-                    // update current module number.
-                    MyCommons.CurrentModuleNumber = testModule;
-                    MyCommons.MyViewModel.UpdateCommand.Execute ( null );
+                    // increment counter to open next test module.
+                    Interlocked.Add(ref moduleCounter, 1);
 
-                    IAutoTM currentTestModule = testModules.get_Item ( testModule );
+                    // update current module number.
+                    // MyCommons.CurrentModuleNumber = testModule;
+                    MyCommons.CurrentModuleNumber = moduleCounter;
+                    MyCommons.MyViewModel.UpdateCommand.Execute(null);
+
+                    TestModule currentTestModule = testModules.Item[moduleCounter];
 
                     this.OmicronProgramName = currentTestModule.Name;
 
                     this.OmicronProgramId = currentTestModule.ProgID;
 
 #if DEBUG
-                    Console.WriteLine ( "{0}", new String ( '-', 20 ) );
-                    Console.WriteLine ( "SCAN PARALLEL thread: {0}", Thread.CurrentThread.GetHashCode ( ) );
-                    Console.WriteLine ( "Connecting to {0} type:   {1}", this.OmicronProgramName, this.OmicronProgramId );
+                    Console.WriteLine("{0}", new String(Settings.Default.RepeatChar, Settings.Default.RepeatNumber));
+                    Console.WriteLine("SCAN PARALLEL thread: {0}", Thread.CurrentThread.GetHashCode());
+                    Console.WriteLine("Test module text...: {0}", OmicronProgramName);
+                    Console.WriteLine("Test module type...: {0}", OmicronProgramId);
+                    Console.WriteLine("{0}", new String(Settings.Default.RepeatChar, Settings.Default.RepeatNumber));
+                    Console.WriteLine("Making a decision if the user wants to delete this test module.....");
+                    Console.WriteLine("Test module name...: {0}", OmicronProgramName);
 #endif
-
-                    switch ( this.OmicronProgramId )
+                    if (TestModuleNamesToRemove.Contains(OmicronProgramName))
                     {
-                        case ProgId.Execute:
+#if DEBUG
+                        Console.WriteLine(" ... TEST MODULE MARK FOR DELETION ....");
+#endif
+                        currentTestModule.Delete();
+                        // just deleted a test module. Omicron updates total test module counter.
+                        // this is the reason for the decrement.
+                        Interlocked.Decrement(ref moduleCounter);
 
-                            try
-                            {
+                        // Show detailed output if the user wants it.
+                        if (Settings.Default.ShowDetailedOutput)
+                        {
+                            // Update DetailsTextBoxText.
+                            MyCommons.MyViewModel.DetailsTextBoxText =
+                                MyCommons.LogProcess.Append(
+                                        string.Format(
+                                                CultureInfo.InvariantCulture,
+                                                MyResources.Strings_RemoveTM,
+                                                OmicronProgramName,
+                                                OmicronProgramId,
+                                                Environment.NewLine))
+                                        .ToString();
+                        }
 
-                                // Polling CancellationToken's status.
-                                // If cancellation requested throw error and exit loop.
-                                if ( MyCommons.CancellationToken.IsCancellationRequested == true )
-                                {
-                                    MyCommons.CancellationToken.ThrowIfCancellationRequested ( );
-                                }
-
-                                // Retrieve parameters and save.
-                                Retrieve ( currentTestModule );
-                            }
-                            catch ( AggregateException ae )
-                            {
-                                foreach ( Exception ex in ae.InnerExceptions )
-                                {
-                                    // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                    ErrorHandler.Log ( ex, this.CurrentFileName );
-                                }
-                                return;
-                            }
-
-                            break;
-
-                        default:
-                            // Not supported test module. move on to the next module.
-                            break;
                     }
-                } );
+                    else
+                    {
+#if DEBUG
+                        Console.WriteLine(" .... NO DELETION REQUIRED ....");
+#endif
+                        switch (this.OmicronProgramId)
+                        {
+                            case ProgId.Execute:
+
+                                try
+                                {
+
+                                    // Polling CancellationToken's status.
+                                    // If cancellation requested throw error and exit loop.
+                                    if (MyCommons.CancellationToken.IsCancellationRequested == true)
+                                    {
+                                        MyCommons.CancellationToken.ThrowIfCancellationRequested();
+                                    }
+
+                                    // Retrieve parameters and save.
+                                    Retrieve(currentTestModule);
+                                }
+                                catch (AggregateException ae)
+                                {
+                                    foreach (Exception ex in ae.InnerExceptions)
+                                    {
+                                        // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                        ErrorHandler.Log(ex, this.CurrentFileName);
+                                    }
+                                    return;
+                                }
+
+                                break;
+
+                            default:
+                                // Not supported test module. move on to the next module.
+                                break;
+                        }
+                    }
+                });
             }
-            catch ( AggregateException ae )
+            catch (System.NullReferenceException ae)
             {
-                foreach ( Exception ex in ae.InnerExceptions )
+                ErrorHandler.Log(ae, this.CurrentFileName);
+                return;
+            }
+            catch (System.OperationCanceledException ae)
+            {
+                ErrorHandler.Log(ae, this.CurrentFileName);
+                return;
+            }
+            catch (AggregateException ae)
+            {
+                foreach (Exception ex in ae.InnerExceptions)
                 {
                     // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                    ErrorHandler.Log ( ex, this.CurrentFileName );
+                    ErrorHandler.Log(ex, this.CurrentFileName);
                 }
                 return;
             }

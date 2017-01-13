@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using EditProfiles.Data;
 
 namespace EditProfiles.Operations
 {
@@ -17,6 +19,8 @@ namespace EditProfiles.Operations
 
         private StringBuilder NewParameterString { get; set; }
 
+        private IList<string> TestModuleNamesToRemove {get; set;}
+
         private IList<string> ItemsToFind { get; set; }
 
         private IList<string> ItemsToReplace { get; set; }
@@ -30,7 +34,7 @@ namespace EditProfiles.Operations
         /// </summary>
         /// <param name="findParameters">The parameters currently in the Exceute Module.</param>
         /// <returns>Returns a modified string.</returns>
-        public StringBuilder FindAndReplaceParameters ( string findParameters )
+        public StringBuilder FindAndReplaceParameters(string findParameters)
         {
             try
             {
@@ -41,12 +45,12 @@ namespace EditProfiles.Operations
 
                 this.FindParam = findParameters;
 
-                return this.FindAndReplaceParameter ( );
+                return FindAndReplaceParameter ( );
             }
             catch ( ArgumentNullException ae )
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log ( ae, this.CurrentFileName );
+                ErrorHandler.Log ( ae, CurrentFileName );
                 return new StringBuilder ( );
             }
         }
@@ -66,7 +70,7 @@ namespace EditProfiles.Operations
                 if ( !string.IsNullOrWhiteSpace ( item ) )
                 {
                     // ignores the case of the inputs.
-                    if ( this.FindParam.IndexOf ( item, StringComparison.OrdinalIgnoreCase ) > -1 )
+                    if ( FindParam.IndexOf ( item, StringComparison.OrdinalIgnoreCase ) > -1 )
                     {
                         // this variable > 0, if there is a match.
                         numberOfFindings++;
@@ -77,23 +81,27 @@ namespace EditProfiles.Operations
             // We find at least 1 item matched the user input.
             if ( numberOfFindings > 0 )
             {
-                NewParameterString = new StringBuilder ( this.FindParam );
+                NewParameterString = new StringBuilder ( FindParam );
 
                 int position = 0;
 
-                foreach ( string item in this.ItemsToFind )
+                foreach ( string item in ItemsToFind )
                 {
-                    // Replace the Execute Parameter 
-                    NewParameterString.Replace ( item, this.ItemsToReplace.ElementAt ( position ) );
+                    if (Regex.Matches(item, ModuleRemovalPattern).Count != 1)
+                    {
+                        // Replace the Execute Parameter 
+                        NewParameterString.Replace(item, ItemsToReplace.ElementAt(position));
 
-                    position++;
+                        position++;
+                    }
+                   
                 }
 
                 return NewParameterString;
             }
             else
             {
-                return new StringBuilder ( this.FindParam );
+                return new StringBuilder ( FindParam );
             }
         }
 

@@ -72,12 +72,12 @@ namespace EditProfiles.Operations
         /// and terminate all of them.
         /// </summary>
         [SecurityCritical]
-        public bool KillOmicronProcesses ( )
+        public bool KillOmicronProcesses()
         {
 
-            // Save debug and trace info before terminating the program.
-            Debug.Flush ( );
-            Trace.Flush ( );
+            //// Save debug and trace info before terminating the program.
+            //Debug.Flush ( );
+            MyCommons.EditProfileTraceSource.Flush();
 
             return this.KillOmicronFiles ( );
         }
@@ -88,7 +88,7 @@ namespace EditProfiles.Operations
         /// </summary>
         /// <param name="omicronProgId">Omicron ProgID value</param>
         [SecurityCritical]
-        public bool KillOmicronProcesses ( string omicronProgId )
+        public bool KillOmicronProcesses(string omicronProgId)
         {
             try
             {

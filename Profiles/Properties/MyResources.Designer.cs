@@ -79,11 +79,29 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1}{0}{2}{0}{3}{0}{1}{0}.
+        ///   Looks up a localized string similar to {1}{0}Start...:{2}{0}{3}{0}{1}{0}.
         /// </summary>
         internal static string Strings_CurrentFileName {
             get {
                 return ResourceManager.GetString("Strings_CurrentFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _MM_dd_yyyy.
+        /// </summary>
+        internal static string Strings_DateTimeFormat {
+            get {
+                return ResourceManager.GetString("Strings_DateTimeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ({1}) ({2}) Finalized..
+        /// </summary>
+        internal static string Strings_Debug_GarbageCollection {
+            get {
+                return ResourceManager.GetString("Strings_Debug_GarbageCollection", resourceCulture);
             }
         }
         
@@ -97,7 +115,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ip17|ip18|4793,0.
+        ///   Looks up a localized string similar to ip17|ip18|4793,0|removeModule=Set Unit1-3 Breakers|removeModule=Set Unit4-5 Breakers.
         /// </summary>
         internal static string Strings_Debug_TextBoxFind {
             get {
@@ -124,7 +142,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to errors.log.
+        ///   Looks up a localized string similar to crash{0}.log.
         /// </summary>
         internal static string Strings_Error_FileName {
             get {
@@ -151,11 +169,11 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An error has occurred. Please check &quot;errors.log&quot; file..
+        ///   Looks up a localized string similar to CrashReports.
         /// </summary>
-        internal static string Strings_ErrorLogFile {
+        internal static string Strings_ErrorFolder {
             get {
-                return ResourceManager.GetString("Strings_ErrorLogFile", resourceCulture);
+                return ResourceManager.GetString("Strings_ErrorFolder", resourceCulture);
             }
         }
         
@@ -192,6 +210,15 @@ namespace EditProfiles.Properties {
         internal static string Strings_ErrorTraceErrors {
             get {
                 return ResourceManager.GetString("Strings_ErrorTraceErrors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error has occurred. Please check &quot;{0}.log&quot; file..
+        /// </summary>
+        internal static string Strings_ErrorUserMsg {
+            get {
+                return ResourceManager.GetString("Strings_ErrorUserMsg", resourceCulture);
             }
         }
         
@@ -268,15 +295,6 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} ({1}) ({2}) Finalized..
-        /// </summary>
-        internal static string Strings_GarbageCollection {
-            get {
-                return ResourceManager.GetString("Strings_GarbageCollection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Find what: Use | to separate items.
         /// </summary>
         internal static string Strings_LabelFind {
@@ -300,6 +318,24 @@ namespace EditProfiles.Properties {
         internal static string Strings_LabelReplace {
             get {
                 return ResourceManager.GetString("Strings_LabelReplace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to log{0}.log.
+        /// </summary>
+        internal static string Strings_LogFileName {
+            get {
+                return ResourceManager.GetString("Strings_LogFileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logs.
+        /// </summary>
+        internal static string Strings_LogFolder {
+            get {
+                return ResourceManager.GetString("Strings_LogFolder", resourceCulture);
             }
         }
         
@@ -349,7 +385,16 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1}{7}{1} End time: {0}{1}Total test time: {2:d2} day(s), {3:d2} hour(s), {4:d2} min(s), {5:d2} sec(s), {6:d3} millisecond(s){1}{7}.
+        ///   Looks up a localized string similar to {2}Deleted following test module...:{2} {0} - {1}{2}.
+        /// </summary>
+        internal static string Strings_RemoveTM {
+            get {
+                return ResourceManager.GetString("Strings_RemoveTM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {1}{2}{1}Completed...: {3}{1}Test end time: {0}{1}{2}{1}.
         /// </summary>
         internal static string Strings_TestEnd {
             get {
@@ -363,6 +408,33 @@ namespace EditProfiles.Properties {
         internal static string Strings_TestStart {
             get {
                 return ResourceManager.GetString("Strings_TestStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EditProfiles.Tracing.
+        /// </summary>
+        internal static string Strings_TracerName {
+            get {
+                return ResourceManager.GetString("Strings_TracerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.
+        /// </summary>
+        internal static string Strings_VersionFolder {
+            get {
+                return ResourceManager.GetString("Strings_VersionFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {3}{2}{3}Test(s) completed on {1}{3}Total test time..: {0:dd}:{0:hh}:{0:mm}:{0:ss}.{0:fff}{3}{2}.
+        /// </summary>
+        internal static string Strings_WholeTestEnd {
+            get {
+                return ResourceManager.GetString("Strings_WholeTestEnd", resourceCulture);
             }
         }
     }
