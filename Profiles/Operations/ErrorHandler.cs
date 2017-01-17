@@ -74,6 +74,13 @@ namespace EditProfiles.Operations
             //    File.Create(path);
             //}
 
+            // activate tracer here to prevent unnecessary crash file generation.
+            // initialize a new tracer if there is only default.
+            if (MyCommons.EditProfileTraceSource.Name == "Default")
+            {
+                Tracer();
+            }            
+ 
             // Save to the fileOutputFolder
             MyCommons.EditProfileTraceSource.TraceEvent(TraceEventType.Error,
                                                  ex.Source.Length,

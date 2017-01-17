@@ -4,7 +4,7 @@
 ********************************************
 
 Find what:
-/select ip22,1032,4088,1033,4,1016,7|/select ip22,8725,0,8726,81,8728,11500,8729,20,8727,1|/select ip22,8725,0,8726,1,8728,11500,8729,1000,8727,1|removeModule=Set Triple Single 50P.INDSET|removeModule=Set Triple Single 51P.INDSET|removeModule=Set Vz1 Usage
+/select ip22,1032,4088,1033,4,1016,7|/select ip22,8725,0,8726,81,8728,11500,8729,20,8727,1|/select ip22,8725,0,8726,1,8728,11500,8729,1000,8727,1|removeModule=Set Triple Single 50P.INDSET|removeModule=Set Triple Single 51P.INDSET|removeModule=Set Vz1 Usage|removeModule=Set 3ph 50P.INDSET|removeModule=Set 3ph 51P.INDSET
 
 Replace with:
 /select ip22,1033,4,1016,7|/select ip22,8725,0,8726,0,8728,11500,8729,20,8727,1|/select ip22,8725,0,8726,0,8728,11500,8729,1000,8727,1

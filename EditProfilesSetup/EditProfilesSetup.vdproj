@@ -15,25 +15,19 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_18F92D768CCD430CBD91FFFC6BE98D21"
+        "MsmKey" = "8:_0A9F9BB1C4EE4B4C97AB18A017DE8FF0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
-        "OwnerKey" = "8:_456B54370F574B338A5D42299EF44E56"
+        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_456B54370F574B338A5D42299EF44E56"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_5A79714C7F254D878776CF66232F6648"
+        "MsmKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -46,25 +40,25 @@
         "Entry"
         {
         "MsmKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
-        "OwnerKey" = "8:_456B54370F574B338A5D42299EF44E56"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_456B54370F574B338A5D42299EF44E56"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
+        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -172,7 +166,7 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_18F92D768CCD430CBD91FFFC6BE98D21"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0A9F9BB1C4EE4B4C97AB18A017DE8FF0"
             {
             "SourcePath" = "8:..\\Profiles\\ReadMe.txt"
             "TargetName" = "8:ReadMe.txt"
@@ -199,11 +193,6 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_1EB3039D4E728C8F27F6223642BE4009"
-                    {
-                    "Name" = "8:Microsoft.Expression.Interactions.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Microsoft.Expression.Interactions.dll"
             "TargetName" = "8:"
@@ -223,26 +212,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5A79714C7F254D878776CF66232F6648"
-            {
-            "SourcePath" = "8:..\\Profiles\\ProfileChanger.ico"
-            "TargetName" = "8:ProfileChanger.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D058B90EF04D859C7BBBFFE29862B2DC"
             {
             "AssemblyRegister" = "3:1"
@@ -250,11 +219,6 @@
             "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_D058B90EF04D859C7BBBFFE29862B2DC"
-                    {
-                    "Name" = "8:System.Windows.Interactivity.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Windows.Interactivity.dll"
             "TargetName" = "8:"
@@ -330,15 +294,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Edit Profiles"
-        "ProductCode" = "8:{3FE5F6AC-FBBB-40C4-B2A0-29FA9FF7EEA3}"
-        "PackageCode" = "8:{859F7C31-4106-47D2-BAB3-91039CFEE8D2}"
+        "ProductCode" = "8:{A383036E-85DC-49D0-A7E7-C37B1AA31D25}"
+        "PackageCode" = "8:{E6E88392-D6A2-468E-A088-66ACA18739C6}"
         "UpgradeCode" = "8:{47BBA6CC-C7B4-4803-9D53-F71CC01927E4}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.2"
+        "ProductVersion" = "8:1.0.3"
         "Manufacturer" = "8:Beckwith Electric Co. Inc."
         "ARPHELPTELEPHONE" = "8:x7671"
         "ARPHELPLINK" = "8:"
@@ -348,13 +312,13 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:http://www.beckwithelectric.com/"
-        "ARPPRODUCTICON" = "8:_5A79714C7F254D878776CF66232F6648"
-        "ARPIconIndex" = "3:0"
+        "ARPPRODUCTICON" = "8:_94373BA73503438EBB56FDC38BDFD755"
+        "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
-        "PreBuildEvent" = "8:"
-        "PostBuildEvent" = "8:"
+        "PreBuildEvent" = "8::: Folder Locations\r\nset winToolKit=\"\\\\eng94-win8\\\\c$\\\\Program Files\\\\Windows Kits\\\\10\\\\bin\\\\x86\\\\\"\r\nset mainProject=\"C:\\\\Users\\\\tbircek\\\\Documents\\\\Visual Studio 2010\\\\Projects\\\\CSharpWPF\\\\Working Projects\\\\Profiles\\\\\"\r\nset exeLocation=%mainProject%Profiles\\\\obj\\\\x86\\\\$(Configuration)\\\\\"\r\nset packages=%mainProject%packages\\\\System.Windows.Interactivity.WPF.2.0.20525\\\\lib\\\\net40\\\\\r\nset allFiles=%packages%*.DLL %exeLocation%EditProfiles.exe\r\n\r\n:: Certificate Items\r\nset timeServer=http://time.certum.pl\r\nset certIssuer=\"Turgay Bircek\"\r\nset sha=CC59DAB7C8295C0E600931FCC26755EB52B827EF\r\nset certID=\"Turgay Bircek\"\r\n::set crossSigner=%documents%Certificate\\\\DigiCert High Assurance EV Root CA.crt\r\n\r\n:: Sign Files\r\necho\r\necho ----------------------------------------\r\necho ... PRE-BUILD STARTED ....\r\necho Signing files ... PLEASE WAIT ...\r\necho ----------------------------------------\r\n::%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /ac %crossSigner% /n %certID% /t %timeServer% /sha1 %sha% %allFiles%\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /t %timeServer% /sha1 %sha% %allFiles%\r\nIF ERRORLEVEL 1 (\r\necho failed to sign files\r\nexit /b 2\r\n)"
+        "PostBuildEvent" = "8::: Folder Locations\r\nset winToolKit=\"\\\\eng94-win8\\\\c$\\\\Program Files\\\\Windows Kits\\\\10\\\\bin\\\\x86\\\\\"\r\nset mainProject=\"C:\\\\Users\\\\tbircek\\\\Documents\\\\Visual Studio 2010\\\\Projects\\\\CSharpWPF\\\\Working Projects\\\\Profiles\\\\EditProfilesSetup\\\\$(Configuration)\\\\\"\r\nset documents=\\\\eng94-win8\\\\c$\\\\ips\\\\S6280\\\\CapTalk\\\\CapTalkSetup\\\\Documents\r\n::set allFiles=%mainProject%*.DLL %mainProject%*.exe\r\nset allFiles=%mainProject%*.msi %mainProject%*.exe\r\n\r\n:: Certificate Items\r\nset timeServer=http://time.certum.pl\r\nset certIssuer=\"Turgay Bircek\"\r\nset sha=CC59DAB7C8295C0E600931FCC26755EB52B827EF\r\nset certID=\"Turgay Bircek\"\r\nset crossSigner=%documents%Certificate\\\\DigiCert High Assurance EV Root CA.crt\r\n\r\n:: Sign Files\r\necho\r\necho ----------------------------------------\r\necho Signing files ... PLEASE WAIT ...\r\necho ----------------------------------------\r\n::%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /ac %crossSigner% /n %certID% /t %timeServer% /sha1 %sha% %allFiles%\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /t %timeServer% /sha1 %sha% %allFiles%\r\n::%winToolKit%\\\\signtool.exe sign /a %allFiles%\r\nIF ERRORLEVEL 1 (\r\necho failed to sign files\r\n::echo %winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /ac %crossSigner% /n %certID% /t %timeServer% /sha1 %sha% %allFiles%\r\n::echo %mainProject%\r\nexit /b 2\r\n)"
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
@@ -451,32 +415,32 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_BDB1A8AF1E854F6F961A9A0A2A08345F"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_06DBD4A26CA9467F90295539AFD4A40B"
             {
             "Name" = "8:EditProfiles"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
+            "IconIndex" = "3:32512"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_456B54370F574B338A5D42299EF44E56"
+            "Target" = "8:_94373BA73503438EBB56FDC38BDFD755"
             "Folder" = "8:_064F1B60086946E38AB473ED46F376AA"
             "WorkingFolder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
-            "Icon" = "8:_5A79714C7F254D878776CF66232F6648"
+            "Icon" = "8:_94373BA73503438EBB56FDC38BDFD755"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D41048639F2541558A95E8DAB388EB01"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_AB5053D1FB684B4BA00F1B6B0296E9FB"
             {
             "Name" = "8:EditProfiles"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
+            "IconIndex" = "3:32512"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_456B54370F574B338A5D42299EF44E56"
+            "Target" = "8:_94373BA73503438EBB56FDC38BDFD755"
             "Folder" = "8:_7B9D2F026C1C4E2BA30A431E19B94A37"
             "WorkingFolder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
-            "Icon" = "8:_5A79714C7F254D878776CF66232F6648"
+            "Icon" = "8:_94373BA73503438EBB56FDC38BDFD755"
             "Feature" = "8:"
             }
         }
@@ -878,35 +842,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_33C1AA3B51D6462D885908143086F262"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:ContentFiles"
-            "OutputProjectGuid" = "8:{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_456B54370F574B338A5D42299EF44E56"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_94373BA73503438EBB56FDC38BDFD755"
             {
             "SourcePath" = "8:..\\Profiles\\obj\\x86\\Release\\EditProfiles.exe"
             "TargetName" = "8:"
@@ -928,62 +864,6 @@
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AA880ACE434F48B78CB0AF51F7AB29F3"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B4F455B84B74488E95A989A575FDD31C"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:XmlSerializer"
             "OutputProjectGuid" = "8:{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"

@@ -73,7 +73,8 @@ namespace EditProfiles
 
 
             // Set the Trace to track errors.
-            ErrorHandler.Tracer();
+            // moving all tracing to the ErrorHandler module.
+            // ErrorHandler.Tracer();
 
             #endregion
 

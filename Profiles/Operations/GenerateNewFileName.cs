@@ -84,7 +84,8 @@ namespace EditProfiles.Operations
                         //    CultureInfo.InvariantCulture));
 
                         // Since Ritchie has version control file names do not require Rev# suffix.
-                        this.NewFileName.Append(" ");
+                        // the following line adds an extra space to the fileName.
+                        // this.NewFileName.Append(" ");
                     }
                     else if (!string.IsNullOrWhiteSpace(word))
                     {

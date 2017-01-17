@@ -186,7 +186,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="C:\Users\tbircek\Documents\strong-key\tb-strong-name-key-file.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Operations\ReadMe.txt" />
