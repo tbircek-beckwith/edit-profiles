@@ -1,29 +1,22 @@
-# README #
+# Edit Profiles #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+The most of my work projects use [Omicron Test Universe](https://www.omicronenergy.com/en/products/test-universe/) as main test tool.  
+However modifying, or correcting the test files manually is cumbersome.  
+Edit Profiles can automate this process (for now only for ExeCute modules).  
+> Current version is v1.2
 
-### What is this repository for? ###
+### Usage: ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Enter "Find what:" field your search criteria seperated by "|" character.
+* Enter "Replace with:" field your replacement items in this field seperated by "|" character.
+* If your Omicron Control Center (*.occ) file(s) is/are password protected enter the password to "Password to edit file(s)" field.
+* Use "removeModule=moduleName" to delete named ExeCute test module from your test file.
 
-### How do I get set up? ###
+### What will you need? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* [Microsoft .NET Framework 4](https://www.microsoft.com/en-us/download/details.aspx?id=17851)
+* [Omicron Test Universe](https://www.omicronenergy.com/en/products/test-universe/) v3.10 or higher installed in your computer. 
 
-### Contribution guidelines ###
+### Contact Us ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* [Contact us](http://www.beckwithelectric.com/)
