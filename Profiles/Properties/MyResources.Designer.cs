@@ -106,7 +106,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Test Profile Test\ShortFiles.
+        ///   Looks up a localized string similar to Test Profile Test\actual test files.
         /// </summary>
         internal static string Strings_Debug_InitialDirectory {
             get {
@@ -115,7 +115,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ip17|ip18|4793,0|removeModule=Set Unit1-3 Breakers|removeModule=Set Unit4-5 Breakers.
+        ///   Looks up a localized string similar to C:\DRSend.exe.
         /// </summary>
         internal static string Strings_Debug_TextBoxFind {
             get {
@@ -124,7 +124,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ip22|ip23|4793,1.
+        ///   Looks up a localized string similar to C:\DRSendIPNET.exe.
         /// </summary>
         internal static string Strings_Debug_TextBoxReplace {
             get {

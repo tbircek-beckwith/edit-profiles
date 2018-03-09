@@ -35,9 +35,7 @@
                      Height="{StaticResource ResourceKey=TextBoxHeight}"
                      Margin="0,0,0,15"
                      Text="{Binding Path=FindWhatTextBoxText, 
-                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     IsHitTestVisible="{Binding Path=Editable}"
-                     Focusable="{Binding Path=Editable}" />
+                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Focusable="{Binding Path=Editable}" />
 
             <TextBlock Height="{StaticResource ResourceKey=TextBlockHeight}"
                        Text="{Binding Path=ReplaceWithLabelText}" />
@@ -46,9 +44,7 @@
                      Height="{StaticResource ResourceKey=TextBoxHeight}"
                      Margin="0,0,0,15"
                      Text="{Binding Path=ReplaceWithTextBoxText, 
-                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     IsHitTestVisible="{Binding Path=Editable}"
-                     Focusable="{Binding Path=Editable}" />
+                                    UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Focusable="{Binding Path=Editable}" />
 
         </StackPanel>
 

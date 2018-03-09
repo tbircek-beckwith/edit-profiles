@@ -134,13 +134,13 @@
     <value>{0} ({1}) ({2}) Finalized.</value>
   </data>
   <data name="Strings_Debug_InitialDirectory" xml:space="preserve">
-    <value>Test Profile Test\ShortFiles</value>
+    <value>Test Profile Test\actual test files</value>
   </data>
   <data name="Strings_Debug_TextBoxFind" xml:space="preserve">
-    <value>ip17|ip18|4793,0|removeModule=Set Unit1-3 Breakers|removeModule=Set Unit4-5 Breakers</value>
+    <value>C:\DRSend.exe</value>
   </data>
   <data name="Strings_Debug_TextBoxReplace" xml:space="preserve">
-    <value>ip22|ip23|4793,1</value>
+    <value>C:\DRSendIPNET.exe</value>
   </data>
   <data name="Strings_DefaultTextBoxValues" xml:space="preserve">
     <value>Not specified</value>

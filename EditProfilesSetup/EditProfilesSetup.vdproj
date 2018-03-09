@@ -46,7 +46,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
+        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -58,7 +58,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
+        "OwnerKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -193,6 +193,11 @@
             "AssemblyAsmDisplayName" = "8:Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_1EB3039D4E728C8F27F6223642BE4009"
+                    {
+                    "Name" = "8:Microsoft.Expression.Interactions.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Microsoft.Expression.Interactions.dll"
             "TargetName" = "8:"
@@ -219,6 +224,11 @@
             "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_D058B90EF04D859C7BBBFFE29862B2DC"
+                    {
+                    "Name" = "8:System.Windows.Interactivity.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Windows.Interactivity.dll"
             "TargetName" = "8:"
@@ -844,7 +854,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_94373BA73503438EBB56FDC38BDFD755"
             {
-            "SourcePath" = "8:..\\Profiles\\obj\\x86\\Release\\EditProfiles.exe"
+            "SourcePath" = "8:..\\Profiles\\obj\\x86\\Debug\\EditProfiles.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
