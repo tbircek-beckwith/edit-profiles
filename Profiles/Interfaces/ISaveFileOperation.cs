@@ -18,15 +18,6 @@ namespace EditProfiles.Operations
         void SaveOmicronFiles ( string oldFileName, bool saveAs );
 
         /// <summary>
-        /// Sets specified protection level and saves modified Omicron Test File.
-        /// </summary>
-        /// <param name="oldFileName">Original file name.</param>
-        /// <param name="saveAs">If it is true the file "SaveAs", false the file "Save".</param>
-        /// <param name="protectionLevel">provide a protection level to protect the file.</param>
-        [Obsolete(" Protection Level decided by the original file.", true)]
-        void SaveOmicronFiles(string oldFileName, bool saveAs, short protectionLevel);
-
-        /// <summary>
         /// Generates a new file name based on the original file name.
         /// </summary>
         /// <param name="fileNameWithPath">A string that contains original file's fullname.</param>
@@ -36,7 +27,7 @@ namespace EditProfiles.Operations
         /// <summary>
         /// Finds and replaces the Execute Test Module Parameters.
         /// </summary>
-        /// <param name="findParameters">The parameters currently in the Exceute Module.</param>
+        /// <param name="findParameters">The parameters currently in the ExeCute Module.</param>
         /// <returns>Returns a modified string.</returns>
         StringBuilder FindAndReplaceParameters ( string findParameters );
 

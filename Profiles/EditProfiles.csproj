@@ -130,6 +130,7 @@
     <Compile Include="Commands\SaveCommand.cs" />
     <Compile Include="Commands\UpdateCommand.cs" />
     <Compile Include="Behaviors\DispatchService.cs" />
+    <Compile Include="Operations\FindAndRename.cs" />
     <Compile Include="Operations\ErrorHandler.cs" />
     <Compile Include="Operations\ExecuteParameters.cs" />
     <Compile Include="Operations\FindAndRemove.cs" />
@@ -180,6 +181,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="app.config" />
+    <None Include="EditProfiles.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

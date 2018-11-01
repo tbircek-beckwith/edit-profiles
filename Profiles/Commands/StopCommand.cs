@@ -36,7 +36,7 @@ namespace EditProfiles.Commands
 
             MyCommons.TokenSource.Dispose ( );
 
-            //// Create a new Token in case the user wants to run it again.
+            // Create a new Token in case the user wants to run the program again.
             MyCommons.TokenSource = new System.Threading.CancellationTokenSource ( );
             MyCommons.CancellationToken = new System.Threading.CancellationToken ( false );
 

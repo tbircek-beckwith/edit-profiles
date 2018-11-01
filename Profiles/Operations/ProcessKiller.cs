@@ -130,9 +130,7 @@ namespace EditProfiles.Operations
 
                         if ( !process.HasExited )
                         {
-#if DEBUG
-                            Console.WriteLine ( "KillOmicronFiles ( ) thread: {0}", Thread.CurrentThread.GetHashCode ( ) );
-#endif
+                            Debug.WriteLine ( "KillOmicronFiles ( ) thread: {0}", Thread.CurrentThread.GetHashCode ( ) );
                             process.Kill ( );
                         }
                     }
@@ -170,9 +168,7 @@ namespace EditProfiles.Operations
 
                     if ( !process.HasExited )
                     {
-#if DEBUG
-                        Console.WriteLine ( "KillOmicronFiles ( {1} ) thread: {0}", Thread.CurrentThread.GetHashCode ( ), omicronProgId );
-#endif
+                        Debug.WriteLine ( "KillOmicronFiles ( {1} ) thread: {0}", Thread.CurrentThread.GetHashCode ( ), omicronProgId );
                         process.Kill ( );
 
                     }

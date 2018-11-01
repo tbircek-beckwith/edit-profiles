@@ -7,6 +7,7 @@ using System.Windows;
 using EditProfiles.Behaviors;
 using EditProfiles.Data;
 using EditProfiles.Properties;
+using System.Diagnostics;
 
 namespace EditProfiles.Operations
 {
@@ -21,43 +22,6 @@ namespace EditProfiles.Operations
         private string FilePath { get; set; }
 
         private string FilePassword { get; set; }
-
-        #endregion
-
-        #region Obsolete Methods
-
-        /// <summary>
-        /// Opens the Omicron Control Center file.
-        /// </summary>
-        /// <param name="path">Location of the OCC file.</param>
-        /// <param name="password">The password used to protect the file.</param>
-        /// <returns>Returns unlocked the Omicron Control Center file.</returns>
-        [Obsolete(" Password must be defined by the user in the 'Password' field")]
-        public OMICRON.OCCenter.IAutoDoc OpenDocument(string path, string password)
-        {
-            try
-            {
-                // Not all files have a password.
-                // Do not check if the password is empty.
-                if (string.IsNullOrWhiteSpace(path))
-                {
-                    throw new ArgumentNullException("path");
-                }
-
-                this.FilePath = path;
-
-                this.FilePassword = password;
-
-                return OpenDocuments();
-            }
-            catch (ArgumentNullException ae)
-            {
-                // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log(ae, this.CurrentFileName);
-
-                return null;
-            }
-        }
 
         #endregion
 
@@ -106,10 +70,8 @@ namespace EditProfiles.Operations
 
                 try
                 {
-
-#if DEBUG
-                    Console.WriteLine("OPENDOCUMENT thread: {0}", Thread.CurrentThread.GetHashCode());
-#endif
+                    Debug.WriteLine(string.Format("{1}\tOpening file {0} ---", this.FilePath, DateTime.Now));
+                    Debug.WriteLine(string.Format("OPENDOCUMENT thread: {0}", Thread.CurrentThread.GetHashCode()));
 
                     // Open the document.
                     this.OmicronDocument = this.OmicronApplication.Documents.Open(this.FilePath);
@@ -117,6 +79,12 @@ namespace EditProfiles.Operations
                     // Store Omicron.Application.Protection level to save each new file with same Protection Level 
                     // as the original file.
                     this.ProtectionLevel = this.OmicronDocument.Protection;
+
+                    //// TODO: Add logic to perform if ClearAll needed.
+                    //// Clear All Test Modules.
+
+                    //Debug.WriteLine("--- ClearAll command is processing ---");
+                    //this.OmicronDocument.ClearAll();
 
                     // Strip down any type of file protection if a file is protected with the user specified password.
                     // If the password does not unlock the file report it and move to the next file in the list.
@@ -161,7 +129,7 @@ namespace EditProfiles.Operations
                                                 MyResources.Strings_ErrorProtectionLevel,
                                                 Environment.NewLine,
                                                 this.CurrentFileName,
-                                                Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber)));                           
+                                                Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber)));
                         }
                     }
                 }
@@ -173,7 +141,7 @@ namespace EditProfiles.Operations
                     // Trying to shut down processing of the file.
                     // cannot change protection of a file.
                     MyCommons.TokenSource.Cancel();
-                    
+
                     return null;
                 }
 

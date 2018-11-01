@@ -19,7 +19,9 @@ namespace EditProfiles.Operations
 
         private StringBuilder NewParameterString { get; set; }
 
-        private IList<string> TestModuleNamesToRemove {get; set;}
+        private IDictionary<string, string> ItemsToRemove = new Dictionary<string, string>();
+
+        private IDictionary<string, string> ItemsToRename = new Dictionary<string, string>();
 
         private IList<string> ItemsToFind { get; set; }
 
@@ -38,20 +40,20 @@ namespace EditProfiles.Operations
         {
             try
             {
-                if ( string.IsNullOrWhiteSpace ( findParameters ) )
+                if (string.IsNullOrWhiteSpace(findParameters))
                 {
-                    throw new ArgumentNullException ( "findParameters" );
+                    throw new ArgumentNullException("findParameters");
                 }
 
                 this.FindParam = findParameters;
 
-                return FindAndReplaceParameter ( );
+                return FindAndReplaceParameter();
             }
-            catch ( ArgumentNullException ae )
+            catch (ArgumentNullException ae)
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log ( ae, CurrentFileName );
-                return new StringBuilder ( );
+                ErrorHandler.Log(ae, CurrentFileName);
+                return new StringBuilder();
             }
         }
 
@@ -59,18 +61,18 @@ namespace EditProfiles.Operations
 
         #region Private Methods
 
-        private StringBuilder FindAndReplaceParameter ( )
+        private StringBuilder FindAndReplaceParameter()
         {
             // Decide if any string matches to the user "Find what".
             int numberOfFindings = 0;
 
-            foreach ( string item in this.ItemsToFind )
+            foreach (string item in this.ItemsToFind)
             {
                 // if item is blank don't match to anything.
-                if ( !string.IsNullOrWhiteSpace ( item ) )
+                if (!string.IsNullOrWhiteSpace(item))
                 {
                     // ignores the case of the inputs.
-                    if ( FindParam.IndexOf ( item, StringComparison.OrdinalIgnoreCase ) > -1 )
+                    if (FindParam.IndexOf(item, StringComparison.OrdinalIgnoreCase) > -1)
                     {
                         // this variable > 0, if there is a match.
                         numberOfFindings++;
@@ -79,29 +81,42 @@ namespace EditProfiles.Operations
             }
 
             // We find at least 1 item matched the user input.
-            if ( numberOfFindings > 0 )
+            if (numberOfFindings > 0)
             {
-                NewParameterString = new StringBuilder ( FindParam );
+                NewParameterString = new StringBuilder(FindParam);
 
                 int position = 0;
 
-                foreach ( string item in ItemsToFind )
+                foreach (string item in ItemsToFind)
                 {
-                    if (Regex.Matches(item, ModuleRemovalPattern).Count != 1)
-                    {
-                        // Replace the Execute Parameter 
-                        NewParameterString.Replace(item, ItemsToReplace.ElementAt(position));
+                    // if the item is in the rename or remove list ignore it. 
+                    // since they are handle by their respective functions.
+                    // if (!(ItemsToRemove.ContainsKey(item.Split('=')[1].ToString()) || ItemsToRename.ContainsKey(item.Split('=')[1].ToString())))
+                    // there is no '='. it means ExeCute parameters.
+                    //if (item.Split('=').Count() == 1)
+                    //{
+                    //    // Replace the Execute Parameter 
+                    //    NewParameterString.Replace(item, ItemsToReplace.ElementAt(position));
 
-                        position++;
+                    //}
+
+                    //position++;
+                    //    }
+                    //}
+
+                    if (NewParameterString.ToString().Contains(item))
+                    {
+                        NewParameterString.Replace(item, ItemsToReplace.ElementAt(position));
+                        
                     }
-                   
+                    position++;
                 }
 
                 return NewParameterString;
             }
             else
             {
-                return new StringBuilder ( FindParam );
+                return new StringBuilder(FindParam);
             }
         }
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using EditProfiles.Properties;
+using System.Diagnostics;
 
 namespace EditProfiles.Operations
 {
@@ -125,9 +126,7 @@ namespace EditProfiles.Operations
                                                     this.NewFileName.ToString()),
                                                     MyResources.Strings_ModifedFolderName));
 
-#if DEBUG
-                Console.WriteLine("New file name is {0}", this.NewFileName.ToString());
-#endif
+                Debug.WriteLine("New file name is {0}", this.NewFileName.ToString());
                 return this.NewFileName.ToString();
             }
             catch (FormatException fe)

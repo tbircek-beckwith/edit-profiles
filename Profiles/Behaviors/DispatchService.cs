@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
@@ -28,19 +29,13 @@ namespace EditProfiles.Behaviors
                 if ( dispatchObject == null || dispatchObject.CheckAccess ( ) )
                 {
 
-#if DEBUG
-                    Console.WriteLine ( "DispatchService running: {0}", dispatchObject.Thread.GetHashCode ( ) );
-#endif
-
+                    Debug.WriteLine ( "DispatchService running: " + dispatchObject.Thread.GetHashCode ( ) );
                     action ( );
                 }
                 else
                 {
-
-#if DEBUG
-                    Console.WriteLine ( "INVOKE DispatchService running: {0}", dispatchObject.Thread.GetHashCode ( ) );
-#endif
-
+                    // keep using same dispathcer.
+                    Debug.WriteLine ( "INVOKE DispatchService running: " + dispatchObject.Thread.GetHashCode ( ) );
                     dispatchObject.Invoke ( action, DispatcherPriority.Background, MyCommons.CancellationToken );
                 }
             }

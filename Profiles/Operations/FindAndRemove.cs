@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using EditProfiles.Data;
 
 namespace EditProfiles.Operations
 {
@@ -13,22 +14,25 @@ namespace EditProfiles.Operations
         #region Properties
 
         /// <summary>
-        /// Holds user entry to removeModule command
+        /// Holds user entry to remove commands
         /// </summary>
-        private static String ModuleRemovalPattern
+        private static Dictionary<string, string> ModuleRemovalPatterns = new Dictionary<string, string>()
         {
-            get
-            {
-                return @"^(?:removeModule=)";
-            }
-        }
+            {@"^(?:removeExecute=)", ProgId.Execute},
+            {@"^(?:removeSequencer=)", ProgId.OMSeq},
+            {@"^(?:removeRamp=)", ProgId.OMRamp},
+            {@"^(?:removePulse=)", ProgId.OMPulse},
+            {@"^(?:removeGroup=)", ProgId.Group},
+            {@"^(?:removeXRio=)", ProgId.XRio},
+            {@"^(?:removeHardware=)", ProgId.Hardware}
+        };
 
-        #endregion        
+        #endregion
 
         #region Private Methods
 
-        /// <summary>
-        /// 
+        /// <summary> 
+        ///  
         /// </summary>
         /// <param name="userEntry"></param>
         /// <returns>Returns true if the user requires removal any test module</returns>
@@ -38,27 +42,54 @@ namespace EditProfiles.Operations
 
             foreach (var item in userEntry)
             {
-                if (Regex.IsMatch(item, ModuleRemovalPattern))
+                foreach (var value in ModuleRemovalPatterns)
                 {
-                    requirement = true;
+                    if (Regex.IsMatch(item, value.Key))
+                    {
+                        requirement = true;
+                        break;
+                    }
+                    if (requirement)
+                    {
+                        break;
+                    }
+                }
+                if (requirement)
+                {
                     break;
                 }
-
             }
             return requirement;
         }
 
-        private IList<string> ListOfTestModulesToDelete(IList<string> userEntry)
+        private IDictionary<string, string> ListOfTestModulesToDelete(IList<string> userEntry)
         {
-            IList<string> result = new List<string>() { };
+            this.ItemsToFind = new List<string>();
+            bool removed = false;
+            IDictionary<string, string> result = new Dictionary<string, string>();
             if (IsRemovalRequired(userEntry))
             {
                 foreach (var item in userEntry)
                 {
-                    if (Regex.IsMatch(item, ModuleRemovalPattern))
+                    foreach (var value in ModuleRemovalPatterns)
                     {
-                        result.Add(Regex.Split(item, ModuleRemovalPattern).GetValue(1).ToString());
+                        if (Regex.IsMatch(item, value.Key))
+                        {
+                            if (!result.ContainsKey(Regex.Split(item, value.Key).GetValue(1).ToString()))
+                            {
+                                result.Add(Regex.Split(item, value.Key).GetValue(1).ToString(), value.Value);
+                            }                             
+
+                            // already been added to the Dictionary.
+                            removed = true;
+                            break;
+                        }                                           
                     }
+                    if (!(removed) && this.ItemsToFind.IndexOf(item) < 0)
+                    {
+                        this.ItemsToFind.Add(item);
+                    }
+                    removed = false;
                 }
             }
 

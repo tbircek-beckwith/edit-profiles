@@ -705,9 +705,7 @@ namespace EditProfiles
         protected virtual void OnPropertyChanged(string propertyName)
         {
 
-#if DEBUG
-            Console.WriteLine("OnPropertyChanged ( propertyName: {0} ) just processed.", propertyName);
-#endif
+            Debug.WriteLine(string.Format("OnPropertyChanged ( propertyName: {0} ) just processed.", propertyName));
 
             this.VerifyPropertyName(propertyName);
 

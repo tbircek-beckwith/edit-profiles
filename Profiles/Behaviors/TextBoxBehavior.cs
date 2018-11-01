@@ -15,24 +15,24 @@ namespace EditProfiles.Behaviors
         /// <summary>
         /// Holds Textbox information to capture.
         /// </summary>
-        static readonly Dictionary<TextBox, Capture> _associations = new Dictionary<TextBox, Capture> ( );
+        static readonly Dictionary<TextBox, Capture> _associations = new Dictionary<TextBox, Capture>();
 
         /// <summary>
         /// Registers the "ScrollOnTextChanged property.
         /// </summary>
         public static readonly DependencyProperty ScrollOnTextChangedProperty =
-            DependencyProperty.RegisterAttached ( "ScrollOnTextChangedProperty",
-            typeof ( bool ),
-            typeof ( TextBoxBehavior ),
-            new UIPropertyMetadata ( false, OnScrollOnTextChanged ) );
+            DependencyProperty.RegisterAttached("ScrollOnTextChangedProperty",
+            typeof(bool),
+            typeof(TextBoxBehavior),
+            new UIPropertyMetadata(false, OnScrollOnTextChanged));
 
         /// <summary>
         /// Returns ScrollOnTextChangedProperty value as boolean.
         /// </summary>
         /// <param name="dependencyObject">Object to value return</param>
-        public static bool GetScrollOnTextChanged ( DependencyObject dependencyObject )
+        public static bool GetScrollOnTextChanged(DependencyObject dependencyObject)
         {
-            return ( bool ) dependencyObject.GetValue ( ScrollOnTextChangedProperty );
+            return (bool)dependencyObject.GetValue(ScrollOnTextChangedProperty);
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace EditProfiles.Behaviors
         /// </summary>
         /// <param name="dependencyObject">Object to investigate.</param>
         /// <param name="value">true = scroll, false = not scroll.</param>
-        public static void SetScrollOnTextChanged ( DependencyObject dependencyObject, bool value )
+        public static void SetScrollOnTextChanged(DependencyObject dependencyObject, bool value)
         {
-            dependencyObject.SetValue ( ScrollOnTextChangedProperty, value );
+            dependencyObject.SetValue(ScrollOnTextChangedProperty, value);
         }
 
         /// <summary>
@@ -50,51 +50,51 @@ namespace EditProfiles.Behaviors
         /// </summary>
         /// <param name="dependencyObject">Object to work with.</param>
         /// <param name="e">arguments.</param>
-        static void OnScrollOnTextChanged ( DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e )
+        static void OnScrollOnTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             var textBox = dependencyObject as TextBox;
 
-            if ( textBox == null )
+            if (textBox == null)
             {
                 return;
             }
 
-            bool oldValue = ( bool ) e.OldValue;
-            bool newValue = ( bool ) e.NewValue;
+            bool oldValue = (bool)e.OldValue;
+            bool newValue = (bool)e.NewValue;
 
-            if ( newValue == oldValue )
+            if (newValue == oldValue)
             {
                 return;
             }
 
-            if ( newValue )
+            if (newValue)
             {
-                textBox.Loaded += new RoutedEventHandler ( textBox_Loaded );
-                textBox.Unloaded += new RoutedEventHandler ( textBox_Unloaded );
+                textBox.Loaded += new RoutedEventHandler(textBox_Loaded);
+                textBox.Unloaded += new RoutedEventHandler(textBox_Unloaded);
             }
             else
             {
                 textBox.Loaded -= textBox_Loaded;
                 textBox.Unloaded -= textBox_Unloaded;
 
-                if ( _associations.ContainsKey ( textBox ) )
+                if (_associations.ContainsKey(textBox))
                 {
-                    _associations[ textBox ].Dispose ( );
+                    _associations[textBox].Dispose();
                 }
             }
         }
 
-        static void textBox_Loaded ( object sender, RoutedEventArgs e )
+        static void textBox_Loaded(object sender, RoutedEventArgs e)
         {
-            var textBox = ( TextBox ) sender;
+            var textBox = (TextBox)sender;
             textBox.Loaded -= textBox_Loaded;
-            _associations[ textBox ] = new Capture ( textBox );
+            _associations[textBox] = new Capture(textBox);
         }
 
-        static void textBox_Unloaded ( object sender, RoutedEventArgs e )
+        static void textBox_Unloaded(object sender, RoutedEventArgs e)
         {
-            var textBox = ( TextBox ) sender;
-            _associations[ textBox ].Dispose ( );
+            var textBox = (TextBox)sender;
+            _associations[textBox].Dispose();
             textBox.Unloaded -= textBox_Unloaded;
         }
     }
@@ -107,15 +107,15 @@ namespace EditProfiles.Behaviors
         /// Capture text changed events.
         /// </summary>
         /// <param name="textBox"></param>
-        public Capture ( TextBox textBox )
+        public Capture(TextBox textBox)
         {
             this.TextBox = textBox;
-            this.TextBox.TextChanged += new TextChangedEventHandler ( TextBox_TextChanged );
+            this.TextBox.TextChanged += new TextChangedEventHandler(TextBox_TextChanged);
         }
 
-        private void TextBox_TextChanged ( object sender, TextChangedEventArgs e )
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            this.TextBox.ScrollToEnd ( );
+            this.TextBox.ScrollToEnd();
         }
 
         #region IDisposable Members
@@ -123,7 +123,7 @@ namespace EditProfiles.Behaviors
         /// <summary>
         /// Remove text changed event.
         /// </summary>
-        public void Dispose ( )
+        public void Dispose()
         {
             this.TextBox.TextChanged -= TextBox_TextChanged;
         }

@@ -2,6 +2,7 @@
 using EditProfiles.Data;
 using EditProfiles.Properties;
 using System;
+using System.Diagnostics;
 
 namespace EditProfiles.Commands
 {
@@ -46,10 +47,7 @@ namespace EditProfiles.Commands
 
             MyCommons.MyViewModel.ModuleProgressBarValue = MyCommons.CurrentModuleNumber;
 
-#if DEBUG
-            Console.WriteLine (" Update Command ran. ");
-#endif
-
+            Debug.WriteLine (" Update Command ran. ");
         }
 
         /// <summary>

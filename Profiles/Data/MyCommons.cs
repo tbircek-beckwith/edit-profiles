@@ -162,5 +162,9 @@ namespace EditProfiles.Data
         /// </summary>
         internal static CancellationToken CancellationToken { get; set; }
 
+        /// <summary>
+        /// Holds OleObject type.
+        /// </summary>
+        internal static OMICRON.OCCenter.OLEObject OccOleObject { get; set; }
     }
 }

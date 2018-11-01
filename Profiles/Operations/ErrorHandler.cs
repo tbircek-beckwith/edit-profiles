@@ -103,9 +103,7 @@ namespace EditProfiles.Operations
         internal static bool ShouldRetry(this COMException e)
         {
 
-#if DEBUG
-            Console.WriteLine(" ERROR HANDLING: 0x{0:X8} , will return {1} ", e.ErrorCode, e.ErrorCode == unchecked((int)RPC_E_SERVERCALL_RETRYLATER));
-#endif
+            Debug.WriteLine(string.Format(" ERROR HANDLING: 0x{0:X8} , will return {1} ", e.ErrorCode, e.ErrorCode == unchecked((int)RPC_E_SERVERCALL_RETRYLATER)));
 
             return (e.ErrorCode == unchecked((int)RPC_E_SERVERCALL_RETRYLATER));
 

@@ -115,7 +115,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to C:\DRSend.exe.
+        ///   Looks up a localized string similar to renameExecute=60 Hz, Beco|path=C:\DRSend.exe|4793,1|renameGroup=Factory Selections|removeSequencer=Set Pwr Scheme -- First|renameXRio=60Hz M-2001D Test|removeSequencer=Set Pwr Scheme-- LAST item|3796,0|removeExecute=Set Tap Position|removeSequencer=Set Pwr Scheme.
         /// </summary>
         internal static string Strings_Debug_TextBoxFind {
             get {
@@ -124,7 +124,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to C:\DRSendIPNET.exe.
+        ///   Looks up a localized string similar to renameExecute=50 Hz, Beco|path=C:\DRSendIPNET\DRSendIPNET.exe|4793,0|renameGroup=Factory Options|renameXRio=50Hz M-2001D Test|3510,1.
         /// </summary>
         internal static string Strings_Debug_TextBoxReplace {
             get {
