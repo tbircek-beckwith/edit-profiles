@@ -28,3 +28,4 @@ _ReSharper*/
 CLR Profiling*/
 *.vssscc
 $tf*/
+/.vs*/
