@@ -29,3 +29,4 @@ CLR Profiling*/
 *.vssscc
 $tf*/
 /.vs*/
+/packages
