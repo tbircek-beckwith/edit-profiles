@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using EditProfiles.Data;
 
@@ -64,11 +63,12 @@ namespace EditProfiles.Operations
 
         private IDictionary<string, string> ListOfTestModulesToDelete(IList<string> userEntry)
         {
-            this.ItemsToFind = new List<string>();
             bool removed = false;
             IDictionary<string, string> result = new Dictionary<string, string>();
             if (IsRemovalRequired(userEntry))
             {
+                this.ItemsToFind = new List<string>();
+
                 foreach (var item in userEntry)
                 {
                     foreach (var value in ModuleRemovalPatterns)

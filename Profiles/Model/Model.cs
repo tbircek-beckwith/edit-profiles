@@ -1,8 +1,4 @@
-﻿using System.Windows.Controls;
-using System.Drawing;
-using System.Text;
-
-namespace EditProfiles.MainModel
+﻿namespace EditProfiles.MainModel
 {
     /// <summary>
     /// Contains data, not behavior.

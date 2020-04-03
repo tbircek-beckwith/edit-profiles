@@ -6,6 +6,7 @@ using EditProfiles.Data;
 using EditProfiles.Properties;
 using OMICRON.OMExec;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace EditProfiles.Operations
 {
@@ -41,32 +42,29 @@ namespace EditProfiles.Operations
         {
             try
             {
-                if (testModuleToModify == null)
-                {
-                    throw new ArgumentNullException("testModuleToModify");
-                }
 
-                // Assing new test module.
-                this.testModule = testModuleToModify;
+                // Assign new test module.
+                testModule = testModuleToModify ?? throw new ArgumentNullException("testModuleToModify");
+
                 // Clear the module so values can be changed.
                 testModule.Clear();
 
                 // Load Omicron Execute Application.
-                this.application = testModule.Specific; // this.MyTestModule.Specific;
+                application = testModule.Specific; //  MyTestModule.Specific;
 
                 // Load Omicron Execute Document.
-                this.document = application.Document;
+                document = application.Document;
 
                 // Sets visibility of the Test Module while the program running.
                 application.Visible = Settings.Default.TestModulesVisibility;
 
-                return this.RetrieveParameters();
+                return RetrieveParameters();
 
             }
             catch (ArgumentNullException ae)
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log(ae, this.CurrentFileName);
+                ErrorHandler.Log(ae, CurrentFileName);
 
                 // Terminate Execute Module.
                 KillOmicronProcesses(testModule.ProgID); // ProgId.Execute );
@@ -95,7 +93,7 @@ namespace EditProfiles.Operations
             //
             bool retry = false;
 
-            // Add a loopcounter to protect application from endless loops.
+            // Add a loop counter to protect application from endless loops.
             int loopCounter = 0;
             // Add a max loop counter value to break the [do...while] loop.
             const int MAX_LOOP_COUNTER = 5;
@@ -106,11 +104,11 @@ namespace EditProfiles.Operations
                 {
                     // Find the user specified texts in the parameters.
                     // Replace the user specified texts.
-                    this.testModuleParameters = FindAndReplaceParameters(document.Parameters);
+                    testModuleParameters = FindAndReplaceParameters(document.Parameters);
                     Debug.WriteLine("\t\t\tPath value: " + document.Path);
                     Debug.WriteLine("\t\t\tExecution options: " + document.Option);
                 }
-                catch (System.Runtime.InteropServices.COMException e)
+                catch (COMException e)
                 {
                     if (retry = e.ShouldRetry())
                     {
@@ -142,7 +140,7 @@ namespace EditProfiles.Operations
                             Debug.WriteLine(" LOOP COUNTER = " + loopCounter);
 
 
-                            // Countinue the loop.
+                            // Continue the loop.
                             retry = true;
                         }
                         else
@@ -151,7 +149,7 @@ namespace EditProfiles.Operations
                             break;
                         }
 
-                        // calling throw without a parameter *rethrows* 
+                        // calling throw without a parameter *re-throws* 
                         // which is important to preserve the stack trace.
                         throw;
                     }
@@ -191,7 +189,8 @@ namespace EditProfiles.Operations
                     .ToString();
             }
 
-            // Update Omicron Execute Module parameters.
+            // Update Omicron Execute Module.
+            document.Path = @"C:\DRSendIPNET\DRSendIPNET.exe";
             document.Parameters = testModuleParameters.ToString();
 
             // Exit the MyTestModule.

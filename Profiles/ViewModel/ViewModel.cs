@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Security;
@@ -277,15 +276,15 @@ namespace EditProfiles
             {
                 // will prevent if the toggle button is not enabled.
                 // without this if statement there is nothing would stop toggling this button.
-                if (this.model.IsEnabled)
-                {
+                //if (this.model.IsEnabled)
+                //{
                     if (this.model.IsChecked != value)
                     {
                         model.IsChecked = value;
 
                         OnPropertyChanged("IsChecked");
                     }
-                }
+                //}
             }
         }
 
@@ -294,18 +293,19 @@ namespace EditProfiles
         /// </summary>
         public bool IsEnabled
         {
-            get
-            {
-                return this.model.IsEnabled = !(String.IsNullOrWhiteSpace(MyCommons.MyViewModel.FindWhatTextBoxText));
-            }
+            // it is enabled while testing
+            get => true;
+            //{
+            //    return this.model.IsEnabled = !(String.IsNullOrWhiteSpace(MyCommons.MyViewModel.FindWhatTextBoxText));
+            //}
             set
             {
-                if (this.model.IsEnabled != value)
-                {
+                //if (this.model.IsEnabled != value)
+                //{
                     model.IsEnabled = value;
 
                     OnPropertyChanged("IsEnabled");
-                }
+                //}
             }
         }
         #endregion
