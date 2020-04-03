@@ -29,7 +29,8 @@ namespace EditProfiles.Commands
         /// </summary>
         public FindReplaceCommand()
         {
-            this.Command = new DefaultCommand(this.ExecuteFindReplace, this.CanExecute);
+            // this.Command = new DefaultCommand(this.ExecuteFindReplace, this.CanExecute);
+            Command = new DefaultCommand(ExecuteFindReplace);
         }
 
         /// <summary>
@@ -38,18 +39,18 @@ namespace EditProfiles.Commands
         /// <param name="unused"></param>
         public void ExecuteFindReplace(object unused)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            // TODO: Find a mechanism to decide if .csv file open or not
+            new ProcessFiles().OpenCsvFile();
 
-            // CommonOpenFileDialog dlg = new CommonOpenFileDialog();
-            // CommonFileDialogFilter filter = new CommonFileDialogFilter(MyResources.Strings_FileDialogFilter, "*.occ");
-
-
-            // Set OpenFileDialog defaults.
-            dlg.Title = MyResources.Strings_OpenFileDialog;
-            dlg.Filter = MyResources.Strings_FileDialogFilter;
-            dlg.DefaultExt = MyResources.Strings_FileDialogDefault;
-            dlg.Multiselect = true;
-            // dlg.IsFolderPicker = true;
+            // initialize new file dialog
+            OpenFileDialog dlg = new OpenFileDialog
+            {
+                // Set OpenFileDialog defaults.
+                Title = MyResources.Strings_OpenFileDialog,
+                Filter = MyResources.Strings_FileDialogFilter,
+                DefaultExt = MyResources.Strings_FileDialogDefault,
+                Multiselect = true,
+            };
 
 
 #if DEBUG
@@ -89,7 +90,7 @@ namespace EditProfiles.Commands
 
                             // Prevents the user to modify texts of FindWhat, ReplaceWith and Password 
                             // while test running.
-                            this.Enable(false);
+                            Enable(false);
 
                             // Start process.
                             // spi.StartProcessing ( dlg.FileNames, MyCommons.MyViewModel.Password, MyCommons.MyViewModel );
@@ -106,19 +107,18 @@ namespace EditProfiles.Commands
                     .ContinueWith(value =>
                         {
                             // Reset and Activate controls.
-                            this.ResetControls();
+                            ResetControls();
                         });
             }
             else
             {
-                // Reverts back 'Start', since the user 'Cancelled' to select file
+                // Reverts back 'Start', since the user 'Canceled' to select file
                 MyCommons.MyViewModel.IsChecked = false;
-
                 MyCommons.MyViewModel.IsEnabled = false;
 
                 // Prevents the user to modify texts of FindWhat, ReplaceWith and Password 
                 // while test running.
-                this.Enable(true);
+                Enable(true);
 
                 // Reset all controls
                 MyCommons.MyViewModel.EraseCommand.Execute(null);
@@ -153,9 +153,9 @@ namespace EditProfiles.Commands
                 Environment.NewLine)))
                 .ToString();
 
-            this.Enable(true);
+            Enable(true);
 
-            // Prepare Toggle Button to restest. 'Start'
+            // Prepare Toggle Button to retest. 'Start'
             MyCommons.MyViewModel.IsChecked = false;
         }
 

@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using EditProfiles.Data;
 using EditProfiles.Properties;
 using OMICRON.OCCenter;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace EditProfiles.Operations
 {
@@ -20,6 +18,9 @@ namespace EditProfiles.Operations
 
         #region Properties
 
+        /// <summary>
+        /// Holds protection level of the omicron test file.
+        /// </summary>
         private short ProtectionLevel { get; set; }
 
         /// <summary>
@@ -48,18 +49,18 @@ namespace EditProfiles.Operations
         /// <param name="viewModel">The copy of the current ViewModel for the business logic.</param>
         public void StartProcessing(IList<string> fileNames, ViewModel viewModel)
         {
-            this.FileNames = fileNames;
-            this.ViewModel = viewModel;
+            FileNames = fileNames;
+            ViewModel = viewModel;
 
             // Following items are not allowed to be modified after "Find & Replace" button clicked.
-            // this.ItemsToFind = new List<string>(this.ViewModel.FindWhatTextBoxText.Split('|'));
-            this.ItemsToReplace = new List<string>(this.ViewModel.ReplaceWithTextBoxText.Split('|'));
+            ItemsToFind = new List<string>(ViewModel.FindWhatTextBoxText.Split('|'));
+            ItemsToReplace = new List<string>(ViewModel.ReplaceWithTextBoxText.Split('|'));
 
-            this.ItemsToRemove = new Dictionary<string, string>(ListOfTestModulesToDelete(this.ViewModel.FindWhatTextBoxText.Split('|')));
+            ItemsToRemove = new Dictionary<string, string>(ListOfTestModulesToDelete(ViewModel.FindWhatTextBoxText.Split('|')));
 
-            this.ItemsToRename = new Dictionary<string, string>(ListOfTestModulesToRename(this.ItemsToFind));
+            ItemsToRename = new Dictionary<string, string>(ListOfTestModulesToRename(ItemsToFind));
 
-            this.StartProcessingFiles();
+            StartProcessingFiles();
         }
 
         #endregion
@@ -75,22 +76,22 @@ namespace EditProfiles.Operations
             MyCommons.CurrentFileNumber = 0;
 
             // Update FileProcessBar;
-            MyCommons.TotalFileNumber = this.FileNames.Count;
-            MyCommons.MyViewModel.FileProgressBarMax = this.FileNames.Count;
+            MyCommons.TotalFileNumber = FileNames.Count;
+            MyCommons.MyViewModel.FileProgressBarMax = FileNames.Count;
 
             // Refresh Process bars.
             MyCommons.MyViewModel.UpdateCommand.Execute(null);
 
             try
             {
-                Parallel.ForEach(this.FileNames, MyCommons.ParallelingOptions, (currentFile) =>
+                Parallel.ForEach(FileNames, MyCommons.ParallelingOptions, (currentFile) =>
                     {
                         // Increment current file number;
                         MyCommons.CurrentFileNumber++;
                         MyCommons.CurrentModuleNumber = 0;
                         MyCommons.MyViewModel.UpdateCommand.Execute(null);
 
-                        this.CurrentFileName = currentFile;
+                        CurrentFileName = currentFile;
                         MyCommons.FileName = Path.GetFileName(CurrentFileName);
 
                         try
@@ -109,20 +110,20 @@ namespace EditProfiles.Operations
                                         // Update DetailsTextBoxText.
                                         MyCommons.MyViewModel.DetailsTextBoxText =
                                             MyCommons.LogProcess.Append(
-                                                String.Format(
+                                                string.Format(
                                                         CultureInfo.InvariantCulture,
                                                         MyResources.Strings_CurrentFileName,
                                                         Environment.NewLine,
                                                         Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber),
                                                         Path.GetFileName(CurrentFileName),
-                                                        String.Format(CultureInfo.InvariantCulture,
+                                                        string.Format(CultureInfo.InvariantCulture,
                                                                 MyResources.Strings_TestStart,
                                                                 DateTime.Now)))
                                             .ToString();
 
                                         // Open Omicron Document.
                                         // this.OmicronDocument = OpenDocument ( this.CurrentFileName, "" ); 
-                                        this.OmicronDocument = OpenDocument(CurrentFileName);
+                                        OmicronDocument = OpenDocument(CurrentFileName);
 
                                     }
                                     catch (ArgumentException ae)
@@ -184,7 +185,7 @@ namespace EditProfiles.Operations
                                         }
 
                                         // Save the new file.
-                                        SaveOmicronFiles(this.OmicronDocument.FullName, true);
+                                        SaveOmicronFiles(OmicronDocument.FullName, true);
 
                                     }
                                     catch (AggregateException ae)
@@ -211,10 +212,10 @@ namespace EditProfiles.Operations
                                     }
 
                                     // Close Omicron Control Center without saving any changes to the original file.
-                                    this.OmicronDocument.Close(false);
+                                    OmicronDocument.Close(false);
 
                                 }
-                                catch (System.Runtime.InteropServices.COMException ae)
+                                catch (COMException ae)
                                 {
                                     ErrorHandler.Log(ae, CurrentFileName);
                                     return;
@@ -242,14 +243,14 @@ namespace EditProfiles.Operations
                                     }
 
                                     // Close Omicron Control Center Application
-                                    this.OmicronApplication.Quit();
+                                    OmicronApplication.Quit();
 
                                 }
-                                catch (System.Runtime.InteropServices.COMException ae)
+                                catch (COMException ae)
                                 {
                                     ErrorHandler.Log(ae, CurrentFileName);
                                 }
-                                catch (System.ObjectDisposedException ae)
+                                catch (ObjectDisposedException ae)
                                 {
                                     ErrorHandler.Log(ae, CurrentFileName);
                                 }
@@ -271,8 +272,8 @@ namespace EditProfiles.Operations
                                     try
                                     {
                                         // Garbage Collection.
-                                        this.OmicronApplication = null;
-                                        this.OmicronDocument = null;
+                                        OmicronApplication = null;
+                                        OmicronDocument = null;
 
                                         // Polling CancellationToken's status.
                                         // If cancellation requested throw error and exit loop.
@@ -284,11 +285,11 @@ namespace EditProfiles.Operations
                                         // Terminate Omicron Processes.
                                         KillOmicronProcesses();
                                     }
-                                    catch (System.Runtime.InteropServices.COMException ae)
+                                    catch (COMException ae)
                                     {
                                         ErrorHandler.Log(ae, CurrentFileName);
                                     }
-                                    catch (System.ObjectDisposedException ae)
+                                    catch (ObjectDisposedException ae)
                                     {
                                         ErrorHandler.Log(ae, CurrentFileName);
                                     }
@@ -311,11 +312,11 @@ namespace EditProfiles.Operations
                             MyCommons.MyViewModel.UpdateCommand.Execute(null);
 
                         }
-                        catch (System.Runtime.InteropServices.COMException ae)
+                        catch (COMException ae)
                         {
                             ErrorHandler.Log(ae, CurrentFileName);
                         }
-                        catch (System.ObjectDisposedException ae)
+                        catch (ObjectDisposedException ae)
                         {
                             ErrorHandler.Log(ae, CurrentFileName);
                         }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using EditProfiles.Data;
 
 namespace EditProfiles.Operations
 {
@@ -45,7 +43,7 @@ namespace EditProfiles.Operations
                     throw new ArgumentNullException("findParameters");
                 }
 
-                this.FindParam = findParameters;
+                FindParam = findParameters;
 
                 return FindAndReplaceParameter();
             }
@@ -61,16 +59,84 @@ namespace EditProfiles.Operations
 
         #region Private Methods
 
+        /// <summary>
+        /// find and replace execute module parameters.
+        /// </summary>
+        /// <returns>a StringBuilder that contains a new execute module parameters.</returns>
         private StringBuilder FindAndReplaceParameter()
+        {
+            // initialize Dictionaries
+            Dictionary<int, int> oldExecuteParameters = new Dictionary<int, int>();
+            Dictionary<int, int> newExecuteParameters = new Dictionary<int, int>();
+
+            // convert execute module entry to Dictionary
+            for (int i = 0; i < FindParam.Split(',').Length; i++)
+            {
+                // add key, value pairs
+                oldExecuteParameters.Add(int.Parse(FindParam.Split(',')[i]), int.Parse(FindParam.Split(',')[i + 1]));
+                // skip values as they included in previous step
+                i++;
+            }
+
+            //  foreach (string item in ItemsToFind)
+            //  {
+            //      if (int.TryParse(item, out int oldKey))
+            //      {
+            //          if (executeParameters.ContainsKey(oldKey))
+            //          {
+            //              // take value
+            //              executeParameters.TryGetValue(oldKey, out int value);
+            //              // take new key
+            //              int.TryParse(ItemsToReplace.ElementAt(ItemsToFind.IndexOf(item)), out int newKey);
+            //              // add new key with old value
+            //              executeParameters.Add(newKey, value);
+
+            //             // remove old key pair
+            //             executeParameters.Remove(oldKey);
+            //          }
+            //      }
+            //  }
+
+            // scan whole entry
+            for (int i = 0; i < ItemsToFind.Count; i++)
+            {
+                // ignore values cannot be numbers.
+                // modbus registers are numbers.
+                if (int.TryParse(ItemsToFind.ElementAt(i), out int oldKey))
+                {
+                    // is the modbus register in the entry?
+                    if (oldExecuteParameters.ContainsKey(oldKey))
+                    {
+                        // take value
+                        oldExecuteParameters.TryGetValue(oldKey, out int value);
+                        // take new key
+                        int.TryParse(ItemsToReplace.ElementAt(i), out int newKey);
+                        // add new key with old value
+                        newExecuteParameters.Add(newKey, value);
+                    }
+                }
+            }
+
+            NewParameterString = new StringBuilder("/select AutoTestIP," + string.Join(",", newExecuteParameters.Select(x => x.Key + "," + x.Value)));
+
+            // return new StringBuilder
+            return NewParameterString;
+        }
+
+        private StringBuilder FindAndReplaceParameter_old()
         {
             // Decide if any string matches to the user "Find what".
             int numberOfFindings = 0;
 
-            foreach (string item in this.ItemsToFind)
+            foreach (string item in ItemsToFind)
             {
                 // if item is blank don't match to anything.
                 if (!string.IsNullOrWhiteSpace(item))
                 {
+
+                    // one of the actual execute input
+                    // 4716,0,4719,1,4736,0,4738,0,4777,0
+                    // 4712,0,4713,0,4714,0,4715,1,4959,0,4828,0,5224,0
                     // ignores the case of the inputs.
                     if (FindParam.IndexOf(item, StringComparison.OrdinalIgnoreCase) > -1)
                     {
@@ -103,13 +169,16 @@ namespace EditProfiles.Operations
                     //position++;
                     //    }
                     //}
-
-                    if (NewParameterString.ToString().Contains(item))
+                    // if item is blank don't match to anything.
+                    if (!string.IsNullOrWhiteSpace(item))
                     {
-                        NewParameterString.Replace(item, ItemsToReplace.ElementAt(position));
-                        
+                        if (NewParameterString.ToString().Contains(item))
+                        {
+                            NewParameterString.Replace(item, ItemsToReplace.ElementAt(position));
+
+                        }
+                        position++;
                     }
-                    position++;
                 }
 
                 return NewParameterString;
