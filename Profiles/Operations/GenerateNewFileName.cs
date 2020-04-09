@@ -72,11 +72,21 @@ namespace EditProfiles.Operations
             // used http://regexr.com to generate following expressions.
             //
             // combination "Regular Expressions" pattern with group names.
-            // (?<powerScheme>\b(([Ff]orward\s)?|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s))?)([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[Aa])\b\w*)|(?<revision>\b[Rr]ev(\d)\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)
+            // (?<powerScheme>\b(([Ff]orward\s)?|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s))?)([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[Aa])\b\w*)|(?<revision>\b[Rr]ev(\d)\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)
             //
             // power scheme "Regular Expressions" pattern group.
             // captures (Forward || (Smart || Src || Reverse)) Power like string in the file name.
             // (?<powerScheme>\b(([Ff]orward\s)?|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s))?)([Pp]ower)\b\w*)
+            // (?<powerScheme>\b([Ff]orward\s)?|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s))([Pp]ower)\b\w*)
+            // (?<powerScheme>\b([Ff]orward\s)?|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s))([Pp]ower)\b\w*)
+            //
+            // determination "Regular Expressions" pattern group.
+            // captures (AD || ADM) like string in the file name.
+            // (?<determination>\b[Aa][Dd]([Mm])?\b\w*)
+            //
+            // distributed "Regular Expressions" pattern group.
+            // captures DG like string in the file name.
+            // (?<distrubuted>\b[Dd][Gg]\b\w*)
             //
             // product "Regular Expressions" pattern group.
             // captures M-6200A like string in the file name.
@@ -99,21 +109,34 @@ namespace EditProfiles.Operations
             // (?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)
 
             // combination Regex pattern with group names
-            string pattern = @"(?<powerScheme>\b(([Ff]orward\s)?|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s))?)([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[Aa])\b\w*)|(?<revision>\b[Rr]ev(\d)\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)";
+            string pattern = @"(?<powerScheme>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[Aa])\b\w*)|(?<revision>\b[Rr]ev\d\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)";
 
             // Regex to capture combination pattern with 100 milliseconds timeout.
             Regex fileName = new Regex(pattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
 
             // Remove every matching pattern to exposed root test name like "Bandwidth"
             string testName = fileName.Replace(Path.GetFileNameWithoutExtension(FileNameWithPath), string.Empty).Trim() + "_";
-        
+
+            string fileNameWithoutRevision = Path.GetFileNameWithoutExtension(FileNameWithPath);
+
+            // if the user desires to keep "Rev#" otherwise just delete it.
+            if (!Settings.Default.AppendFileName)
+            {
+                // Ritchie has version control file names do not require Rev# suffix. However,
+                // since "Rev#" contains a number providing a dictionary solution would be difficult so this service
+                // provided by the following code.
+                Regex rx = new Regex(@"\b[Rr]ev\d\b\w*");
+                // replace "Rev#" with empty string.
+                fileNameWithoutRevision = rx.Replace(fileNameWithoutRevision, string.Empty);
+            }
+
             // temp storage to keep replacement words.
             string output = string.Empty;
 
             // stroll through matching patterns to get replacements.
-            foreach (Match match in Regex.Matches(Path.GetFileNameWithoutExtension(FileNameWithPath), pattern))
+            foreach (Match match in Regex.Matches(fileNameWithoutRevision, pattern))
             {
-                Debug.WriteLine("Match: {0}", match.Value);
+                Debug.WriteLine($"Match: {match.Value}");
                 // stitch replacement words together.
                 output += ReplaceFileNameWords(match.Value);
             }
@@ -138,11 +161,16 @@ namespace EditProfiles.Operations
             {
                 // {"original", "replacement"},
                 {"m-6200a", "M-6200B_"},
-                {"forward", "Fwd "},
-                {"reverse", "Rev "},
-                {"power", "Pwr_"},
+                {"forward power", "Fwd Pwr_"},
+                {"reverse power", "Rev Pwr_"},
+                {"smart reverse power", "Smart Rev Pwr_" },
+                {"src reverse power", "Src Rev Pwr_" },
+                {"smart src reverse power", "Smart Src Rev Pwr_" },
+                {"adm", "ADM_" },
+                {"ad", "AD_" },
+                {"dg", "DG_" },
                 {"test", string.Empty},
-                {"short", string.Empty},
+                {"short version", string.Empty},
             };
 
             // holds dictionary entires as a "Regular Expression" search pattern.
@@ -158,20 +186,6 @@ namespace EditProfiles.Operations
                 // if dictionary doesn't have contains a replacement returns  original value, otherwise replacement value.
                 return searchTerms.ContainsKey(replace.Value) ? searchTerms[replace.Value] : replace.Value;
             });
-
-            // if the user desires to keep "Rev#" otherwise just delete it.
-            if (!Settings.Default.AppendFileName)
-            {
-                // Ritchie has version control file names do not require Rev# suffix. However,
-                // since "Rev#" contains a number providing a dictionary solution would be difficult so this service
-                // provided by the following code.
-                Regex rx = new Regex(@"\b[Rr]ev(\d)*\b\w*",
-                                 RegexOptions.Compiled |
-                                 RegexOptions.IgnoreCase |
-                                 RegexOptions.CultureInvariant);
-                // replace "Rev#" with empty string.
-                output = rx.Replace(output, string.Empty);
-            }
 
             // instead of replacing "P#" just appending '_' character.
             Regex profile = new Regex(@"\b[Pp](\d)*\b\w*");
@@ -233,7 +247,7 @@ namespace EditProfiles.Operations
                                                     NewFileName.ToString()),
                                                    MyResources.Strings_ModifedFolderName));
 
-                Debug.WriteLine("New file name is {0}", NewFileName.ToString());
+                Debug.WriteLine($"New file name is {NewFileName.ToString()}");
 
                 // return new file name.
                 return NewFileName.ToString();
