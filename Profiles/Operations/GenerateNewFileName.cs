@@ -144,7 +144,8 @@ namespace EditProfiles.Operations
             // index of first '_' is right after product number
             int productNameLength = output.IndexOf('_') + 1;
             // split replacement words to insert test file name and new short name for "Regulator #" in the file name, also append file extension.
-            string newFileName = Path.Combine(Path.GetDirectoryName(FileNameWithPath), output.Substring(0, productNameLength) + testName + "Reg 1_" + output.Substring(productNameLength, output.Length - productNameLength))+ Path.GetExtension(FileNameWithPath);
+            // CurrentRegulatorValue is 0 based.
+            string newFileName = Path.Combine(Path.GetDirectoryName(FileNameWithPath), output.Substring(0, productNameLength) + testName + $"Reg {CurrentRegulatorValue + 1}_" + output.Substring(productNameLength, output.Length - productNameLength))+ Path.GetExtension(FileNameWithPath);
             return newFileName;
         }
 
