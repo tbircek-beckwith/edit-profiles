@@ -39,10 +39,10 @@ namespace EditProfiles
             {
                 return string.Format(CultureInfo.InvariantCulture,
                                      MyResources.Strings_FormTitle,
-                                     typeof(EditProfiles.MainWindow)
+                                     typeof(MainWindow)
                                         .Assembly
                                         .GetName()
-                                        .Version);
+                                        .Version.ToString(3));
             }
             set
             {
