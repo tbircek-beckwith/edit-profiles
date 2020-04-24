@@ -35,22 +35,19 @@ namespace EditProfiles
         /// </summary>
         public string ProgramTitle
         {
-            get
-            {
-                return string.Format(CultureInfo.InvariantCulture,
+            get => string.Format(CultureInfo.InvariantCulture,
                                      MyResources.Strings_FormTitle,
                                      typeof(MainWindow)
                                         .Assembly
                                         .GetName()
                                         .Version.ToString(3));
-            }
             set
             {
-                if (this.model.ProgramTitle != value)
+                if (model.ProgramTitle != value)
                 {
-                    this.model.ProgramTitle = value;
+                    model.ProgramTitle = value;
 
-                    this.OnPropertyChanged("ProgramTitle");
+                    OnPropertyChanged("ProgramTitle");
                 }
             }
         }
@@ -60,17 +57,14 @@ namespace EditProfiles
         /// </summary>
         public bool Editable
         {
-            get
-            {
-                return this.model.Editable;
-            }
+            get => model.Editable;
             set
             {
-                if (this.model.Editable != value)
+                if (model.Editable != value)
                 {
-                    this.model.Editable = value;
+                    model.Editable = value;
 
-                    this.OnPropertyChanged("Editable");
+                    OnPropertyChanged("Editable");
                 }
             }
         }
@@ -84,17 +78,14 @@ namespace EditProfiles
         /// </summary>
         public string FindWhatLabelText
         {
-            get
-            {
-                return MyResources.Strings_LabelFind;
-            }
+            get => MyResources.Strings_LabelFind;
             set
             {
-                if (this.model.FindWhatLabelText != value)
+                if (model.FindWhatLabelText != value)
                 {
-                    this.model.FindWhatLabelText = value;
+                    model.FindWhatLabelText = value;
 
-                    this.OnPropertyChanged("FindWhatLabelText");
+                    OnPropertyChanged("FindWhatLabelText");
                 }
             }
         }
@@ -104,23 +95,26 @@ namespace EditProfiles
         /// </summary>
         public string FindWhatTextBoxText
         {
-            get
-            {
-                //#if DEBUG
-                //                return MyResources.Strings_Debug_TextBoxFind;
-                //#else
-                // Return empty string if the user not specified any values  
-                return this.model.FindWhatTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
-                //#endif
-            }
+            //get
+            //{
+            //    //#if DEBUG
+            //    //                return MyResources.Strings_Debug_TextBoxFind;
+            //    //#else
+            //    // Return empty string if the user not specified any values  
+            //    return model.FindWhatTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
+            //    //#endif
+            //}
+
+            // Return empty string if the user not specified any values  
+            get => model.FindWhatTextBoxText ?? string.Empty;
             set
             {
-                if (this.model.FindWhatTextBoxText != value)
+                if (model.FindWhatTextBoxText != value)
                 {
-                    this.model.FindWhatTextBoxText = value;
+                    model.FindWhatTextBoxText = value;
 
-                    this.OnPropertyChanged("FindWhatTextBoxText");
-                    this.OnPropertyChanged("IsEnabled");
+                    OnPropertyChanged("FindWhatTextBoxText");
+                    OnPropertyChanged("IsEnabled");
                 }
             }
         }
@@ -134,17 +128,14 @@ namespace EditProfiles
         /// </summary>
         public string ReplaceWithLabelText
         {
-            get
-            {
-                return MyResources.Strings_LabelReplace;
-            }
+            get => MyResources.Strings_LabelReplace;
             set
             {
-                if (this.model.ReplaceWithLabelText != value)
+                if (model.ReplaceWithLabelText != value)
                 {
-                    this.model.ReplaceWithLabelText = value;
+                    model.ReplaceWithLabelText = value;
 
-                    this.OnPropertyChanged("ReplaceWithLabelText");
+                    OnPropertyChanged("ReplaceWithLabelText");
                 }
             }
         }
@@ -154,22 +145,25 @@ namespace EditProfiles
         /// </summary>
         public string ReplaceWithTextBoxText
         {
-            get
-            {
-                //#if DEBUG
-                //                return MyResources.Strings_Debug_TextBoxReplace;
-                //#else
-                // Return empty string if the user not specified any values                
-                return this.model.ReplaceWithTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
-                //#endif
-            }
+            //get
+            //{
+            //    //#if DEBUG
+            //    //                return MyResources.Strings_Debug_TextBoxReplace;
+            //    //#else
+            //    // Return empty string if the user not specified any values                
+            //    return this.model.ReplaceWithTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
+            //    //#endif
+            //}
+
+            // Return empty string if the user not specified any values   
+            get => model.ReplaceWithTextBoxText ?? string.Empty;
             set
             {
-                if (this.model.ReplaceWithTextBoxText != value)
+                if (model.ReplaceWithTextBoxText != value)
                 {
-                    this.model.ReplaceWithTextBoxText = value;
+                    model.ReplaceWithTextBoxText = value;
 
-                    this.OnPropertyChanged("ReplaceWithTextBoxText");
+                    OnPropertyChanged("ReplaceWithTextBoxText");
                 }
             }
         }
@@ -183,17 +177,14 @@ namespace EditProfiles
         /// </summary>
         public string PasswordLabelText
         {
-            get
-            {
-                return MyResources.Strings_LabelPassword;
-            }
+            get => MyResources.Strings_LabelPassword;
             set
             {
-                if (this.model.PasswordLabelText != value)
+                if (model.PasswordLabelText != value)
                 {
-                    this.model.PasswordLabelText = value;
+                    model.PasswordLabelText = value;
 
-                    this.OnPropertyChanged("PasswordLabelText");
+                    OnPropertyChanged("PasswordLabelText");
                 }
             }
         }
@@ -205,16 +196,13 @@ namespace EditProfiles
         /// </summary>
         public SecureString Password
         {
-            get
-            {
-                return _password;
-            }
+            get => _password;
             set
             {
                 if (_password != value)
                 {
                     _password = value;
-                    this.OnPropertyChanged("Password");
+                    OnPropertyChanged("Password");
                 }
             }
         }
@@ -228,17 +216,14 @@ namespace EditProfiles
         /// </summary>
         public string FindReplaceButtonText
         {
-            get
-            {
-                return MyResources.Strings_ButtonFindReplace;
-            }
+            get => MyResources.Strings_ButtonFindReplace;
             set
             {
-                if (this.model.FindReplaceButtonText != value)
+                if (model.FindReplaceButtonText != value)
                 {
-                    this.model.FindReplaceButtonText = value;
+                    model.FindReplaceButtonText = value;
 
-                    this.OnPropertyChanged("FindReplaceButtonText");
+                    OnPropertyChanged("FindReplaceButtonText");
                 }
             }
         }
@@ -248,17 +233,14 @@ namespace EditProfiles
         /// </summary>
         public string StopTestButtonText
         {
-            get
-            {
-                return MyResources.Strings_ButtonStopTest;
-            }
+            get => MyResources.Strings_ButtonStopTest;
             set
             {
-                if (this.model.StopTestButtonText != value)
+                if (model.StopTestButtonText != value)
                 {
-                    this.model.StopTestButtonText = value;
+                    model.StopTestButtonText = value;
 
-                    this.OnPropertyChanged("StopTestButtonText");
+                    OnPropertyChanged("StopTestButtonText");
                 }
             }
         }
@@ -268,22 +250,19 @@ namespace EditProfiles
         /// </summary>
         public bool IsChecked
         {
-            get
-            {
-                return this.model.IsChecked;
-            }
+            get => model.IsChecked;
             set
             {
                 // will prevent if the toggle button is not enabled.
                 // without this if statement there is nothing would stop toggling this button.
                 //if (this.model.IsEnabled)
                 //{
-                    if (this.model.IsChecked != value)
-                    {
-                        model.IsChecked = value;
+                if (model.IsChecked != value)
+                {
+                    model.IsChecked = value;
 
-                        OnPropertyChanged("IsChecked");
-                    }
+                    OnPropertyChanged("IsChecked");
+                }
                 //}
             }
         }
@@ -745,10 +724,7 @@ namespace EditProfiles
         /// <summary>
         /// provides an Error string.
         /// </summary>
-        public string Error
-        {
-            get { return (model as IDataErrorInfo).Error; }
-        }
+        public string Error => (model as IDataErrorInfo).Error;
 
         /// <summary>
         /// Provides actual error messages. 
