@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using EditProfiles.Data;
 using EditProfiles.Properties;
 using OMICRON.OCCenter;
-using System.Diagnostics;
 
 namespace EditProfiles.Operations
 {
@@ -33,7 +33,7 @@ namespace EditProfiles.Operations
         public void Scan()
         {
 
-            this.ScanDocument();
+            ScanDocument();
         }
 
         #endregion
@@ -45,14 +45,14 @@ namespace EditProfiles.Operations
             try
             {
                 // Omicron Test Module index is between 1 and TestModules.Count
-                int currentPosition = 1;
+                int startPosition = 1;
 
                 // Local thread variable to hold total module number after deletion.
                 int moduleCounter = 0;
 
                 // Update total module number.
                 // MyCommons.TotalModuleNumber = this.OmicronDocument.TestModules.Count;
-                MyCommons.TotalModuleNumber = this.OmicronDocument.OLEObjects.Count;
+                MyCommons.TotalModuleNumber = OmicronDocument.OLEObjects.Count;
                 MyCommons.MyViewModel.ModuleProgressBarMax = MyCommons.TotalModuleNumber;
                 MyCommons.MyViewModel.UpdateCommand.Execute(null);
 
@@ -65,13 +65,13 @@ namespace EditProfiles.Operations
                 // Parallel.For (fromInclusive Int32, toExclusive Int32, parallelOptions, body)
                 // totalModelNumber IS EXCLUSIVE SO MUST ADD 1 TO IT.
                 // Otherwise the last Test Module will never be processed.
-                Parallel.For(currentPosition, MyCommons.TotalModuleNumber + 1, MyCommons.ParallelingOptions, testModule =>
+                Parallel.For(startPosition, MyCommons.TotalModuleNumber + 1, MyCommons.ParallelingOptions, testModule =>
                 {
                     // increment counter to open next test module.
                     Interlocked.Add(ref moduleCounter, 1);
 
-                    this.OmicronProgramId = this.OmicronDocument.OLEObjects.get_Item(moduleCounter).ProgID;
-                    this.OmicronProgramName = this.OmicronDocument.OLEObjects.get_Item(moduleCounter).Name;
+                    OmicronProgramId = OmicronDocument.OLEObjects.get_Item(moduleCounter).ProgID;
+                    OmicronProgramName = OmicronDocument.OLEObjects.get_Item(moduleCounter).Name;
                     // update current module number.
                     // MyCommons.CurrentModuleNumber = testModule;
                     MyCommons.CurrentModuleNumber = moduleCounter;
@@ -85,14 +85,13 @@ namespace EditProfiles.Operations
                     Debug.WriteLine(string.Format("{0}", new String(Settings.Default.RepeatChar, Settings.Default.RepeatNumber)));
                     Debug.WriteLine("Making a decision if the user wants to delete this test module.....");
 
-                    string tempValue = "";
-                    if (ItemsToRemove.TryGetValue(OmicronProgramName, out tempValue))
+                    if (ItemsToRemove.TryGetValue(OmicronProgramName, out string tempValue))
                     {
                         if (tempValue == OmicronProgramId)
                         {
                             Debug.WriteLine(string.Format("Deleting ProgID {0}\tand Name: {1}", OmicronProgramId, OmicronProgramName));
                             Debug.WriteLine(" ... TEST MODULE MARK FOR DELETION ....");
-                            this.OmicronDocument.OLEObjects.get_Item(moduleCounter).Delete();
+                            OmicronDocument.OLEObjects.get_Item(moduleCounter).Delete();
                             // just deleted a test module. Omicron updates total test module counter.
                             // this is the reason for the decrement.
                             Interlocked.Decrement(ref moduleCounter);
@@ -114,9 +113,9 @@ namespace EditProfiles.Operations
                         }
                     }
 
-                    if (this.OmicronDocument.OLEObjects.get_Item(moduleCounter).IsTestModule)
+                    if (OmicronDocument.OLEObjects.get_Item(moduleCounter).IsTestModule)
                     {
-                        TestModule currentTestModule = this.OmicronDocument.OLEObjects.get_Item(moduleCounter).TestModule; //testModules.Item[moduleCounter];
+                        TestModule currentTestModule = OmicronDocument.OLEObjects.get_Item(moduleCounter).TestModule; //testModules.Item[moduleCounter];
 
 
                         Debug.WriteLine(" .... NO DELETION REQUIRED ....");
