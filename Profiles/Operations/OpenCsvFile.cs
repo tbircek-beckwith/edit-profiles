@@ -77,7 +77,7 @@ namespace EditProfiles.Operations
                 {
                     // initialize holders for find and replace items
                     StringBuilder finds = new StringBuilder();
-                    /// List<string> finds = new List<string>();
+                    // List<string> finds = new List<string>();
                     StringBuilder replaces = new StringBuilder();
                     // List<string> replaces = new List<string>();
 

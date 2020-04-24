@@ -52,9 +52,8 @@ namespace EditProfiles.Behaviors
         /// <param name="e">arguments.</param>
         static void OnScrollOnTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var textBox = dependencyObject as TextBox;
-
-            if (textBox == null)
+           
+            if (!(dependencyObject is TextBox textBox))
             {
                 return;
             }
@@ -69,13 +68,13 @@ namespace EditProfiles.Behaviors
 
             if (newValue)
             {
-                textBox.Loaded += new RoutedEventHandler(textBox_Loaded);
-                textBox.Unloaded += new RoutedEventHandler(textBox_Unloaded);
+                textBox.Loaded += new RoutedEventHandler(TextBox_Loaded);
+                textBox.Unloaded += new RoutedEventHandler(TextBox_Unloaded);
             }
             else
             {
-                textBox.Loaded -= textBox_Loaded;
-                textBox.Unloaded -= textBox_Unloaded;
+                textBox.Loaded -= TextBox_Loaded;
+                textBox.Unloaded -= TextBox_Unloaded;
 
                 if (_associations.ContainsKey(textBox))
                 {
@@ -84,18 +83,18 @@ namespace EditProfiles.Behaviors
             }
         }
 
-        static void textBox_Loaded(object sender, RoutedEventArgs e)
+        static void TextBox_Loaded(object sender, RoutedEventArgs e)
         {
             var textBox = (TextBox)sender;
-            textBox.Loaded -= textBox_Loaded;
+            textBox.Loaded -= TextBox_Loaded;
             _associations[textBox] = new Capture(textBox);
         }
 
-        static void textBox_Unloaded(object sender, RoutedEventArgs e)
+        static void TextBox_Unloaded(object sender, RoutedEventArgs e)
         {
             var textBox = (TextBox)sender;
             _associations[textBox].Dispose();
-            textBox.Unloaded -= textBox_Unloaded;
+            textBox.Unloaded -= TextBox_Unloaded;
         }
     }
 

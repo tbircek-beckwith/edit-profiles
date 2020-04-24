@@ -127,10 +127,10 @@ namespace EditProfiles.Operations
             //    new XmlWriterTraceListener(MyCommons.CrashFileNameWithPath);
 
             TextWriterTraceListener textListener =
-                new TextWriterTraceListener(MyCommons.CrashFileNameWithPath);
-
-            textListener.Filter =
-                new EventTypeFilter(SourceLevels.Error);
+                new TextWriterTraceListener(MyCommons.CrashFileNameWithPath)
+                {
+                    Filter = new EventTypeFilter(SourceLevels.Error)
+                };
 
             //xmlListener.Filter =
             //    new EventTypeFilter(SourceLevels.Error);

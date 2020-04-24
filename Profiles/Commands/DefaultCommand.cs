@@ -25,19 +25,8 @@ namespace EditProfiles.Commands
         /// <param name="canExecute">This is where blocking of the command occurs.</param>
         public DefaultCommand ( Action<object> execute, Predicate<object> canExecute )
         {
-
-            if ( execute == null )
-            {
-                throw new ArgumentNullException ( "execute" );
-            }
-
-            if ( canExecute == null )
-            {
-                throw new ArgumentNullException ( "canExecute" );
-            }
-
-            this.execute = execute;
-            this.canExecute = canExecute;
+            this.execute = execute ?? throw new ArgumentNullException ( "execute" );
+            this.canExecute = canExecute ?? throw new ArgumentNullException ( "canExecute" );
         }
 
         /// <summary>
@@ -46,12 +35,7 @@ namespace EditProfiles.Commands
         /// <param name="execute">Action to execute.</param>
         public DefaultCommand ( Action<object> execute )
         {
-            if ( execute == null )
-            {
-                throw new ArgumentNullException ( "execute" );
-            }
-
-            this.execute = execute;
+            this.execute = execute ?? throw new ArgumentNullException ( "execute" );
         }
 
         #endregion // Public Methods

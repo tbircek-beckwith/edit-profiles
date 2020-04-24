@@ -41,9 +41,11 @@ namespace EditProfiles.Data
         {
             get
             {
-                ParallelOptions parallelingOptions = new ParallelOptions();
-                parallelingOptions.MaxDegreeOfParallelism = MyCommons.MaxDegreeOfParallelism;
-                parallelingOptions.CancellationToken = MyCommons.CancellationToken;
+                ParallelOptions parallelingOptions = new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = MyCommons.MaxDegreeOfParallelism,
+                    CancellationToken = MyCommons.CancellationToken
+                };
 
                 return parallelingOptions;
             }

@@ -306,7 +306,7 @@ namespace EditProfiles
                 {
 
                     // This text set while MyCommons.LogProcess updated.
-                    this.OnPropertyChanged("DetailsTextBoxText");
+                    OnPropertyChanged("DetailsTextBoxText");
                 }
             }
         }
@@ -665,11 +665,11 @@ namespace EditProfiles
                            ICommand stopCommand)
         {
             this.model = model;
-            this.SaveCommand = saveCommand;
-            this.EraseCommand = eraseCommand;
-            this.FindReplaceCommand = findReplaceCommand;
-            this.UpdateCommand = updateCommand;
-            this.StopCommand = stopCommand;
+            SaveCommand = saveCommand;
+            EraseCommand = eraseCommand;
+            FindReplaceCommand = findReplaceCommand;
+            UpdateCommand = updateCommand;
+            StopCommand = stopCommand;
         }
 
         /// <summary>
@@ -686,15 +686,9 @@ namespace EditProfiles
 
             Debug.WriteLine(string.Format("OnPropertyChanged ( propertyName: {0} ) just processed.", propertyName));
 
-            this.VerifyPropertyName(propertyName);
+            VerifyPropertyName(propertyName);
 
-            var handler = PropertyChanged;
-
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

@@ -14,7 +14,7 @@ namespace EditProfiles.Operations
         #region ISecurePasswordToString Members
 
         /// <summary>
-        /// Coverts SecureString to an unsecure string.
+        /// Coverts SecureString to an insecure string.
         /// </summary>
         /// <param name="secureString">the content of PasswordBox</param>
         /// <returns>Returns a plain string of the secureString.
@@ -22,7 +22,7 @@ namespace EditProfiles.Operations
         /// Otherwise, it can be seen in the memory scans.</returns>
         public string ConvertToInsecureString ( SecureString secureString )
         {
-            IntPtr passwordBSTR = default ( IntPtr );
+            IntPtr passwordBSTR = default;
             string insecurePassword = string.Empty;
 
             try

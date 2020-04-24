@@ -31,14 +31,14 @@ namespace EditProfiles
             // Following code found on stackoverflow.com
             // http://stackoverflow.com/questions/10202987/in-c-sharp-how-to-collect-stack-trace-of-program-crash
 
-            AppDomain currentDomain = default(AppDomain);
+            AppDomain currentDomain = default;
             currentDomain = AppDomain.CurrentDomain;
 
             // Handler for unhandled exceptions.
             currentDomain.UnhandledException += GlobalUnhandledExceptionHandler;
 
             // Handler for exceptions in thread behind forms.
-            Application.Current.DispatcherUnhandledException += GlobalThreadExceptionHandler;
+            Current.DispatcherUnhandledException += GlobalThreadExceptionHandler;
 
             #endregion
 
@@ -168,7 +168,6 @@ namespace EditProfiles
                 MyCommons.EditProfileTraceSource.Flush();
                 
 
-                // Verify CancellationToken is not null before cancelling it.
                 if (MyCommons.CancellationToken.CanBeCanceled)
                 {
                     MyCommons.TokenSource.Dispose();
@@ -184,7 +183,7 @@ namespace EditProfiles
         // http://stackoverflow.com/questions/10202987/in-c-sharp-how-to-collect-stack-trace-of-program-crash
         private static void GlobalUnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs e)
         {
-            Exception ex = default(Exception);
+            Exception ex = default;
             ex = (Exception)e.ExceptionObject;
 
             // Save to the fileOutputFolder and print to Debug window if the project build is in DEBUG.
@@ -198,7 +197,7 @@ namespace EditProfiles
         // http://stackoverflow.com/questions/10202987/in-c-sharp-how-to-collect-stack-trace-of-program-crash
         private static void GlobalThreadExceptionHandler(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Exception ex = default(Exception);
+            Exception ex = default;
             ex = e.Exception;
 
             // Save to the fileOutputFolder and print to Debug window if the project build is in DEBUG.

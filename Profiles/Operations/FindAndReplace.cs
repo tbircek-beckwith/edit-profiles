@@ -107,12 +107,11 @@ namespace EditProfiles.Operations
                         // take value
                         oldExecuteParameters.TryGetValue(oldKey, out int value);
 
-                        //// if the register has multiple entry for each regulator,
-                        //// use the one appropriate to the current regulator 
-                        //// eg: second for regulator 2
-                        //// otherwise use corresponding the new register value 
-                        //// from the excel file.
-                        ///
+                        // if the register has multiple entry for each regulator,
+                        // use the one appropriate to the current regulator 
+                        // eg: second for regulator 2
+                        // otherwise use corresponding the new register value 
+                        // from the excel file.
 
                         int newKey = default;
                         if (duplicateEntries.Contains(oldKey))
@@ -150,14 +149,9 @@ namespace EditProfiles.Operations
                             newExecuteParameters.Add(newKey > 39999 && newKey < UInt16.MaxValue ? newKey : newKey + (CurrentRegulatorValue * 10000), value);
                     }
                 }
-
-                // if (canRegisterAdded)
-                //     continue;
             }
 
             NewParameterString = new StringBuilder("/select AutoTestIP," + string.Join(",", newExecuteParameters.Select(x => x.Key + "," + x.Value)));
-
-            // canRegisterAdded = true; 
 
             // return new StringBuilder
             return NewParameterString;
