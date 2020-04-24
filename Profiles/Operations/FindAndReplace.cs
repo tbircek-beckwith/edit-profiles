@@ -33,7 +33,7 @@ namespace EditProfiles.Operations
         /// <summary>
         /// Finds and replaces the Execute Test Module Parameters.
         /// </summary>
-        /// <param name="findParameters">The parameters currently in the Exceute Module.</param>
+        /// <param name="findParameters">The parameters currently in the Execute Module.</param>
         /// <returns>Returns a modified string.</returns>
         public StringBuilder FindAndReplaceParameters(string findParameters)
         {
@@ -66,6 +66,8 @@ namespace EditProfiles.Operations
         /// <returns>a StringBuilder that contains a new execute module parameters.</returns>
         private StringBuilder FindAndReplaceParameter()
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            
             // initialize Dictionaries
             Dictionary<int, int> oldExecuteParameters = new Dictionary<int, int>();
             Dictionary<int, int> newExecuteParameters = new Dictionary<int, int>();
@@ -86,72 +88,68 @@ namespace EditProfiles.Operations
                                                     .Select(y => int.Parse(y.Key)) // new { Element = y.Key, Index = ItemsToFind.IndexOf(y.Key) })
                                                     .ToList();
 
-            //// finds at least g.Count() > 2 in ItemsToFind all items with all indexes
-            //var duplicates = ItemsToFind.Select((item, index) => new { Item = item, Index = index })
-            //                            .GroupBy(g => g.Item)
-            //                            .Where(g => g.Count() > 2);
-
-
-            // scan whole entry
-            for (int i = 0; i < ItemsToFind.Count; i++)
+            // scan whole Execute parameter entry
+            foreach (var currentKey in oldExecuteParameters.Keys)
             {
-                // ignore values cannot be numbers.
-                // modbus registers are numbers.
-                if (int.TryParse(ItemsToFind.ElementAt(i), out int oldKey))
+
+                // scan whole .csv file for the current key
+                for (int i = 0; i < ItemsToFind.Count; i++)
                 {
-
-                    // is the modbus register in the entry?
-                    if (oldExecuteParameters.ContainsKey(oldKey))
+                    // string matching would match strings of "4567" and "4567x"
+                    // so match them as numbers
+                    if (int.TryParse(ItemsToFind.ElementAt(i), out int oldKey))
                     {
-
-                        // take value
-                        oldExecuteParameters.TryGetValue(oldKey, out int value);
-
-                        // if the register has multiple entry for each regulator,
-                        // use the one appropriate to the current regulator 
-                        // eg: second for regulator 2
-                        // otherwise use corresponding the new register value 
-                        // from the excel file.
-
-                        int newKey = default;
-                        if (duplicateEntries.Contains(oldKey))
+                        // verify both keys are matched.
+                        if (currentKey == oldKey)
                         {
-                            int.TryParse(ItemsToReplace.ElementAt(GetDuplicateIndex(i)), out newKey);
+
                             
+                            // initialize the replacement key
+                            int replacementKey = default;
+
+                            // if the register has multiple entry for each regulator,
+                            if (duplicateEntries.Contains(oldKey))
+                            {
+                                // use the one appropriate to the current regulator 
+                                // eg: second for regulator 2
+                                int.TryParse(ItemsToReplace.ElementAt(GetDuplicateIndex(i)), out replacementKey);
+
+                            }
+                            else
+                            {
+                                // otherwise use corresponding the new register value 
+                                // from the excel file.
+                                int.TryParse(ItemsToReplace.ElementAt(i), out replacementKey);
+                            }
+
+                            // take original value
+                            oldExecuteParameters.TryGetValue(currentKey, out int originalValue);
+
+                            // add new key with old value.
+                            if (!newExecuteParameters.ContainsKey(replacementKey))
+                                newExecuteParameters.Add(replacementKey > 39999 && replacementKey < UInt16.MaxValue ? replacementKey : replacementKey + (CurrentRegulatorValue * 10000), originalValue);
+
+                            // stop scanning and move on to next entry.
+                            break;
                         }
-                        else
-                        {
-                            int.TryParse(ItemsToReplace.ElementAt(i), out newKey);
-                        }
-                        //string newValue = ItemsToReplace.ElementAt(i);
-                        //if (duplicateEntries.Contains(ItemsToFind.ElementAt(i)))
-                        //{
-                        //    foreach (var item in duplicates)
-                        //    {
-                        //        if (Equals(item.Key, ItemsToFind.ElementAt(i)))
-                        //        {
-                        //            // ItemsToReplace.ElementAt(item.ElementAt(CurrentRegulatorValue).Index)
-                        //            newValue = ItemsToReplace.ElementAt(item.ElementAt(CurrentRegulatorValue).Index);
-                        //            Debug.WriteLine($"something found: {item.Key}");
-
-                        //            // canRegisterAdded = false;
-                        //            break;
-                        //        }
-                        //    }
-                        //}
-
-                        // take new key - for each regulator value add 10000 to replacement value
-                        //int.TryParse(ItemsToReplace.ElementAt(i), out int newKey);
-                        // int.TryParse(newValue, out int newKey);
-
-                        // add new key with old value.
-                        if (!newExecuteParameters.ContainsKey(newKey))
-                            newExecuteParameters.Add(newKey > 39999 && newKey < UInt16.MaxValue ? newKey : newKey + (CurrentRegulatorValue * 10000), value);
                     }
                 }
+
             }
 
-            NewParameterString = new StringBuilder("/select AutoTestIP," + string.Join(",", newExecuteParameters.Select(x => x.Key + "," + x.Value)));
+            // don't replace old parameters if there is no replacement
+            if (newExecuteParameters.Count > 0)
+            {
+                // return new parameters.
+                NewParameterString = new StringBuilder("/select AutoTestIP," + string.Join(",", newExecuteParameters.Select(x => x.Key + "," + x.Value)));
+            }
+            else
+            {
+                // return old parameters.
+                NewParameterString = new StringBuilder(FindParam);
+            }
+
+            Debug.WriteLine($"-----------------------------------------------------> total time: {stopwatch.ElapsedMilliseconds}");
 
             // return new StringBuilder
             return NewParameterString;
@@ -180,72 +178,6 @@ namespace EditProfiles.Operations
             }
             return result;
         }
-
-        //private StringBuilder FindAndReplaceParameter_old()
-        //{
-        //    // Decide if any string matches to the user "Find what".
-        //    int numberOfFindings = 0;
-
-        //    foreach (string item in ItemsToFind)
-        //    {
-        //        // if item is blank don't match to anything.
-        //        if (!string.IsNullOrWhiteSpace(item))
-        //        {
-
-        //            // one of the actual execute input
-        //            // 4716,0,4719,1,4736,0,4738,0,4777,0
-        //            // 4712,0,4713,0,4714,0,4715,1,4959,0,4828,0,5224,0
-        //            // ignores the case of the inputs.
-        //            if (FindParam.IndexOf(item, StringComparison.OrdinalIgnoreCase) > -1)
-        //            {
-        //                // this variable > 0, if there is a match.
-        //                numberOfFindings++;
-        //            }
-        //        }
-        //    }
-
-        //    // We find at least 1 item matched the user input.
-        //    if (numberOfFindings > 0)
-        //    {
-        //        NewParameterString = new StringBuilder(FindParam);
-
-        //        int position = 0;
-
-        //        foreach (string item in ItemsToFind)
-        //        {
-        //            // if the item is in the rename or remove list ignore it. 
-        //            // since they are handle by their respective functions.
-        //            // if (!(ItemsToRemove.ContainsKey(item.Split('=')[1].ToString()) || ItemsToRename.ContainsKey(item.Split('=')[1].ToString())))
-        //            // there is no '='. it means ExeCute parameters.
-        //            //if (item.Split('=').Count() == 1)
-        //            //{
-        //            //    // Replace the Execute Parameter 
-        //            //    NewParameterString.Replace(item, ItemsToReplace.ElementAt(position));
-
-        //            //}
-
-        //            //position++;
-        //            //    }
-        //            //}
-        //            // if item is blank don't match to anything.
-        //            if (!string.IsNullOrWhiteSpace(item))
-        //            {
-        //                if (NewParameterString.ToString().Contains(item))
-        //                {
-        //                    NewParameterString.Replace(item, ItemsToReplace.ElementAt(position));
-
-        //                }
-        //                position++;
-        //            }
-        //        }
-
-        //        return NewParameterString;
-        //    }
-        //    else
-        //    {
-        //        return new StringBuilder(FindParam);
-        //    }
-        //}
 
         #endregion
 
