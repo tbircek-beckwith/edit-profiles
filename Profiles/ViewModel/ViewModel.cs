@@ -95,15 +95,6 @@ namespace EditProfiles
         /// </summary>
         public string FindWhatTextBoxText
         {
-            //get
-            //{
-            //    //#if DEBUG
-            //    //                return MyResources.Strings_Debug_TextBoxFind;
-            //    //#else
-            //    // Return empty string if the user not specified any values  
-            //    return model.FindWhatTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
-            //    //#endif
-            //}
 
             // Return empty string if the user not specified any values  
             get => model.FindWhatTextBoxText ?? string.Empty;
@@ -145,15 +136,6 @@ namespace EditProfiles
         /// </summary>
         public string ReplaceWithTextBoxText
         {
-            //get
-            //{
-            //    //#if DEBUG
-            //    //                return MyResources.Strings_Debug_TextBoxReplace;
-            //    //#else
-            //    // Return empty string if the user not specified any values                
-            //    return this.model.ReplaceWithTextBoxText ?? string.Empty;  // MyResources.Strings_DefaultTextBoxValues;
-            //    //#endif
-            //}
 
             // Return empty string if the user not specified any values   
             get => model.ReplaceWithTextBoxText ?? string.Empty;
