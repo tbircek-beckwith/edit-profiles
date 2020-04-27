@@ -26,6 +26,8 @@ namespace EditProfiles
 
         private const double PROGRESSBAR_MIN = 0.0;
 
+        private readonly object lockObject = new object();
+
         #endregion
 
         #region Program
@@ -263,9 +265,9 @@ namespace EditProfiles
             {
                 //if (this.model.IsEnabled != value)
                 //{
-                    model.IsEnabled = value;
+                model.IsEnabled = value;
 
-                    OnPropertyChanged("IsEnabled");
+                OnPropertyChanged("IsEnabled");
                 //}
             }
         }
@@ -280,7 +282,10 @@ namespace EditProfiles
         {
             get
             {
-                return MyCommons.LogProcess.ToString();
+                lock (lockObject)
+                {
+                    return MyCommons.LogProcess.ToString();
+                }
             }
             set
             {
