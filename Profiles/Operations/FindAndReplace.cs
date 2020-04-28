@@ -67,7 +67,7 @@ namespace EditProfiles.Operations
         private StringBuilder FindAndReplaceParameter()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            
+
             // initialize Dictionaries
             Dictionary<int, int> oldExecuteParameters = new Dictionary<int, int>();
             Dictionary<int, int> newExecuteParameters = new Dictionary<int, int>();
@@ -75,78 +75,87 @@ namespace EditProfiles.Operations
             // convert execute module entry to Dictionary
             for (int i = 0; i < FindParam.Split(',').Length; i++)
             {
-                // add key, value pairs
-                oldExecuteParameters.Add(int.Parse(FindParam.Split(',')[i]), int.Parse(FindParam.Split(',')[i + 1]));
-                // skip values as they included in previous step
-                i++;
-            }
-
-
-            // only one repeating item with one index
-            List<int> duplicateEntries = ItemsToFind.GroupBy(x => x)
-                                                    .Where(g => g.Count() > 2)
-                                                    .Select(y => int.Parse(y.Key)) // new { Element = y.Key, Index = ItemsToFind.IndexOf(y.Key) })
-                                                    .ToList();
-
-            // scan whole Execute parameter entry
-            foreach (var currentKey in oldExecuteParameters.Keys)
-            {
-
-                // scan whole .csv file for the current key
-                for (int i = 0; i < ItemsToFind.Count; i++)
+                // verify items are numbers
+                if (int.TryParse(FindParam.Split(',')[i], out int key))
                 {
-                    // string matching would match strings of "4567" and "4567x"
-                    // so match them as numbers
-                    if (int.TryParse(ItemsToFind.ElementAt(i), out int oldKey))
+                    if (int.TryParse(FindParam.Split(',')[i + 1], out int value))
                     {
-                        // verify both keys are matched.
-                        if (currentKey == oldKey)
-                        {
+                        // add key, value pairs
+                        oldExecuteParameters.Add(key, value);
 
-                            
-                            // initialize the replacement key
-                            int replacementKey = default;
-
-                            // if the register has multiple entry for each regulator,
-                            if (duplicateEntries.Contains(oldKey))
-                            {
-                                // use the one appropriate to the current regulator 
-                                // eg: second for regulator 2
-                                int.TryParse(ItemsToReplace.ElementAt(GetDuplicateIndex(i)), out replacementKey);
-
-                            }
-                            else
-                            {
-                                // otherwise use corresponding the new register value 
-                                // from the excel file.
-                                int.TryParse(ItemsToReplace.ElementAt(i), out replacementKey);
-                            }
-
-                            // take original value
-                            oldExecuteParameters.TryGetValue(currentKey, out int originalValue);
-
-                            // add new key with old value.
-                            if (!newExecuteParameters.ContainsKey(replacementKey))
-                                newExecuteParameters.Add(replacementKey > 39999 && replacementKey < UInt16.MaxValue ? replacementKey : replacementKey + (CurrentRegulatorValue * 10000), originalValue);
-
-                            // stop scanning and move on to next entry.
-                            break;
-                        }
+                        // skip values as they included in previous step
+                        i++;
                     }
                 }
 
             }
 
-            // don't replace old parameters if there is no replacement
-            if (newExecuteParameters.Count > 0)
+            // is there any matching parameters?
+            if (!oldExecuteParameters.Keys.Any(x => ItemsToFind.Contains(x.ToString())))
             {
-                // return new parameters.
-                NewParameterString = new StringBuilder("/select AutoTestIP," + string.Join(",", newExecuteParameters.Select(x => x.Key + "," + x.Value)));
+                // NO. return old parameters.
+                NewParameterString = new StringBuilder(FindParam);
             }
             else
             {
-                // return old parameters.
-                NewParameterString = new StringBuilder(FindParam);
+                // only one repeating item with one index
+                List<int> duplicateEntries = ItemsToFind.GroupBy(x => x)
+                                                        .Where(g => g.Count() > 2)
+                                                        .Select(y => int.Parse(y.Key)) // new { Element = y.Key, Index = ItemsToFind.IndexOf(y.Key) })
+                                                        .ToList();
+
+                // scan whole Execute parameter entry
+                foreach (var currentKey in oldExecuteParameters.Keys)
+                {
+
+                    // scan whole .csv file for the current key
+                    for (int i = 0; i < ItemsToFind.Count; i++)
+                    {
+                        // string matching would match strings of "4567" and "4567x"
+                        // so match them as numbers
+                        if (int.TryParse(ItemsToFind.ElementAt(i), out int oldKey))
+                        {
+                            // verify both keys are matched.
+                            if (currentKey == oldKey)
+                            {
+
+
+                                // initialize the replacement key
+                                int replacementKey = default;
+
+                                // if the register has multiple entry for each regulator,
+                                if (duplicateEntries.Contains(oldKey))
+                                {
+                                    // use the one appropriate to the current regulator 
+                                    // eg: second for regulator 2
+                                    int.TryParse(ItemsToReplace.ElementAt(GetDuplicateIndex(i)), out replacementKey);
+
+                                }
+                                else
+                                {
+                                    // otherwise use corresponding the new register value 
+                                    // from the excel file.
+                                    int.TryParse(ItemsToReplace.ElementAt(i), out replacementKey);
+                                }
+
+                                // take original value
+                                oldExecuteParameters.TryGetValue(currentKey, out int originalValue);
+
+                                // add new key with old value.
+                                if (!newExecuteParameters.ContainsKey(replacementKey))
+                                    newExecuteParameters.Add(replacementKey > 39999 && replacementKey < UInt16.MaxValue ? replacementKey : replacementKey + (CurrentRegulatorValue * 10000), originalValue);
+
+                                // stop scanning and move on to next entry.
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+                // return new parameters.
+                NewParameterString = new StringBuilder("/select AutoTestIP," + string.Join(",", newExecuteParameters.Select(x => x.Key + "," + x.Value)));
+
             }
 
             Debug.WriteLine($"-----------------------------------------------------> total time: {stopwatch.ElapsedMilliseconds}");
