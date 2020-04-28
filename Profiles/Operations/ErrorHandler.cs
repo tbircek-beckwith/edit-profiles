@@ -83,7 +83,7 @@ namespace EditProfiles.Operations
  
             // Save to the fileOutputFolder
             MyCommons.EditProfileTraceSource.TraceEvent(TraceEventType.Error,
-                                                 ex.Source.Length,
+                                                 ex.HResult,
                                                  string.Format(
                                                                  CultureInfo.InvariantCulture,
                                                                  MyResources.Strings_ErrorTraceErrors,
