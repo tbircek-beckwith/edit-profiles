@@ -190,8 +190,18 @@ namespace EditProfiles.Operations
             }
 
             // Update Omicron Execute Module.
-            document.Path = @"C:\DRSendIPNET\DRSendIPNET.exe";
+            if (document.Path.Contains(@"\DRSend.exe"))
+            {
+                document.Path = @"C:\DRSendIPNET\DRSendIPNET.exe";
+            }
             document.Parameters = testModuleParameters.ToString();
+
+            Debug.WriteLine($"Before: {testModule.Name}");
+
+            // update execute module title if needed.
+            testModule.Name = new AnalyzeValues().Change(input: testModule.Name, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords); 
+
+            Debug.WriteLine($"After: {testModule.Name}");
 
             // Exit the MyTestModule.
             application.Quit();
