@@ -196,12 +196,12 @@ namespace EditProfiles.Operations
             }
             document.Parameters = testModuleParameters.ToString();
 
-            Debug.WriteLine($"Before: {testModule.Name}");
+            //Debug.WriteLine($"Before: {testModule.Name}");
 
-            // update execute module title if needed.
-            testModule.Name = new AnalyzeValues().Change(input: testModule.Name, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords); 
+            //// update execute module title if needed.
+            //testModule.Name = new AnalyzeValues().Change(input: testModule.Name, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords); 
 
-            Debug.WriteLine($"After: {testModule.Name}");
+            //Debug.WriteLine($"After: {testModule.Name}");
 
             // Exit the MyTestModule.
             application.Quit();
