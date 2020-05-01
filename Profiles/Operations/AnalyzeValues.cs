@@ -16,8 +16,6 @@ namespace EditProfiles.Operations
 
         // used http://regexr.com to generate following expressions.
         //
-        // combination "Regular Expressions" pattern with group names.
-        // (?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[Aa])\b\w*)|(?<revision>\b[Rr]ev\d\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)
         //
         // power scheme "Regular Expressions" pattern group.
         // captures (Forward || (Smart || Src || Reverse)) Power like string in the file name.
@@ -33,7 +31,7 @@ namespace EditProfiles.Operations
         //
         // product "Regular Expressions" pattern group.
         // captures M-6200A like string in the file name.
-        // (?<product>\b([Mm]-6200[Aa])\b\w*)
+        // (?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)
         //
         // revision "Regular Expressions" pattern group.
         // captures Rev# like string in the file name.
@@ -45,7 +43,7 @@ namespace EditProfiles.Operations
         //
         // profile "Regular Expressions" pattern group.
         // captures P1 like string in the file name.
-        // (?<profile>\b[Pp](\d)\b\w*)
+        // (?<profile>\b(?=[Pp](\d))\b\w*)
         //
         // powerInitials "Regular Expressions" pattern group.
         // captures FP or RP like strings in the file name.
@@ -62,27 +60,28 @@ namespace EditProfiles.Operations
         // not used "Regular Expressions" pattern group.
         // captures (Test || (Short Version)) like string in the file name.
         // (?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)
-
+        //
         // combination Regex pattern with group names
-        //string testFileNamePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[Aa])\b\w*)|(?<revision>\b[Rr]ev\d\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
+        //(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)|(?<revision>\b[Rr]ev\d\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)
+        //
 
         /// <summary>
         /// combination Regex pattern with group names
         /// </summary>
         /// <remarks>Future use maybe</remarks>
-        public readonly string TitlePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[Aa])\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
+        public readonly string TitlePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
 
         /// <summary>
         /// combination Regex pattern with group names
         /// </summary>
         /// <remarks>Future use maybe</remarks>
-        public readonly string TestFileNamePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[Aa])\b\w*)|(?<revision>\b[Rr]ev\d\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
+        public readonly string TestFileNamePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)|(?<revision>\b[Rr]ev\d\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b(?=[Pp](\d))\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
 
         /// <summary>
         /// combination Regex pattern with group names
         /// </summary>
         /// <remarks>Future use maybe</remarks>
-        public readonly string TestFolderNamePatterns = @"(?<alarms>\b((?=Alarm)\b\w*))|(?<bandcenters>\b((?=Bandcenter)\b\w*))|(?<bandwidth>\b((?=Bandwidth)\b\w*))|(?<dtDelay>\b((?=Definite)\b\w*))|(?<dg>\b((?=Distributed)\b\w*))|(?<georgia>\b((?=Georgia)\b\w*))|(?<intertap>\b((?=Inter[Tt]ap)\b\w*))|(?<interse>\b((?=Inverse)\b\w*))|(?<ldc>\b((?=[Ll][Dd][Cc][\s])\b\w*))|(?<limit>\b((?=Line Limit)\b\w*))|(?<pulse>\b((?=Pulse Width)\b\w*))|(?<varbias>\b((?=VAr[Bb]ias)\b\w*))|(?<smartVR>\b(Smart VR)\b\w*)|(?<vr>\b(Voltage Reduction (?!Alarm))\b\w*)|(?<vt>\b(Correction)\b\w*)";
+        public readonly string TestFolderNamePatterns = @"(?<alarms>\b((?=Alarm)\b\w*))|(?<bandcenters>\b((?=Bandcenter)\b\w*))|(?<bandwidth>\b((?=Bandwidth)\b\w*))|(?<dtDelay>\b((?=Definite)\b\w*))|(?<dg>\b((?=Distributed)\b\w*))|(?<georgia>\b((?=Georgia)\b\w*))|(?<intertap>\b((?=Inter[Tt]ap)\b\w*))|(?<interse>\b((?=Inverse)\b\w*))|(?<ldc>\b((?=[Ll][Dd][Cc][\s])\b\w*))|(?<limit>\b((?=Line Limit)\b\w*))|(?<pulse>\b((?=Pulse Width)\b\w*))|(?<varbias>\b((?=VAr[Bb]ias)\b\w*))|(?<smartVR>\b(Smart [Vv][Rr])\b\w*)|(?<vr>\b(Reduction)\b\w*)|(?<vt>\b(Correction)\b\w*)";
 
         /// <summary>
         /// holds replacement words with ignoring casing.
@@ -92,6 +91,7 @@ namespace EditProfiles.Operations
             {
                 // {"original", "replacement"},
                 {"m-6200a", "M-6200B"},
+                //{"m-6200", "M-6200B"},
                 {"forward power", "Fwd Pwr"},
                 {"fp", "Fwd Pwr"},
                 {"reverse power", "Rev Pwr"},
@@ -116,6 +116,8 @@ namespace EditProfiles.Operations
             {
                 // {"original", "replacement"},
                 {"m-6200a", "M-6200B_"},
+                //{"m-6200b_", "M-6200B_"},   // reformat
+                {"m-6200b", "M-6200B_"},    // reformat
                 {"forward power", "Fwd Pwr_"},
                 {"fp", "Fwd Pwr_"},
                 {"reverse power", "Rev Pwr_"},
@@ -139,21 +141,26 @@ namespace EditProfiles.Operations
         public Dictionary<string, string> FolderNameKeywords = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 // {"original", "replacement"},
-                {"alarm", "alarms"},
-                {"bandcenter", "bandcenters"},
-                {"bandwidth", "bandwidths"},
-                {"definite", "definite-time-delays"},
-                {"distributed", "distributed-generations"},
-                {"georgia", "georgia-power"},
-                {"intertap", "intertap-time-delays"},
-                {"inverse", "inverse-time-delays"},
-                {"ldc", "ldc-settings"},
-                {"line limit", "line-limits"},
-                {"pulse width", "output-pulse-widths"},
-                {"varbias", "varbias"},
-                {"smart vr", "voltage-reductions"},
+                {"alarm", "alarms"},                            //
+                {"bandcenter", "bandcenters"},                  //
+                {"bandwidth", "bandwidths"},                    //
+                {"definite", "definite-time-delays"},           //
+                {"distributed", "distributed-generations"},     //
+                {"georgia", "georgia-power"},                   //
+                {"intertap", "intertap-time-delays"},           //
+                {"intertap_output", "intertap-time-delays"},    //
+                {"inverse", "inverse-time-delays"},             //
+                {"ldc", "ldc-settings"},                        //
+                // {"line limit", "line-limits"},      
+                {"line", "line-limits"},                        //
+                // {"pulse width", "output-pulse-widths"},
+                {"pulse", "output-pulse-widths"},               //
+                {"varbias", "varbias"},                         //
+                {"smart vr", "voltage-reductions"},             //
                 {"voltage reduction", "voltage-reductions"},
-                {"correction", "vt-corrections"},
+                {"reduction test", "voltage-reductions"},       //
+                {"reduction", "voltage-reductions"},       //
+                {"correction", "vt-corrections"},               //
             };
 
         #endregion
@@ -204,18 +211,8 @@ namespace EditProfiles.Operations
         /// <returns>Returns replacement of the values matched, and non-matched original values.</returns>
         public string Change(string input, string pattern, Dictionary<string, string> keywords)
         {
-            // temp storage to keep replacement words.
-            string output = string.Empty;
-
-            // stroll through matching patterns to get replacements.
-            foreach (string value in input.Split(' '))
-            {
-                Debug.WriteLine($"Match: {value}");
-                // stitch replacement words together.
-                output += $"{ReplaceValue(value, keywords)} ";
-            }
-
-            return output;
+            
+            return ReplaceValue(input, keywords);
         }
 
         /// <summary>
@@ -260,10 +257,22 @@ namespace EditProfiles.Operations
                 return searchTerms.ContainsKey(replace.Value) ? searchTerms[replace.Value] : replace.Value;
             });
 
-            // instead of replacing "P#" just appending '_' character.
-            Regex profile = new Regex(@"\b[Pp](\d)*\b\w*");
-            output = profile.Replace(output, output + "_");
+            // 
+            if (!new Regex(@"(?<setting>\b(?=Set)\b\w*)").IsMatch(textToReplace))
+            {
+                // instead of replacing "P#" just appending '_' character.
+                Regex profile = new Regex(@"(?<profile>\b(?=[Pp](\d))\b\w*)");
+                output = profile.Replace(output, output + "_");
+            }
 
+            //// the most likely file name and/or folder name wouldn't have "Set" and "P#" in their name.
+            //if (!new Regex(@"(?<profile>\b(?=[Pp](\d))\b\w*)|(?<setting>\b(?=Set)\b\w*)").IsMatch(textToReplace))
+            //{
+            //    // instead of replacing "P#" just appending '_' character.
+            //    Regex profile = new Regex(@"(?<profile>\b(?=[Pp](\d))\b\w*)");
+            //    output = profile.Replace(output, output + "_");
+            //}
+           
             // return a word.
             return output;
         }
