@@ -113,10 +113,20 @@ namespace EditProfiles.Operations
                         }
                     }
 
+                    // store old title
+                    string title = OmicronDocument.OLEObjects.get_Item(moduleCounter).Name;
+                    Debug.WriteLine($"--------------------------> old title: {title}");
+                    // update title.
+                    OmicronDocument.OLEObjects.get_Item(moduleCounter).Name = new AnalyzeValues().Change(input: title, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords);
+                    Debug.WriteLine($"--------------------------> new title: {OmicronDocument.OLEObjects.get_Item(moduleCounter).Name}");
+
+
                     if (OmicronDocument.OLEObjects.get_Item(moduleCounter).IsTestModule)
                     {
-                        TestModule currentTestModule = OmicronDocument.OLEObjects.get_Item(moduleCounter).TestModule; //testModules.Item[moduleCounter];
-
+                        TestModule currentModule = OmicronDocument.OLEObjects.get_Item(moduleCounter).TestModule; //testModules.Item[moduleCounter];
+                        
+                        //// update current test module title if needed.
+                        // currentModule.Name = new AnalyzeValues().Change(input: currentModule.Name, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords);
 
                         Debug.WriteLine(" .... NO DELETION REQUIRED ....");
 
@@ -133,19 +143,19 @@ namespace EditProfiles.Operations
                                     {
                                         MyCommons.CancellationToken.ThrowIfCancellationRequested();
                                     }
-                                    Debug.WriteLine("--- Add option to modify 'Title' ---");
-                                    Debug.WriteLine("--- Add option to modify 'Path' ---");
+                                    Debug.WriteLine("--- Add option to modify 'Title' --- DONE");
+                                    Debug.WriteLine("--- Add option to modify 'Path' --- DONE");
                                     Debug.WriteLine("--- Add option to modify 'Execution Options' ---");
                                     Debug.WriteLine("--- as of 10/30/2018 ---");
                                     // Retrieve parameters and save.
-                                    Retrieve(currentTestModule);
+                                    Retrieve(currentModule);
                                 }
                                 catch (AggregateException ae)
                                 {
                                     foreach (Exception ex in ae.InnerExceptions)
                                     {
                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                        ErrorHandler.Log(ex, this.CurrentFileName);
+                                        ErrorHandler.Log(ex, CurrentFileName);
                                     }
                                     return;
                                 }
@@ -166,16 +176,19 @@ namespace EditProfiles.Operations
                                     Debug.WriteLine("--- Add option to modify 'Title' ---");
                                     Debug.WriteLine("--- as of 10/30/2018 ---");
 
+                                    //// update current test module title if needed.
+                                    //currentModule.Name = new AnalyzeValues().Change(input: currentModule.Name, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords);
+
                                     // Retrieve parameters and save.
                                     // Retrieve(currentTestModule);
-                                    currentTestModule.Clear();
+                                    currentModule.Clear();
                                 }
                                 catch (AggregateException ae)
                                 {
                                     foreach (Exception ex in ae.InnerExceptions)
                                     {
                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                        ErrorHandler.Log(ex, this.CurrentFileName);
+                                        ErrorHandler.Log(ex, CurrentFileName);
                                     }
                                     return;
                                 }
@@ -194,18 +207,17 @@ namespace EditProfiles.Operations
                                     Debug.WriteLine("--- Add options to link each item to 'XRio Block' ---");
                                     Debug.WriteLine("--- Add option to modify 'Title' ---");
                                     Debug.WriteLine("--- as of 10/30/2018 ---");
-
-
+                                    
                                     // Retrieve parameters and save.
                                     // Retrieve(currentTestModule);
-                                    currentTestModule.Clear();
+                                    currentModule.Clear();
                                 }
                                 catch (AggregateException ae)
                                 {
                                     foreach (Exception ex in ae.InnerExceptions)
                                     {
                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                        ErrorHandler.Log(ex, this.CurrentFileName);
+                                        ErrorHandler.Log(ex, CurrentFileName);
                                     }
                                     return;
                                 }
@@ -221,10 +233,12 @@ namespace EditProfiles.Operations
                         Debug.WriteLine("--- NonTest object ---");
                         Debug.WriteLine(string.Format("Test module name...: {0}", OmicronProgramName));
                         Debug.WriteLine(string.Format("Test module type...: {0}", OmicronProgramId));
+
                         // it is not a Test Module.
                         switch (OmicronProgramId)
                         {
                             case ProgId.XRio:
+
                                 // Polling CancellationToken's status.
                                 // If cancellation requested throw error and exit loop.
                                 if (MyCommons.CancellationToken.IsCancellationRequested == true)
@@ -265,14 +279,14 @@ namespace EditProfiles.Operations
                     }
                 });
             }
-            catch (System.NullReferenceException ae)
+            catch (NullReferenceException ae)
             {
-                ErrorHandler.Log(ae, this.CurrentFileName);
+                ErrorHandler.Log(ae, CurrentFileName);
                 return;
             }
-            catch (System.OperationCanceledException ae)
+            catch (OperationCanceledException ae)
             {
-                ErrorHandler.Log(ae, this.CurrentFileName);
+                ErrorHandler.Log(ae, CurrentFileName);
                 return;
             }
             catch (AggregateException ae)
@@ -280,7 +294,7 @@ namespace EditProfiles.Operations
                 foreach (Exception ex in ae.InnerExceptions)
                 {
                     // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                    ErrorHandler.Log(ex, this.CurrentFileName);
+                    ErrorHandler.Log(ex, CurrentFileName);
                 }
                 return;
             }
