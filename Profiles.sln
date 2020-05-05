@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditProfiles", "Profiles\EditProfiles.csproj", "{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EditProfilesSetup", "EditProfilesSetup\EditProfilesSetup.vdproj", "{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}"
@@ -9,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditProfilesTest", "EditProfilesTest\EditProfilesTest.csproj", "{708BE493-4A0C-43AB-A807-78EB1CE9572C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,8 +44,23 @@ Global
 		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Release|Mixed Platforms.Build.0 = Release
 		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Release|x86.ActiveCfg = Release
 		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Release|x86.Build.0 = Release
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|x86.Build.0 = Debug|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|x86.ActiveCfg = Release|Any CPU
+		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5D80680-B17F-4CFC-AECF-8C6F3670D7B2}
 	EndGlobalSection
 EndGlobal
