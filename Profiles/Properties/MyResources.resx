@@ -145,6 +145,10 @@
   <data name="Strings_DefaultTextBoxValues" xml:space="preserve">
     <value>Not specified</value>
   </data>
+  <data name="Strings_DrIPNet_prepend" xml:space="preserve">
+    <value>/select AutoTestIP,</value>
+    <comment>adds required command for DrSendIPNet</comment>
+  </data>
   <data name="Strings_ErrorFolder" xml:space="preserve">
     <value>CrashReports</value>
   </data>

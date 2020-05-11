@@ -142,6 +142,15 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /select AutoTestIP,.
+        /// </summary>
+        internal static string Strings_DrIPNet_prepend {
+            get {
+                return ResourceManager.GetString("Strings_DrIPNet_prepend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to crash{0}.log.
         /// </summary>
         internal static string Strings_Error_FileName {

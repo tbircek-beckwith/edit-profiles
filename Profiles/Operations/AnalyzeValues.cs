@@ -191,15 +191,25 @@ namespace EditProfiles.Operations
             // temp storage to keep replacement words.
             string output = string.Empty;
 
-            // stroll through matching patterns to get replacements.
-            foreach (Match match in Regex.Matches(input, pattern))
+            // if there is no match return original input.
+            if (Regex.Matches(input, pattern).Count > 0)
             {
-                Debug.WriteLine($"Match: {match.Value}");
-                // stitch replacement words together.
-                output += ReplaceValue(match.Value, keywords);
-            }
+                // stroll through matching patterns to get replacements.
+                foreach (Match match in Regex.Matches(input, pattern))
+                {
+                    Debug.WriteLine($"Match: {match.Value}");
+                    // stitch replacement words together.
+                    output += ReplaceValue(match.Value, keywords);
+                }
 
-            return output;
+                // return modified input
+                return output;
+            }
+            else
+            {
+                // return original input
+                return input;
+            }
         }
 
         /// <summary>
@@ -224,6 +234,7 @@ namespace EditProfiles.Operations
         /// <returns>Returns value/s that doesn't match the pattern</returns>
         public string Extract(string input, string pattern, Dictionary<string, string> keywords)
         {
+
             // temp storage to keep replacement words.
             string output = Regex.Replace(input, pattern, string.Empty,RegexOptions.None, TimeSpan.FromMilliseconds(20)).Trim();
                         

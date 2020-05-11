@@ -15,13 +15,55 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_007B33481767D5F2DA5D588B3E6DD89C"
+        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_0A9F9BB1C4EE4B4C97AB18A017DE8FF0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
+        "MsmKey" = "8:_11707DD9FC92198DA8B90F286C786FBB"
+        "OwnerKey" = "8:_4937734218C7D79114B1EA614937DCC8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_11707DD9FC92198DA8B90F286C786FBB"
+        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2E39AD9539A8A014718FA26C61947AC4"
+        "OwnerKey" = "8:_007B33481767D5F2DA5D588B3E6DD89C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2E39AD9539A8A014718FA26C61947AC4"
+        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3DF0987B440A3B2FAEE61E3C1E591A89"
+        "OwnerKey" = "8:_A3083FCCE3712E2CBDB4FB5E26CD9F02"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3DF0987B440A3B2FAEE61E3C1E591A89"
+        "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4937734218C7D79114B1EA614937DCC8"
         "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,14 +75,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
-        "OwnerKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
+        "MsmKey" = "8:_A3083FCCE3712E2CBDB4FB5E26CD9F02"
+        "OwnerKey" = "8:_2E39AD9539A8A014718FA26C61947AC4"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
+        "MsmKey" = "8:_A3083FCCE3712E2CBDB4FB5E26CD9F02"
         "OwnerKey" = "8:_94373BA73503438EBB56FDC38BDFD755"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A3083FCCE3712E2CBDB4FB5E26CD9F02"
+        "OwnerKey" = "8:_007B33481767D5F2DA5D588B3E6DD89C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -58,13 +106,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1EB3039D4E728C8F27F6223642BE4009"
+        "OwnerKey" = "8:_4937734218C7D79114B1EA614937DCC8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D058B90EF04D859C7BBBFFE29862B2DC"
+        "OwnerKey" = "8:_11707DD9FC92198DA8B90F286C786FBB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_007B33481767D5F2DA5D588B3E6DD89C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2E39AD9539A8A014718FA26C61947AC4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A3083FCCE3712E2CBDB4FB5E26CD9F02"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3DF0987B440A3B2FAEE61E3C1E591A89"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -94,15 +166,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.0"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.0"
-                    }
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
-                    {
-                    "Name" = "8:Windows Installer 3.1"
-                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
                     }
                 }
             }
@@ -164,14 +231,45 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:.NETFramework,Version=v4.0"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.7.2"
                 "AllowLaterVersions" = "11:FALSE"
-                "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=131000"
+                "InstallUrl" = "8:https://dotnet.microsoft.com/download/dotnet-framework/net472"
                 }
             }
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_007B33481767D5F2DA5D588B3E6DD89C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_007B33481767D5F2DA5D588B3E6DD89C"
+                    {
+                    "Name" = "8:CsvHelper.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CsvHelper.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0A9F9BB1C4EE4B4C97AB18A017DE8FF0"
             {
             "SourcePath" = "8:..\\Profiles\\ReadMe.txt"
@@ -192,14 +290,107 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1EB3039D4E728C8F27F6223642BE4009"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_11707DD9FC92198DA8B90F286C786FBB"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_11707DD9FC92198DA8B90F286C786FBB"
+                    {
+                    "Name" = "8:System.Windows.Interactivity.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Windows.Interactivity.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2E39AD9539A8A014718FA26C61947AC4"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2E39AD9539A8A014718FA26C61947AC4"
+                    {
+                    "Name" = "8:Microsoft.Bcl.AsyncInterfaces.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Microsoft.Bcl.AsyncInterfaces.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3DF0987B440A3B2FAEE61E3C1E591A89"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3DF0987B440A3B2FAEE61E3C1E591A89"
+                    {
+                    "Name" = "8:System.Runtime.CompilerServices.Unsafe.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Runtime.CompilerServices.Unsafe.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4937734218C7D79114B1EA614937DCC8"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_1EB3039D4E728C8F27F6223642BE4009"
+                    "_4937734218C7D79114B1EA614937DCC8"
                     {
                     "Name" = "8:Microsoft.Expression.Interactions.dll"
                     "Attributes" = "3:512"
@@ -223,20 +414,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D058B90EF04D859C7BBBFFE29862B2DC"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A3083FCCE3712E2CBDB4FB5E26CD9F02"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_D058B90EF04D859C7BBBFFE29862B2DC"
+                    "_A3083FCCE3712E2CBDB4FB5E26CD9F02"
                     {
-                    "Name" = "8:System.Windows.Interactivity.dll"
+                    "Name" = "8:System.Threading.Tasks.Extensions.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:System.Windows.Interactivity.dll"
+            "SourcePath" = "8:System.Threading.Tasks.Extensions.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"
@@ -330,15 +521,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Edit Profiles"
-        "ProductCode" = "8:{EA00B833-73F4-40FB-B78D-EB2E6E8AEF6C}"
-        "PackageCode" = "8:{2224E5BE-1778-42E2-9D1C-DD88F01A323D}"
+        "ProductCode" = "8:{82EF9EF9-79AF-4926-B152-39565D91A29E}"
+        "PackageCode" = "8:{D0F52ED4-52DD-44BA-947E-16FD42A40170}"
         "UpgradeCode" = "8:{3F4FA868-831C-47EA-BB43-393C87ABFCE7}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.4"
+        "ProductVersion" = "8:1.0.5"
         "Manufacturer" = "8:Beckwith Electric Co. Inc."
         "ARPHELPTELEPHONE" = "8:727-544-2326 x7671"
         "ARPHELPLINK" = "8:https://bitbucket.org/tbircek/edit-profiles.git"
@@ -353,8 +544,8 @@
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
-        "PreBuildEvent" = "8::: Folder Locations\r\nset winToolKit=\"\\\\eng94-win8\\\\c$\\\\Program Files\\\\Windows Kits\\\\10\\\\bin\\\\x86\\\\\"\r\nset mainProject=\"C:\\\\Users\\\\tbircek\\\\Documents\\\\Visual Studio 2010\\\\Projects\\\\CSharpWPF\\\\Working Projects\\\\Profiles\\\\\"\r\n:: set exeLocation=%mainProject%Profiles\\\\obj\\\\x86\\\\$(Configuration)\\\\\" :: Old exe file location.\r\nset exeLocation=%mainProject%Profiles\\\\bin\\\\Release\\\\\"\r\nset packages=%mainProject%packages\\\\System.Windows.Interactivity.WPF.2.0.20525\\\\lib\\\\net40\\\\\r\nset allFiles=%packages%*.DLL %exeLocation%EditProfiles.exe\r\n\r\n:: Certificate Items\r\nset timeServer=http://time.certum.pl\r\nset certIssuer=\"Turgay Bircek\"\r\n:: set sha=CC59DAB7C8295C0E600931FCC26755EB52B827EF :: Older license key\r\nset sha=d7ea1283e54b37bae14283a5c3ee34139410b63b\r\nset certID=\"Turgay Bircek\"\r\n::set crossSigner=%documents%Certificate\\\\DigiCert High Assurance EV Root CA.crt\r\n\r\n:: Sign Files\r\necho\r\necho ----------------------------------------\r\necho ... PRE-BUILD STARTED ....\r\necho Signing files ... PLEASE WAIT ...\r\necho ----------------------------------------\r\n:: sha1 signing\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /t %timeServer% /sha1 %sha% %allFiles%\r\n::sha256 signing\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /tr %timeServer% /td sha256 /fd sha256 /as /sha1 %sha% %allFiles%\r\n\r\nIF ERRORLEVEL 1 (\r\necho failed to sign files\r\nexit /b 2\r\n)"
-        "PostBuildEvent" = "8::: Folder Locations\r\nset winToolKit=\"\\\\eng94-win8\\\\c$\\\\Program Files\\\\Windows Kits\\\\10\\\\bin\\\\x86\\\\\"\r\nset mainProject=\"C:\\\\Users\\\\tbircek\\\\Documents\\\\Visual Studio 2010\\\\Projects\\\\CSharpWPF\\\\Working Projects\\\\Profiles\\\\EditProfilesSetup\\\\$(Configuration)\\\\\"\r\nset allFiles=%mainProject%*.msi %mainProject%*.exe\r\nset exeFiles=%mainProject%*.exe\r\n\r\n:: Certificate Items\r\nset timeServer=http://time.certum.pl\r\nset certIssuer=\"Turgay Bircek\"\r\nset sha=d7ea1283e54b37bae14283a5c3ee34139410b63b\r\nset certID=\"Turgay Bircek\"\r\nset crossSigner=%documents%Certificate\\\\DigiCert High Assurance EV Root CA.crt\r\n\r\n:: Sign Files\r\necho\r\necho ----------------------------------------\r\necho Signing files ... PLEASE WAIT ...\r\necho ----------------------------------------\r\n::sha1 signing\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /t %timeServer% /sha1 %sha% %allFiles%\r\n::sha256 signing\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /tr %timeServer% /td sha256 /fd sha256 /as /sha1 %sha% %exeFiles%\r\n\r\nIF ERRORLEVEL 1 (\r\necho failed to sign files\r\nexit /b 2\r\n)"
+        "PreBuildEvent" = "8::: Folder Locations\r\n::set winToolKit=\"\\\\eng94-win8\\\\c$\\\\Program Files\\\\Windows Kits\\\\10\\\\bin\\\\x86\\\\\"\r\nset winToolKit=\"C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\bin\\\\10.0.17763.0\\\\x86\\\\\"\r\n::set mainProject=\"C:\\\\Users\\\\tbircek\\\\Documents\\\\Visual Studio 2010\\\\Projects\\\\CSharpWPF\\\\Working Projects\\\\Profiles\\\\\"\r\nset mainProject=\"C:\\\\Users\\\\TBircek\\\\source\\\\repos\\\\edit-profiles\\\\\"\r\nset exeLocation=%mainProject%Profiles\\\\obj\\\\x86\\\\$(Configuration)\\\\\" :: Old exe file location.\r\nset exeLocation=%mainProject%Profiles\\\\bin\\\\Release\\\\\"\r\nset packages=%mainProject%packages\\\\System.Windows.Interactivity.WPF.2.0.20525\\\\lib\\\\net40\\\\\r\nset allFiles=%packages%*.DLL %exeLocation%EditProfiles.exe\r\n\r\n:: Certificate Items\r\nset timeServer=http://time.certum.pl\r\nset certIssuer=\"Turgay Bircek\"\r\nset sha=eb540eea41cd2c495aec2c18d8789cc760f6eb22\r\nset certID=\"Turgay Bircek\"\r\nset crossSigner=%documents%Certificate\\\\DigiCert High Assurance EV Root CA.crt\r\n\r\n:: Sign Files\r\necho\r\necho ----------------------------------------\r\necho ... PRE-BUILD STARTED ....\r\necho Signing files ... PLEASE WAIT ...\r\necho ----------------------------------------\r\n:: sha1 signing\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /t %timeServer% /sha1 %sha% %allFiles%\r\n::sha256 signing\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /tr %timeServer% /td sha256 /fd sha256 /as /sha1 %sha% %allFiles%\r\n\r\nIF ERRORLEVEL 1 (\r\necho failed to sign files\r\nexit /b 2\r\n)"
+        "PostBuildEvent" = "8::: Folder Locations\r\nset winToolKit=\"C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\bin\\\\10.0.17763.0\\\\x86\\\\\"\r\nset mainProject=\"C:\\\\Users\\\\TBircek\\\\source\\\\repos\\\\edit-profiles\\\\EditProfilesSetup\\\\$(Configuration)\\\\\"\r\nset allFiles=%mainProject%*.msi %mainProject%*.exe\r\nset exeFiles=%mainProject%*.exe\r\n\r\n:: Certificate Items\r\nset timeServer=http://time.certum.pl\r\nset certIssuer=\"Turgay Bircek\"\r\nset sha=eb540eea41cd2c495aec2c18d8789cc760f6eb22\r\nset certID=\"Turgay Bircek\"\r\nset crossSigner=%documents%Certificate\\\\DigiCert High Assurance EV Root CA.crt\r\n\r\n:: Sign Files\r\necho\r\necho ----------------------------------------\r\necho Signing files ... PLEASE WAIT ...\r\necho ----------------------------------------\r\n::sha1 signing\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /t %timeServer% /sha1 %sha% ::%allFiles%\r\n::sha256 signing\r\n%winToolKit%\\\\signtool.exe sign /v /i %certIssuer% /n %certID% /tr %timeServer% /td sha256 /fd ::sha256 /as /sha1 %sha% %exeFiles%\r\n\r\nIF ERRORLEVEL 1 (\r\necho failed to sign files\r\nexit /b 2\r\n)"
         "RunPostBuildEvent" = "3:0"
         }
         "Registry"
@@ -880,7 +1071,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_94373BA73503438EBB56FDC38BDFD755"
             {
-            "SourcePath" = "8:..\\Profiles\\obj\\x86\\Release\\EditProfiles.exe"
+            "SourcePath" = "8:..\\Profiles\\obj\\x86\\Debug\\EditProfiles.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_237FED1CF54E4F17B9EEB59C158041FB"

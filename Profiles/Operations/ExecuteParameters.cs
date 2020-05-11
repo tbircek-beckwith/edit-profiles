@@ -192,7 +192,11 @@ namespace EditProfiles.Operations
             // Update Omicron Execute Module.
             if (document.Path.Contains(@"\DRSend.exe"))
             {
+                // change the path for DRSendIPNET send option
                 document.Path = @"C:\DRSendIPNET\DRSendIPNET.exe";
+                // prepends DRSendIPNET command to the parameter.
+                // document.Parameters = $"{MyResources.Strings_DrIPNet_prepend},{testModuleParameters.ToString()}";
+                testModuleParameters.Insert(0, MyResources.Strings_DrIPNet_prepend, 1);
             }
             document.Parameters = testModuleParameters.ToString();
 

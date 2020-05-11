@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using EditProfiles.Properties;
 
 namespace EditProfiles.Operations
 {
@@ -154,7 +155,7 @@ namespace EditProfiles.Operations
                 }
 
                 // return new parameters.
-                NewParameterString = new StringBuilder("/select AutoTestIP," + string.Join(",", newExecuteParameters.Select(x => x.Key + "," + x.Value)));
+                NewParameterString = new StringBuilder(MyResources.Strings_DrIPNet_prepend + string.Join(",", newExecuteParameters.Select(x => x.Key + "," + x.Value)));
 
             }
 

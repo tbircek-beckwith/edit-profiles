@@ -90,21 +90,21 @@ namespace EditProfiles.Operations
             }
 
             // temp storage to keep replacement words.
-            string output = new AnalyzeValues().Replace(input: fileNameWithoutRevision, pattern: new AnalyzeValues().TestFileNamePatterns, keywords: new AnalyzeValues().FileNameKeywords);
+            string keywords = new AnalyzeValues().Replace(input: fileNameWithoutRevision, pattern: new AnalyzeValues().TestFileNamePatterns, keywords: new AnalyzeValues().FileNameKeywords);
 
             // temp storage to keep replacement words.
             string testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
 
             // index of first '_' is right after product number
-            int productNameLength = output.IndexOf('_') + 1;
+            int productNameLength = keywords.IndexOf('_') + 1;
 
             // split replacement words to insert test file name and new short name for "Regulator #" in the file name, also append file extension.
             // CurrentRegulatorValue is 0 based.
             string modifiedFolderName = Path.Combine(MyResources.Strings_ModifedFolderName, testSubFolderName);
             string regulatorFolderName = $"regulator {CurrentRegulatorValue + 1}";
-            string profileFolderName = $"profile {output.Substring(productNameLength + 1, 1)}";
+            string profileFolderName = $"profile {keywords.Substring(productNameLength + 1, 1)}";
             string testFolderName = Path.Combine(modifiedFolderName, Path.Combine(regulatorFolderName, new Regex(@"(?<profile>\b[Pp](\d)\b\w*)", RegexOptions.None, TimeSpan.FromMilliseconds(100)).IsMatch(fileNameWithoutRevision) ? profileFolderName : string.Empty)).ToLower();
-            string newFileName = Path.Combine(Path.Combine(Path.GetDirectoryName(FileNameWithPath), testFolderName), $"{output.Substring(0, productNameLength)}{testName}_Reg {CurrentRegulatorValue + 1}_{output.Substring(productNameLength, output.Length - productNameLength)}{Path.GetExtension(FileNameWithPath)}");
+            string newFileName = Path.Combine(Path.Combine(Path.GetDirectoryName(FileNameWithPath), testFolderName), $"{keywords.Substring(0, productNameLength)}{testName}_Reg {CurrentRegulatorValue + 1}_{keywords.Substring(productNameLength, keywords.Length - productNameLength)}{Path.GetExtension(FileNameWithPath)}");
             
             return newFileName;
         }
