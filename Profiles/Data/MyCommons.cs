@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using EditProfiles.Properties;
 using System.Diagnostics;
 using System.Globalization;
+using EditProfiles.Operations;
+using System.Collections.ObjectModel;
 
 namespace EditProfiles.Data
 {
@@ -115,17 +117,8 @@ namespace EditProfiles.Data
         {
             get
             {
-                return Path.Combine(Environment.GetFolderPath(
-                                      Environment.SpecialFolder.LocalApplicationData),
-                                      MyResources.Strings_FolderName
-                    //Path.Combine(MyResources.Strings_FolderName,
-                    //              String.Format(MyResources.Strings_VersionFolder,
-                    //                  typeof(EditProfiles.MainWindow)
-                    //                              .Assembly
-                    //                              .GetName()
-                    //                              .Version)
-                    //             )
-                                    );
+                return Path.Combine(path1: Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                                    path2: MyResources.Strings_FolderName);
             }
         }
 
@@ -168,5 +161,21 @@ namespace EditProfiles.Data
         /// Holds OleObject type.
         /// </summary>
         internal static OMICRON.OCCenter.OLEObject OccOleObject { get; set; }
+
+        /// <summary>
+        /// Holds collection of <see cref="Regulator"/>s.
+        /// </summary>
+        internal static ObservableCollection<Regulator> Regulators { get; set; }
+
+        /// <summary>
+        /// Holds collection of <see cref="Profile"/>s.
+        /// </summary>
+        internal static ObservableCollection<Profile> Profiles { get; set; }
+
+        /// <summary>
+        /// Holds collection of <see cref="Register"/>s.
+        /// </summary>
+        internal static ObservableCollection<Register> Registers { get; set; }
+        
     }
 }

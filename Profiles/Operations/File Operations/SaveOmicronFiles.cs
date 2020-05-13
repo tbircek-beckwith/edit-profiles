@@ -60,6 +60,12 @@ namespace EditProfiles.Operations
                 ErrorHandler.Log(ae, this.OldFileName);
                 return;
             }
+            catch (PathTooLongException ex)
+            {
+                // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                ErrorHandler.Log(ex, CurrentFileName);
+                //return Path.Combine(Path.GetDirectoryName(FileNameWithPath), Path.Combine(MyResources.Strings_ModifedFolderName, Path.GetFileName(FileNameWithPath)));
+            }
         }
 
         #endregion

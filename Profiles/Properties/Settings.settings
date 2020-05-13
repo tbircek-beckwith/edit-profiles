@@ -23,8 +23,11 @@
     <Setting Name="RepeatNumber" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">50</Value>
     </Setting>
-    <Setting Name="CrashLogFileSize" Type="System.Int64" Scope="Application">
+    <Setting Name="CrashLogFileSize" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">1000000</Value>
+    </Setting>
+    <Setting Name="MaxFileNameLength" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">250</Value>
     </Setting>
   </Settings>
 </SettingsFile>

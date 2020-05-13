@@ -105,7 +105,26 @@ namespace EditProfiles.Operations
             string profileFolderName = $"profile {keywords.Substring(productNameLength + 1, 1)}";
             string testFolderName = Path.Combine(modifiedFolderName, Path.Combine(regulatorFolderName, new Regex(@"(?<profile>\b[Pp](\d)\b\w*)", RegexOptions.None, TimeSpan.FromMilliseconds(100)).IsMatch(fileNameWithoutRevision) ? profileFolderName : string.Empty)).ToLower();
             string newFileName = Path.Combine(Path.Combine(Path.GetDirectoryName(FileNameWithPath), testFolderName), $"{keywords.Substring(0, productNameLength)}{testName}_Reg {CurrentRegulatorValue + 1}_{keywords.Substring(productNameLength, keywords.Length - productNameLength)}{Path.GetExtension(FileNameWithPath)}");
-            
+
+            // let's limit file name length > MaxFileNameLength omicron test universe fails to save modified files.
+            // just add a sub folder named "modified files" with original file name
+            // do not modify anything else
+            if (newFileName.Length > Settings.Default.MaxFileNameLength)
+            {
+                // mode full filename
+                newFileName = Path.Combine(Path.GetDirectoryName(FileNameWithPath), Path.Combine(MyResources.Strings_ModifedFolderName, Path.GetFileName(FileNameWithPath)));
+
+                // if this new file name is still > MaxFileNameLength 
+                // let put this file under user document
+                if (newFileName.Length > Settings.Default.MaxFileNameLength)
+                {
+                    newFileName = Path.Combine(path1: Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                                               path2: typeof(MainWindow).Assembly.GetName().Name,
+                                               path3: $"{MyResources.Strings_ModifedFolderName}",
+                                               path4: Path.GetFileName(FileNameWithPath));
+                }
+            }
+
             return newFileName;
         }
 
@@ -133,7 +152,7 @@ namespace EditProfiles.Operations
                 }
 
                 // Create new folder to store modified files.
-                if(!Directory.Exists(Path.GetDirectoryName(NewFileName.ToString())))
+                if (!Directory.Exists(Path.GetDirectoryName(NewFileName.ToString())))
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(NewFileName.ToString()));
                 }
@@ -142,6 +161,12 @@ namespace EditProfiles.Operations
 
                 // return new file name.
                 return NewFileName.ToString();
+            }
+            catch (PathTooLongException ex)
+            {
+                // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                ErrorHandler.Log(ex, CurrentFileName);
+                return Path.Combine(Path.GetDirectoryName(FileNameWithPath), Path.Combine(MyResources.Strings_ModifedFolderName, Path.GetFileName(FileNameWithPath)));
             }
             catch (FormatException fe)
             {

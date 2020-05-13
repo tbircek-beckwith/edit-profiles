@@ -89,9 +89,18 @@ namespace EditProfiles.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1000000")]
-        public long CrashLogFileSize {
+        public int CrashLogFileSize {
             get {
-                return ((long)(this["CrashLogFileSize"]));
+                return ((int)(this["CrashLogFileSize"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("250")]
+        public int MaxFileNameLength {
+            get {
+                return ((int)(this["MaxFileNameLength"]));
             }
         }
     }

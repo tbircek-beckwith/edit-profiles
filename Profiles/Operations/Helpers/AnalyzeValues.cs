@@ -14,74 +14,29 @@ namespace EditProfiles.Operations
 
         #region Public Variables
 
+        //
         // used http://regexr.com to generate following expressions.
         //
-        //
-        // power scheme "Regular Expressions" pattern group.
-        // captures (Forward || (Smart || Src || Reverse)) Power like string in the file name.
-        // (?< powerKeyword >\b(([Ff]orward\s) | (([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)
-        //
-        // determination "Regular Expressions" pattern group.
-        // captures (AD || ADM) like string in the file name.
-        // (?<determination>\b[Aa][Dd]([Mm])?\b\w*)
-        //
-        // distributed "Regular Expressions" pattern group.
-        // captures DG like string in the file name.
-        // (?<distrubuted>\b[Dd][Gg]\b\w*)
-        //
-        // product "Regular Expressions" pattern group.
-        // captures M-6200A like string in the file name.
-        // (?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)
-        //
-        // revision "Regular Expressions" pattern group.
-        // captures Rev# like string in the file name.
-        // (?<revision>\b[Rr]ev(\d)\b\w*)
-        //
-        // frequency "Regular Expressions" pattern group.
-        // captures 60Hz like string in the file name.
-        // (?<frequency>\b\d{2}[Hh][Zz]\b\w*)
-        //
-        // profile "Regular Expressions" pattern group.
-        // captures P1 like string in the file name.
-        // (?<profile>\b(?=[Pp](\d))\b\w*)
-        //
-        // powerInitials "Regular Expressions" pattern group.
-        // captures FP or RP like strings in the file name.
-        // (?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)
-        //
-        // srcReverse "Regular Expressions" pattern group.
-        // captures Src Reverse like strings in the file name.
-        // (?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)
-        //
-        // src "Regular Expressions" pattern group.
-        // captures Src like strings in the file name.
-        // (?<src>\b([Ss]rc)\b\w*)
-        //
-        // not used "Regular Expressions" pattern group.
-        // captures (Test || (Short Version)) like string in the file name.
-        // (?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)
-        //
-        // combination Regex pattern with group names
-        //(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)|(?<revision>\b[Rr]ev\d\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b[Pp](\d)\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)
-        //
 
         /// <summary>
-        /// combination Regex pattern with group names
+        /// Holds patterns to retrieve profile set points from a .csv file
         /// </summary>
-        /// <remarks>Future use maybe</remarks>
+        public readonly string SetPointPatterns = @"(?<setpointKeyword>(?:setpoints\[\d\]))+";
+
+        /// <summary>
+        /// Holds patterns to generate test module titles
+        /// </summary>
         public readonly string TitlePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
 
-        /// <summary>
-        /// combination Regex pattern with group names
+        /// <summary>        
+        /// Holds patterns to generate test file names
         /// </summary>
-        /// <remarks>Future use maybe</remarks>
         public readonly string TestFileNamePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)|(?<revision>\b[Rr]ev\d\b\w*)|(?<notUsed>\b([Tt]est*)|([Ss]hort\s[Vv]ersion)\b\w*)|(?<frequency>\b\d{2}[Hh][Zz]\b\w*)|(?<profile>\b(?=[Pp](\d))\b\w*)|(?<determination>\b[Aa][Dd]([Mm])?\b\w*)|(?<distrubuted>\b[Dd][Gg]\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
 
         /// <summary>
-        /// combination Regex pattern with group names
+        /// Holds patterns to generate test folder names
         /// </summary>
-        /// <remarks>Future use maybe</remarks>
-        public readonly string TestFolderNamePatterns = @"(?<alarms>\b((?=Alarm)\b\w*))|(?<bandcenters>\b((?=Bandcenter)\b\w*))|(?<bandwidth>\b((?=Bandwidth)\b\w*))|(?<dtDelay>\b((?=Definite)\b\w*))|(?<dg>\b((?=Distributed)\b\w*))|(?<georgia>\b((?=Georgia)\b\w*))|(?<intertap>\b((?=Inter[Tt]ap)\b\w*))|(?<interse>\b((?=Inverse)\b\w*))|(?<ldc>\b((?=[Ll][Dd][Cc][\s])\b\w*))|(?<limit>\b((?=Line Limit)\b\w*))|(?<pulse>\b((?=Pulse Width)\b\w*))|(?<varbias>\b((?=VAr[Bb]ias)\b\w*))|(?<smartVR>\b(Smart [Vv][Rr])\b\w*)|(?<vr>\b(Reduction)\b\w*)|(?<vt>\b(Correction)\b\w*)";
+        public readonly string TestFolderNamePatterns = @"(?<alarms>\b((?=Alarm)\b\w*))|(?<bandcenters>\b((?=Bandcenter)\b\w*))|(?<bandwidth>\b((?=Bandwidth)\b\w*))|(?<dtDelay>\b((?=Definite)\b\w*))|(?<dg>\b((?=Distributed)\b\w*))|(?<georgia>\b((?=Georgia)\b\w*))|(?<intertap>\b((?=Inter[Tt]ap)\b\w*))|(?<inverse>\b((?=Inverse)\b\w*))|(?<ldc>\b((?=[Ll][Dd][Cc][\s])\b\w*))|(?<limit>\b((?=Line Limit)\b\w*))|(?<pulse>\b((?=Pulse Width)\b\w*))|(?<varbias>\b((?=VAr[Bb]ias)\b\w*))|(?<smartVR>\b(Smart [Vv][Rr])\b\w*)|(?<vr>\b(Reduction)\b\w*)|(?<vt>\b(Correction)\b\w*)";
 
         /// <summary>
         /// holds replacement words with ignoring casing.
@@ -177,7 +132,32 @@ namespace EditProfiles.Operations
         #endregion
 
         #region Public Functions
-        
+
+        /// <summary>
+        /// Removes input string non-matching keywords using specified pattern.
+        /// </summary>
+        /// <param name="input">original string to be modified.</param>
+        /// <param name="pattern">pattern to use matching keywords</param>
+        /// <returns>Returns only matched, others return as empty string.</returns>
+        public string Match(string input, string pattern)
+        {
+
+            // temp storage to keep replacement words.
+            string output = string.Empty;
+
+            if(IsMatch(input, pattern))
+            {
+                Match match = Regex.Match(input, pattern);
+                output = match.Value;
+            }
+            else
+            {
+                output = input;
+            }
+
+            return output;
+        }
+
         /// <summary>
         /// Replaces input string with matching keywords using specified pattern.
         /// </summary>
@@ -185,7 +165,7 @@ namespace EditProfiles.Operations
         /// <param name="pattern">pattern to use matching keywords</param>
         /// <param name="keywords">keywords to match and replace</param>
         /// <returns>Returns replacement of the values matched, others return as empty string.</returns>
-        public string Replace(string input, string pattern, Dictionary <string,string> keywords)
+        public string Replace(string input, string pattern, Dictionary<string, string> keywords)
         {
 
             // temp storage to keep replacement words.
@@ -221,7 +201,7 @@ namespace EditProfiles.Operations
         /// <returns>Returns replacement of the values matched, and non-matched original values.</returns>
         public string Change(string input, string pattern, Dictionary<string, string> keywords)
         {
-            
+
             return ReplaceValue(input, keywords);
         }
 
@@ -236,9 +216,21 @@ namespace EditProfiles.Operations
         {
 
             // temp storage to keep replacement words.
-            string output = Regex.Replace(input, pattern, string.Empty,RegexOptions.None, TimeSpan.FromMilliseconds(20)).Trim();
-                        
+            string output = Regex.Replace(input, pattern, string.Empty, RegexOptions.None, TimeSpan.FromMilliseconds(200)).Trim();
+
             return output;
+        }
+
+        /// <summary>
+        /// Indicates if <paramref name="input"/> contains matching <paramref name="pattern"/>
+        /// </summary>
+        /// <param name="input">original string to be modified.</param>
+        /// <param name="pattern">pattern to use matching keywords</param>
+        /// <returns>Returns true if there is a match</returns>
+        public bool IsMatch(string input, string pattern)
+        {
+
+            return Regex.IsMatch(input, pattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
         }
 
         #endregion
@@ -283,7 +275,7 @@ namespace EditProfiles.Operations
             //    Regex profile = new Regex(@"(?<profile>\b(?=[Pp](\d))\b\w*)");
             //    output = profile.Replace(output, output + "_");
             //}
-           
+
             // return a word.
             return output;
         }
