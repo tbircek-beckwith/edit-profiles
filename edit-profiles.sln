@@ -5,14 +5,14 @@ VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditProfiles", "Profiles\EditProfiles.csproj", "{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EditProfilesSetup", "EditProfilesSetup\EditProfilesSetup.vdproj", "{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "edit-profiles-setup", "EditProfilesSetup\EditProfilesSetup.vdproj", "{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92A1383F-E1DD-43F9-9F99-73BD9923C550}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditProfilesTest", "EditProfilesTest\EditProfilesTest.csproj", "{708BE493-4A0C-43AB-A807-78EB1CE9572C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edit-profiles-test", "EditProfilesTest\edit-profiles-test.csproj", "{708BE493-4A0C-43AB-A807-78EB1CE9572C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
