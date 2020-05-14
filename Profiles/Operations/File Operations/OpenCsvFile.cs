@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -72,26 +71,21 @@ namespace EditProfiles.Operations
             // Sender is a FileDialog
             var dlg = sender as FileDialog;
 
-            //ItemsToFind = new List<string>();
-            //ItemsToReplace = new List<string>();
-
             using (var reader = new StreamReader(dlg.FileName))
             {
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
                     // initialize holders for find and replace items
                     StringBuilder finds = new StringBuilder();
-                    // List<string> finds = new List<string>();
                     StringBuilder replaces = new StringBuilder();
-                    // List<string> replaces = new List<string>();
-                    //int counter = 0;
+
                     // the .csv file doesn't have any header.
                     csv.Configuration.HasHeaderRecord = false;
 
-                    // initialize 
+                    // initialize a new Register collection
                     ObservableCollection<Register> registers = new ObservableCollection<Register>();
 
-
+                    // scan thru the file
                     while (csv.Read())
                     {
                         // ignore the blank entries.
@@ -99,128 +93,65 @@ namespace EditProfiles.Operations
                         {
                             // append new field to appropriate groups with "|" 
                             finds.Append(csv.GetField(3)).Append("|");
-                            //ItemsToFind.Add(csv.GetField(3));
                             replaces.Append(csv.GetField(1)).Append("|");
-                            //ItemsToReplace.Add(csv.GetField(1));
-
-                            // var test = registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;  // ---> crash
-
-                            // var test2 = $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}";  // ---> crash
-
-                            // string registerType = new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns);
+                            
+                            // Profile 2,3, and 4's "Original Value" must exchange to Profile 1 "Original Value".
+                            // since .cvs file follows profile order we can assume first two profiles are configuration
+                            // and profile 1.
                             int profileCount = registers.Select(a => a.Profile).Distinct().Count();
 
-                            //string profileTest = new AnalyzeValues().IsMatch(csv.GetField(6), new AnalyzeValues().SetPointPatterns) ? $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}" : csv.GetField(6);
+                            // Set points name must include a "setpoints[#]" in their name and Column R != "NULL"
                             bool isSetPoint = Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns, RegexOptions.None, TimeSpan.FromSeconds(2)).Length > 1 && !string.Equals(csv.GetField(17), "NULL");
 
+                            bool hasRegulatorInfo = Regex.Split(csv.GetField(6), new AnalyzeValues().RegulatorPatterns, RegexOptions.None, TimeSpan.FromSeconds(2)).Length > 1;
+
+                            // if a value don't include ".set[points[#]." then it belongs to other variations of the modbus register.
+                            // refering them as profile 0
                             string profile = isSetPoint ? $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}" : "0";
-                            //var useOriginalValue = !isSetPoint && (1 > profileCount) && (string.Equals(profileTest, registers[0].Profile));
-                            //Debug.WriteLine($"Original value: {csv.GetField(3)}\t Replacement: {csv.GetField(1)}\t but we use: {(useOriginalValue? csv.GetField(3): registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue)}");
-                            // Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns,RegexOptions.None, TimeSpan.FromSeconds(2)).Last();
 
+                            // if a value don't include "[REG_IDX_1]" then it unattached.
+                            // refering them as regulator 0
+                            string regulator = hasRegulatorInfo ? $"{new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().RegulatorPatterns).Split('_').GetValue(2)}" : "0";
 
-                            Register register = new Register();
-
-                            register.Index = csv.Context.Row - 1;
-                            register.RowNumber = csv.Context.Row;
-                            register.ReplacementValue = csv.GetField(1);
-                            // assumption made: original file(s) are/is always Profile 1 
-                            // so always change "Find" value to Profile 1 register number
-                            register.OriginalValue = (isSetPoint) && (2 < profileCount) && (!string.Equals(profile, registers[0].Profile)) ? registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue : csv.GetField(3); // csv.GetField(3),
-                            register.Location = csv.GetField(6);
-                            register.MinimumValue = csv.GetField(8);
-                            register.MaximumValue = csv.GetField(9);
-                            register.Increment = csv.GetField(10);
-                            register.OptionalName = string.Equals(csv.GetField(17), "NULL") ? csv.GetField(22) : csv.GetField(17);
-                            register.Profile = profile;
-
-
-                            //if (new AnalyzeValues().IsMatch(csv.GetField(6), new AnalyzeValues().SetPointPatterns))
-                            //{
-
-                            //    // var test = registers.Select(a => a.Profile).Distinct().Count() < 2 ? csv.GetField(3) : registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;
-                            //    // int profileCount = registers.Select(a => a.Profile).Distinct().Count();
-                            //    string profile = $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}";
-
-                            //    // read a row of .csv file
-                            //    Register register = new Register
-                            //    {
-                            //        Index = csv.Context.Row - 1,
-                            //        RowNumber = csv.Context.Row,
-                            //        ReplacementValue = csv.GetField(1),
-                            //        // assumption made: original file(s) are/is always Profile 1 
-                            //        // so always change "Find" value to Profile 1 register number
-                            //        OriginalValue = (1 <= profileCount) && (!string.Equals(profile,registers[0].Profile)) ? registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue : csv.GetField(3), // csv.GetField(3),
-                            //        Location = csv.GetField(6),
-                            //        MinimumValue = csv.GetField(8),
-                            //        MaximumValue = csv.GetField(9),
-                            //        Increment = csv.GetField(10),
-                            //        OptionalName = string.Equals(csv.GetField(17), "NULL") ? csv.GetField(22) : csv.GetField(17),
-                            //        Profile = profile,
-                            //    };
+                            // retrieve the row.
+                            Register register = new Register
+                            {
+                                Index = csv.Context.Row - 1,
+                                RowNumber = csv.Context.Row,   
+                                ReplacementValue = csv.GetField(1),
+                                // if the conditions met Profile 1.OriginalValue, otherwise whatever .csv file value 
+                                OriginalValue = (isSetPoint) && (2 < profileCount) && (!string.Equals(profile, registers[0].Profile)) ? registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue : csv.GetField(3),
+                                Location = csv.GetField(6),
+                                MinimumValue = csv.GetField(8),
+                                MaximumValue = csv.GetField(9),
+                                Increment = csv.GetField(10),
+                                OptionalName = string.Equals(csv.GetField(17), "NULL") ? csv.GetField(22) : csv.GetField(17),
+                                Profile = profile,
+                                Regulator = regulator,
+                            };
 
                             //  Debug.WriteLine($"record #:{registers.Count}\t index:{register.Index}\t row: {register.RowNumber}\t repl: {register.ReplacementValue}\t ori: {register.OriginalValue}\t profile: {register.Profile}\t opt: {register.OptionalName}\t loc: {register.Location}");
 
+                            // add new register to the collection
                             registers.Add(register);
 
-                            // var test = registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;
-                            Debug.WriteLine($"row: {register.RowNumber} -- reg value: {register.OriginalValue},{csv.GetField(3)} :excel value, ---> profile: {register.Profile}");
-                            //}
+                            // Debug.WriteLine($"row: {register.RowNumber} -- reg value: {register.OriginalValue},{csv.GetField(3)} :excel value, ---> profile: {register.Profile}");
                         }
                     }
 
                     // store registers
                     MyCommons.Registers = registers;
-
+                    
                     // initialize
                     ObservableCollection<Profile> profiles = new ObservableCollection<Profile>();
-
-                    //// get profile information of 2 and up
-                    //// assumption made: original file(s) are/is always Profile 1 
-                    //// assign Profile 1
-                    //ObservableCollection<Register> profile1Registers = new ObservableCollection<Register>(registers.Where(x => x.Profile == $"{1}"));
-                    //Profile profile = new Profile()
-                    //{
-                    //    Id = 1,
-                    //    Name = $"Profile {1}",
-                    //    Registers = profile1Registers,
-                    //};
-
-                    //profiles.Add(profile);
 
                     // assign other profile values
                     for (int i = 0; i <= registers.Select(a => a.Profile).Distinct().Count() - 1; i++)
                     {
+                        // group all the same registers.Profile items together.
+                        ObservableCollection<Register> profileRegisters = new ObservableCollection<Register>(registers.Where(x => x.Profile == $"{i}").Where(x => !String.Equals(x.Location, "&dummy")));
 
-                        ObservableCollection<Register> profileRegisters = new ObservableCollection<Register>(registers.Where(d => d.Profile == $"{i}"));
-
-                        //// initialize 
-                        //ObservableCollection<Register> newRegisters = new ObservableCollection<Register>();
-
-                        //foreach (var item in profileRegisters)
-                        //{
-
-                        //    Debug.WriteLine($"loc: {item.Location}, ori: {item.OriginalValue}, rep: {item.ReplacementValue}");
-
-                        //    Register register = new Register
-                        //    {
-                        //        Index = item.Index,
-                        //        RowNumber = item.RowNumber,
-                        //        ReplacementValue = item.ReplacementValue,
-                        //        OriginalValue = profile1Registers.Where(y => y.Location.Contains(Regex.Split(item.Location, new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue,
-                        //        Location = item.Location,
-                        //        MinimumValue = item.MinimumValue,
-                        //        MaximumValue = item.MaximumValue,
-                        //        Increment = item.Increment,
-                        //        OptionalName = item.OptionalName,
-                        //        Profile = item.Profile,
-                        //    };
-
-                        //    Debug.WriteLine($"loc: {register.Location}, ori: {register.OriginalValue}, rep: {register.ReplacementValue}");
-
-                        //    newRegisters.Add(register);
-                        //}
-
+                        // retrieve the profile
                         Profile profile = new Profile()
                         {
                             Id = i,
@@ -228,14 +159,33 @@ namespace EditProfiles.Operations
                             Registers = profileRegisters,
                         };
 
+                        // add new profiles to the collection
                         profiles.Add(profile);
                     }
 
+                    // initialize
+                    ObservableCollection<Regulator> regulators = new ObservableCollection<Regulator>();
+
+                    for (int i = 1; i <= registers.Select(a => a.Regulator).Distinct().Count() - 1; i++)
+                    {
+                        
+                        // retrieve the regulator
+                        Regulator regulator = new Regulator()
+                        {
+                            Id = i,
+                            Name = $"Regulator {i}",
+                            Profiles = profiles,
+                        };
+
+                        regulators.Add(regulator);
+                    }
+                                                           
                     // assign values to the text boxes.
                     MyCommons.MyViewModel.FindWhatTextBoxText = finds.ToString();
                     MyCommons.MyViewModel.ReplaceWithTextBoxText = replaces.ToString();
 
                     MyCommons.Profiles = profiles;
+                    MyCommons.Regulators = regulators;
                 }
             }
 

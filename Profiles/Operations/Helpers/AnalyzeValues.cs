@@ -24,6 +24,11 @@ namespace EditProfiles.Operations
         public readonly string SetPointPatterns = @"(?<setpointKeyword>(?:setpoints\[\d\]))+";
 
         /// <summary>
+        /// Holds patterns to retrieve regulator number from a .csv file
+        /// </summary>
+        public readonly string RegulatorPatterns = @"(?<regulatorKeyword>(?:REG_IDX_\d))+";
+
+        /// <summary>
         /// Holds patterns to generate test module titles
         /// </summary>
         public readonly string TitlePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
@@ -40,8 +45,8 @@ namespace EditProfiles.Operations
 
         /// <summary>
         /// holds replacement words with ignoring casing.
+        /// <para>must add or remove words here to provide replacements.</para>
         /// </summary>
-        /// <remarks>must add or remove words here to provide replacements.</remarks>
         public Dictionary<string, string> TitleKeywords = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 // {"original", "replacement"},
@@ -65,8 +70,8 @@ namespace EditProfiles.Operations
 
         /// <summary>
         /// holds replacement words with ignoring casing.
+        /// <para>must add or remove words here to provide replacements.</para>
         /// </summary>
-        /// <remarks>must add or remove words here to provide replacements.</remarks>
         public Dictionary<string, string> FileNameKeywords = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 // {"original", "replacement"},
@@ -91,8 +96,8 @@ namespace EditProfiles.Operations
 
         /// <summary>
         /// holds replacement words with ignoring casing.
+        /// <para>must add or remove words here to provide replacements.</para>
         /// </summary>
-        /// <remarks>must add or remove words here to provide replacements.</remarks>
         public Dictionary<string, string> FolderNameKeywords = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 // {"original", "replacement"},

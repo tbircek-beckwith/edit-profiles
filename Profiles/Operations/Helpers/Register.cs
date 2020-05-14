@@ -14,57 +14,67 @@ namespace EditProfiles.Operations
         public int Index { get; set; }
 
         /// <summary>
-        /// The register row number in selected .csv file
-        /// remember row is 1 based while collection is 0 based
+        /// The register row number in selected .csv file.
+        /// <para>RowNumber starts at 1.</para>
         /// </summary>
         public int RowNumber { get; set; }
 
         /// <summary>
         /// The new modbus register address. 
-        /// Column B : Field 1
+        /// <para>Column B : Field 1</para>
         /// </summary>
         public string ReplacementValue { get; set; }
 
         /// <summary>
         /// The old modbus register address
-        /// Column D : Field 3
+        /// <para>Assumption made: original file(s) are/is always Profile 1
+        /// so always change "Find" value to Profile 1 register number</para>
+        /// <para>Column D : Field 3</para>
         /// </summary>
         public string OriginalValue { get; set; }
 
         /// <summary>
-        /// This is C code memory location
-        /// Column G : Field 6
+        /// This is C code variable name
+        /// <para>Column G : Field 6</para>
         /// </summary>
         public string Location { get; set; }
 
         /// <summary>
         /// The register minimum value
-        /// Column I : Field 8
+        /// <para>Column I : Field 8</para>
         /// </summary>
         public string MinimumValue { get; set; }
 
         /// <summary>
         /// The register maximum value
-        /// Column J : Field 9
+        /// <para>Column J : Field 9</para>
         /// </summary>
         public string MaximumValue { get; set; }
 
         /// <summary>
         /// The increment step size
-        /// Column K : Field 10
+        /// <para>Column K : Field 10</para>
         /// </summary>
         public string Increment { get; set; }
 
         /// <summary>
         /// The register optional name. Could be nothing.
-        /// Column R : Field 17 or Column W : 22 (if Column R == "NULL")
+        /// <para>Column R : Field 17 or Column W : 22 (if Column R == "NULL")</para>
         /// </summary>
         public string OptionalName { get; set; }
 
         /// <summary>
         /// Hold information about <see cref="Register"/> profile
+        /// <para>all <see cref="Profile"/> must modify <see cref="OriginalValue"/> to match Profile 1.
+        /// Except Profile 0 and 1</para>
         /// </summary>
         public string Profile { get; set; }
+
+        /// <summary>
+        /// Hold information about <see cref="Register"/> regulator
+        /// <para></para>
+        /// </summary>
+        public string Regulator { get; set; }
 
         #endregion
 
