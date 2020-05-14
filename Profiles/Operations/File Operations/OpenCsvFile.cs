@@ -103,39 +103,69 @@ namespace EditProfiles.Operations
                             replaces.Append(csv.GetField(1)).Append("|");
                             //ItemsToReplace.Add(csv.GetField(1));
 
-                            //var test = registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;
+                            // var test = registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;  // ---> crash
 
-                            if (new AnalyzeValues().IsMatch(csv.GetField(6), new AnalyzeValues().SetPointPatterns))
-                            {
+                            // var test2 = $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}";  // ---> crash
 
-                                // var test = registers.Select(a => a.Profile).Distinct().Count() < 2 ? csv.GetField(3) : registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;
-                                int profileCount = registers.Select(a => a.Profile).Distinct().Count();
-                                string profile = $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}";
+                            // string registerType = new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns);
+                            int profileCount = registers.Select(a => a.Profile).Distinct().Count();
 
-                                // read a row of .csv file
-                                Register register = new Register
-                                {
-                                    Index = csv.Context.Row - 1,
-                                    RowNumber = csv.Context.Row,
-                                    ReplacementValue = csv.GetField(1),
-                                    // assumption made: original file(s) are/is always Profile 1 
-                                    // so always change "Find" value to Profile 1 register number
-                                    OriginalValue = (1 <= profileCount) && (!string.Equals(profile,registers[0].Profile)) ? registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue : csv.GetField(3), // csv.GetField(3),
-                                    Location = csv.GetField(6),
-                                    MinimumValue = csv.GetField(8),
-                                    MaximumValue = csv.GetField(9),
-                                    Increment = csv.GetField(10),
-                                    OptionalName = string.Equals(csv.GetField(17), "NULL") ? csv.GetField(22) : csv.GetField(17),
-                                    Profile = profile,
-                                };
+                            //string profileTest = new AnalyzeValues().IsMatch(csv.GetField(6), new AnalyzeValues().SetPointPatterns) ? $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}" : csv.GetField(6);
+                            bool isSetPoint = Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns, RegexOptions.None, TimeSpan.FromSeconds(2)).Length > 1 && !string.Equals(csv.GetField(17), "NULL");
 
-                                //  Debug.WriteLine($"record #:{registers.Count}\t index:{register.Index}\t row: {register.RowNumber}\t repl: {register.ReplacementValue}\t ori: {register.OriginalValue}\t profile: {register.Profile}\t opt: {register.OptionalName}\t loc: {register.Location}");
+                            string profile = isSetPoint ? $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}" : "0";
+                            //var useOriginalValue = !isSetPoint && (1 > profileCount) && (string.Equals(profileTest, registers[0].Profile));
+                            //Debug.WriteLine($"Original value: {csv.GetField(3)}\t Replacement: {csv.GetField(1)}\t but we use: {(useOriginalValue? csv.GetField(3): registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue)}");
+                            // Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns,RegexOptions.None, TimeSpan.FromSeconds(2)).Last();
 
-                                registers.Add(register);
 
-                                // var test = registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;
-                                Debug.WriteLine($"row: {register.RowNumber} -- reg value: {register.OriginalValue},{csv.GetField(3)} :excel value, ---> profile: {register.Profile}");
-                            }
+                            Register register = new Register();
+
+                            register.Index = csv.Context.Row - 1;
+                            register.RowNumber = csv.Context.Row;
+                            register.ReplacementValue = csv.GetField(1);
+                            // assumption made: original file(s) are/is always Profile 1 
+                            // so always change "Find" value to Profile 1 register number
+                            register.OriginalValue = (isSetPoint) && (2 < profileCount) && (!string.Equals(profile, registers[0].Profile)) ? registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue : csv.GetField(3); // csv.GetField(3),
+                            register.Location = csv.GetField(6);
+                            register.MinimumValue = csv.GetField(8);
+                            register.MaximumValue = csv.GetField(9);
+                            register.Increment = csv.GetField(10);
+                            register.OptionalName = string.Equals(csv.GetField(17), "NULL") ? csv.GetField(22) : csv.GetField(17);
+                            register.Profile = profile;
+
+
+                            //if (new AnalyzeValues().IsMatch(csv.GetField(6), new AnalyzeValues().SetPointPatterns))
+                            //{
+
+                            //    // var test = registers.Select(a => a.Profile).Distinct().Count() < 2 ? csv.GetField(3) : registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;
+                            //    // int profileCount = registers.Select(a => a.Profile).Distinct().Count();
+                            //    string profile = $"{Convert.ToInt32(new AnalyzeValues().Match(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Split('[').GetValue(1).ToString().Split(']').GetValue(0)) + 1}";
+
+                            //    // read a row of .csv file
+                            //    Register register = new Register
+                            //    {
+                            //        Index = csv.Context.Row - 1,
+                            //        RowNumber = csv.Context.Row,
+                            //        ReplacementValue = csv.GetField(1),
+                            //        // assumption made: original file(s) are/is always Profile 1 
+                            //        // so always change "Find" value to Profile 1 register number
+                            //        OriginalValue = (1 <= profileCount) && (!string.Equals(profile,registers[0].Profile)) ? registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue : csv.GetField(3), // csv.GetField(3),
+                            //        Location = csv.GetField(6),
+                            //        MinimumValue = csv.GetField(8),
+                            //        MaximumValue = csv.GetField(9),
+                            //        Increment = csv.GetField(10),
+                            //        OptionalName = string.Equals(csv.GetField(17), "NULL") ? csv.GetField(22) : csv.GetField(17),
+                            //        Profile = profile,
+                            //    };
+
+                            //  Debug.WriteLine($"record #:{registers.Count}\t index:{register.Index}\t row: {register.RowNumber}\t repl: {register.ReplacementValue}\t ori: {register.OriginalValue}\t profile: {register.Profile}\t opt: {register.OptionalName}\t loc: {register.Location}");
+
+                            registers.Add(register);
+
+                            // var test = registers.Where(y => y.Location.Contains(Regex.Split(csv.GetField(6), new AnalyzeValues().SetPointPatterns).Last())).ElementAt(0).OriginalValue;
+                            Debug.WriteLine($"row: {register.RowNumber} -- reg value: {register.OriginalValue},{csv.GetField(3)} :excel value, ---> profile: {register.Profile}");
+                            //}
                         }
                     }
 
@@ -159,7 +189,7 @@ namespace EditProfiles.Operations
                     //profiles.Add(profile);
 
                     // assign other profile values
-                    for (int i = 1; i <= registers.Select(a => a.Profile).Distinct().Count(); i++)
+                    for (int i = 0; i <= registers.Select(a => a.Profile).Distinct().Count() - 1; i++)
                     {
 
                         ObservableCollection<Register> profileRegisters = new ObservableCollection<Register>(registers.Where(d => d.Profile == $"{i}"));
