@@ -147,6 +147,7 @@
     <Compile Include="Commands\UpdateCommand.cs" />
     <Compile Include="Behaviors\DispatchService.cs" />
     <Compile Include="Operations\Helpers\AnalyzeValues.cs" />
+    <Compile Include="Operations\Helpers\Columns.cs" />
     <Compile Include="Operations\Helpers\Profile.cs" />
     <Compile Include="Operations\Helpers\Register.cs" />
     <Compile Include="Operations\Helpers\Regulator.cs" />
