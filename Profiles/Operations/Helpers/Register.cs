@@ -22,6 +22,7 @@ namespace EditProfiles.Operations
         /// <summary>
         /// The new modbus register address. 
         /// <para>Column B : Field 1</para>
+        /// <para>"T:N"</para>
         /// </summary>
         public string ReplacementValue { get; set; }
 
@@ -32,12 +33,24 @@ namespace EditProfiles.Operations
         /// <para>Column D : Field 3</para>
         /// </summary>
         public string OriginalValue { get; set; }
+        
+        /// <summary>
+        /// This is register's read/write permissions 
+        /// <para>Column G : Field 5</para>
+        /// </summary>
+        public string RegisterPermissions { get; set; }
 
         /// <summary>
         /// This is C code variable name
         /// <para>Column G : Field 6</para>
         /// </summary>
         public string Location { get; set; }
+
+        /// <summary>
+        /// This is C data type of the variable
+        /// <para>Column H : Field 7</para>
+        /// </summary>
+        public string DataType { get; set; }
 
         /// <summary>
         /// The register minimum value
@@ -47,19 +60,37 @@ namespace EditProfiles.Operations
 
         /// <summary>
         /// The register maximum value
-        /// <para>Column J : Field 9</para>
+        /// <para>Column K : Field 9</para>
         /// </summary>
         public string MaximumValue { get; set; }
 
         /// <summary>
         /// The increment step size
-        /// <para>Column K : Field 10</para>
+        /// <para>Column L : Field 10</para>
         /// </summary>
         public string Increment { get; set; }
 
         /// <summary>
+        /// The increment step size
+        /// <para>Column O : Field 14</para>
+        /// </summary>
+        public string MBFunction { get; set; }
+
+        /// <summary>
+        /// The increment step size
+        /// <para>Column P : Field 15</para>
+        /// </summary>
+        public string ProtectionLevel { get; set; }
+
+        /// <summary>
+        /// The increment step size
+        /// <para>Column Q : Field 16</para>
+        /// </summary>
+        public string Permissions { get; set; }
+
+        /// <summary>
         /// The register optional name. Could be nothing.
-        /// <para>Column R : Field 17 or Column W : 22 (if Column R == "NULL")</para>
+        /// <para>Column S : Field 18 or Column W : 23 (if Column S == "NULL")</para>
         /// </summary>
         public string OptionalName { get; set; }
 
@@ -71,10 +102,10 @@ namespace EditProfiles.Operations
         public string Profile { get; set; }
 
         /// <summary>
-        /// Hold information about <see cref="Register"/> regulator
-        /// <para></para>
+        /// Hold information whether this <see cref="Register"/> is common to all regulators. 
+        /// <para><see cref="Register"/> value >= 40000</para>
         /// </summary>
-        public string Regulator { get; set; }
+        public bool IsRegulatorCommon { get; set; }
 
         #endregion
 
