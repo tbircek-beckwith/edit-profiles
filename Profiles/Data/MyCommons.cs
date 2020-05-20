@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EditProfiles.Properties;
-using System.Diagnostics;
-using System.Globalization;
 using EditProfiles.Operations;
-using System.Collections.ObjectModel;
+using EditProfiles.Properties;
 
 namespace EditProfiles.Data
 {
@@ -162,20 +161,20 @@ namespace EditProfiles.Data
         /// </summary>
         internal static OMICRON.OCCenter.OLEObject OccOleObject { get; set; }
 
-        /// <summary>
-        /// Holds collection of <see cref="Regulator"/>s.
-        /// </summary>
-        internal static ObservableCollection<Regulator> Regulators { get; set; }
+        ///// <summary>
+        ///// Holds collection of <see cref="Regulator"/>s.
+        ///// </summary>
+        //internal static List<Regulator> Regulators { get; set; }
 
-        /// <summary>
-        /// Holds collection of <see cref="Profile"/>s.
-        /// </summary>
-        internal static ObservableCollection<Profile> Profiles { get; set; }
+        ///// <summary>
+        ///// Holds collection of <see cref="Profile"/>s.
+        ///// </summary>
+        //internal static List<Profile> Profiles { get; set; }
 
-        /// <summary>
-        /// Holds collection of <see cref="Register"/>s.
-        /// </summary>
-        internal static ObservableCollection<Register> Registers { get; set; }
+        ///// <summary>
+        ///// Holds collection of <see cref="Register"/>s.
+        ///// </summary>
+        //internal static List<Register> Registers { get; set; }
         
     }
 }
