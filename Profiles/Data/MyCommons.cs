@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -161,10 +161,10 @@ namespace EditProfiles.Data
         /// </summary>
         internal static OMICRON.OCCenter.OLEObject OccOleObject { get; set; }
 
-        ///// <summary>
-        ///// Holds collection of <see cref="Regulator"/>s.
-        ///// </summary>
-        //internal static List<Regulator> Regulators { get; set; }
+        /// <summary>
+        /// Holds <see cref="Regulator"/>s
+        /// </summary>
+        internal static ObservableCollection<Regulator> Regulators { get; set; } = new ObservableCollection<Regulator>() { };
 
         ///// <summary>
         ///// Holds collection of <see cref="Profile"/>s.
@@ -175,6 +175,6 @@ namespace EditProfiles.Data
         ///// Holds collection of <see cref="Register"/>s.
         ///// </summary>
         //internal static List<Register> Registers { get; set; }
-        
+
     }
 }
