@@ -32,6 +32,16 @@ namespace EditProfiles
 
         #region Program
 
+        ///// <summary>
+        ///// Holds <see cref="Register"/>s
+        ///// </summary>
+        //public ObservableCollection<Profile> Profiles { get; set; } = new ObservableCollection<Profile>() { };
+
+        ///// <summary>
+        ///// Holds <see cref="Register"/>s
+        ///// </summary>
+        //public ObservableCollection<Register> Registers { get; set; } = new ObservableCollection<Register>() { };
+
         /// <summary>
         /// Sets and gets ProgramTitle.
         /// </summary>
@@ -43,7 +53,7 @@ namespace EditProfiles
                                         .Assembly
                                         .GetName()
                                         .Version.ToString(3));
-            set
+            private set
             {
                 if (model.ProgramTitle != value)
                 {
@@ -76,7 +86,7 @@ namespace EditProfiles
         #region FindWhat Label & Textbox
 
         /// <summary>
-        /// Sets and gets FindWhatLabelText.
+        /// Sets and gets <see cref="Model.FindWhatLabelText"/>.
         /// </summary>
         public string FindWhatLabelText
         {
@@ -93,7 +103,7 @@ namespace EditProfiles
         }
 
         /// <summary>
-        /// Sets and gets FindWhatTextBoxText.
+        /// Sets and gets <see cref="Model.FindWhatTextBoxText"/>.
         /// </summary>
         public string FindWhatTextBoxText
         {
@@ -112,6 +122,23 @@ namespace EditProfiles
             }
         }
 
+        /// <summary>
+        /// Sets and gets <see cref="Model.FindOriginalTestValues"/>
+        /// </summary>
+        public string FindOriginalTestValues
+        {
+            get => model.FindOriginalTestValues ?? string.Empty;
+            set
+            {
+                if (model.FindOriginalTestValues != value)
+                {
+                    model.FindOriginalTestValues = value;
+
+                    OnPropertyChanged("FindOriginalTestValues");
+                    OnPropertyChanged("IsEnabled");
+                }
+            }
+        }
         #endregion
 
         #region ReplaceWith Label & Text
@@ -657,6 +684,8 @@ namespace EditProfiles
             FindReplaceCommand = findReplaceCommand;
             UpdateCommand = updateCommand;
             StopCommand = stopCommand;
+
+            // Regulators = new ObservableCollection<Regulator>() { };
         }
 
         /// <summary>
