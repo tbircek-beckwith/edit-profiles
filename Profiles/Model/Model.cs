@@ -33,6 +33,12 @@
         /// </summary>
         public string FindWhatTextBoxText { get; set; }
 
+        /// <summary>
+        /// Holds alternate register values to find.
+        /// <para>This is special case where original test file has only
+        /// Profile 1 values and the application is generating other profiles.</para>
+        /// </summary>
+        public string FindOriginalTestValues { get; set; }
         #endregion
 
         #region ReplaceWith Label & Text
@@ -76,12 +82,12 @@
         public string StopTestButtonText { get; set; }
 
         /// <summary>
-        /// Status of the togglebutton.
+        /// Status of the toggle button.
         /// </summary>
         public bool IsChecked { get; set; }
 
         /// <summary>
-        /// availability of the togglebutton 
+        /// availability of the toggle button 
         /// </summary>
         public bool IsEnabled { get; set; } 
 
