@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
+using System.ComponentModel;
 using System.Linq;
+using System.Text;
+using EditProfiles.Data;
 
 namespace EditProfiles.Operations
 {
@@ -37,10 +39,7 @@ namespace EditProfiles.Operations
         /// <summary>
         /// Default constructor
         /// </summary>
-        public Regulator()
-        {
-            // Profiles.Clear();
-        }
+        public Regulator() { }
 
         #endregion
 
@@ -94,71 +93,42 @@ namespace EditProfiles.Operations
                     Profiles = profiles,
                 });
 
-              
+
             }
 
             return regulators;
         }
-
-
+        
         /// <summary>
-        /// 
+        /// Scans through <see cref="Regulator"/>
+        /// <para>Returns a string contains all available <see cref="Register"/> for each specified <see cref="Profile"/> and <see cref="Regulator"/>.</para>
         /// </summary>
-        /// <returns></returns>
-        public string GetOriginalSettingValues()
+        /// <param name="regulator"></param>
+        /// <param name="profile"></param>
+        /// <param name="property"></param>
+        /// <returns>Returns a string contains all available <see cref="Register"/> for each specified <see cref="Profile"/> and <see cref="Regulator"/>.</returns>
+        public string GetValues(int regulator, int profile, Column property)
         {
-            string values = string.Empty;
+            StringBuilder values = new StringBuilder();
+            ObservableCollection<Regulator> regulators = new ObservableCollection<Regulator>(MyCommons.Regulators) { };
 
-            foreach (Profile item in Profiles)
+            // filter register per profile #
+            IEnumerable<Profile> filter = from x in regulators
+                                           .Where(x => x.Id == regulator)
+                                           .SelectMany(x => new[] { x.Profiles[0], x.Profiles[profile] })
+                                          select x;
+
+            foreach (Profile item in filter)
             {
                 foreach (Register register in item.Registers)
                 {
-                    values += register.OriginalSettingValue + "|";
+                    // gets value of "Column" property out of the collection of properties for current Register.
+                    values.Append($"{TypeDescriptor.GetProperties(register)[property.ToString()].GetValue(register)}|");
                 }
             }
 
-
-            return values;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public string GetOriginalTestValues()
-        {
-            string values = string.Empty;
-
-            foreach (Profile item in Profiles)
-            {
-                foreach (Register register in item.Registers)
-                {
-                    values += register.OriginalTestValue + "|";
-                }
-            }
-
-
-            return values;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public string GetReplacementValues()
-        {
-            string values = string.Empty;
-
-            foreach (Profile item in Profiles)
-            {
-                foreach (Register register in item.Registers)
-                {
-                    values += register.ReplacementValue + "|";
-                }
-            }
-
-
-            return values;
+            // remove last "|" from the string.
+            return values.Remove(values.Length - 1, 1).ToString();
         }
 
         #endregion
@@ -166,12 +136,13 @@ namespace EditProfiles.Operations
         #region Private Functions
 
         /// <summary>
-        /// 
+        /// Gets a <see cref="Register"/> collection per specified <paramref name="filter"/> and <paramref name="regulatorValue"/>
+        /// <para>Returns a collection of <see cref="Register"/></para>
         /// </summary>
-        /// <param name="filter"></param>
-        /// <param name="regulatorValue"></param>
-        /// <returns></returns>
-        ObservableCollection<Register> GetProfile(IEnumerable<Register> filter, int regulatorValue)
+        /// <param name="filter">Query to filter <see cref="Register"/>s</param>
+        /// <param name="regulatorValue">the current <see cref="Regulator"/> value </param>
+        /// <returns>Returns a collection of <see cref="Register"/></returns>
+        private ObservableCollection<Register> GetProfile(IEnumerable<Register> filter, int regulatorValue)
         {
 
             ObservableCollection<Register> profileRegisters = new ObservableCollection<Register>() { };
@@ -181,6 +152,8 @@ namespace EditProfiles.Operations
             {
                 // Debug.Write($"profile: {item.Profile} origSetValue: {item.OriginalSettingValue} origTestValue: {item.OriginalTestValue} oldValue: {item.ReplacementValue}");
 
+                // don't modify IsRegulatorCommon == true
+                // because these points will not change for either Profile or Regulator.
                 if (!item.IsRegulatorCommon)
                 {
                     item.ReplacementValue = $"{Convert.ToInt32(item.ReplacementValue) + ((regulatorValue >> 1) * 10000)}";
