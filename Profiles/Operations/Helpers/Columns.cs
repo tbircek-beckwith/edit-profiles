@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace EditProfiles.Operations
@@ -16,6 +17,7 @@ namespace EditProfiles.Operations
         /// 
         /// </summary>
         protected int index;
+
         /// <summary>
         /// 
         /// </summary>
@@ -25,7 +27,9 @@ namespace EditProfiles.Operations
         /// Go with a dictionary to enforce unique index
         /// </summary>
         protected static readonly IDictionary<int, Column> values = new Dictionary<int, Column>();
-
+        //protected static readonly ICollection<Column> values = new Collection<Column>();
+        // protected static readonly ILookup<int, Column> values = new Lookup<int, Column>();
+        //
         #endregion
 
         #region Enums values
@@ -33,17 +37,24 @@ namespace EditProfiles.Operations
         /// <summary>
         /// <see cref="Register.ReplacementValue"/> column location 1.
         /// </summary>
-        public static readonly Column ReplacementValue = new Column(1, "Replacement");
+        public static readonly Column ReplacementValue = new Column(1, "ReplacementValue");
 
         /// <summary>
-        /// <see cref="Register.OriginalValue"/> column location 3.
+        /// <see cref="Register.OriginalSettingValue"/> column location 3.
         /// </summary>
-        public static readonly Column OriginalValue = new Column(3, "Original");
+        public static readonly Column OriginalSettingValue = new Column(3, "OriginalSettingValue");
 
         /// <summary>
-        /// <see cref="Register.RegisterPermissions"/> column location 5.
+        /// <see cref="Register.OriginalTestValue"/> column location 3.
+        /// As value repeated causes "System.ArgumentException"
+        /// changed to 31 since not used.
         /// </summary>
-        public static readonly Column RegisterPermissions = new Column(5, "Function");
+        public static readonly Column OriginalTestValue = new Column(31, "OriginalTestValue");
+
+        /// <summary>
+        /// <see cref="Register.RegisterPermission"/> column location 5.
+        /// </summary>
+        public static readonly Column RegisterPermissions = new Column(5, "RegisterPermissions");
 
         /// <summary>
         /// <see cref="Register.Location"/> column location 6.
@@ -58,12 +69,12 @@ namespace EditProfiles.Operations
         /// <summary>
         /// <see cref="Register.MinimumValue"/> column location 8.
         /// </summary>
-        public static readonly Column MinimumValue = new Column(8, "Minimum");
+        public static readonly Column MinimumValue = new Column(8, "MinimumValue");
 
         /// <summary>
         /// <see cref="Register.MaximumValue"/> column location 9.
         /// </summary>
-        public static readonly Column MaximumValue = new Column(9, "Maximum");
+        public static readonly Column MaximumValue = new Column(9, "MaximumValue");
 
         /// <summary>
         /// <see cref="Register.Increment"/> column location 10.
@@ -81,19 +92,19 @@ namespace EditProfiles.Operations
         public static readonly Column ProtectionLevel = new Column(15, "ProtectionLevel");
 
         /// <summary>
-        /// <see cref="Register.Permissions"/> column location 16.
+        /// <see cref="Register.Permission"/> column location 16.
         /// </summary>
-        public static readonly Column Permissions = new Column(16, "Permissions");
+        public static readonly Column Permission = new Column(16, "Permission");
 
         /// <summary>
         /// <see cref="Register.OptionalName"/> column location 17.
         /// </summary>
-        public static readonly Column AltNames = new Column(17, "AltNames");
+        public static readonly Column AltName = new Column(17, "AltName");
 
         /// <summary>
         /// <see cref="Register.OptionalName"/> column location 22.
         /// </summary>
-        public static readonly Column DetailNames = new Column(22, "DetailNames");
+        public static readonly Column OptionalName = new Column(22, "OptionalName");
 
         #endregion
 
@@ -125,7 +136,8 @@ namespace EditProfiles.Operations
         /// Easy string conversion (also update ToString for the same effect)
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => $"Column: {(char)index}, Field: {index}";
+        public override string ToString() => $"{name}";
+        //public override string ToString() => $"Column: {(char)index}, Field: {index}";
 
         /// <summary>
         /// 
@@ -139,12 +151,12 @@ namespace EditProfiles.Operations
         /// <param name="name"></param>
         public static implicit operator Column(string name) => name == null ? null : values.Values.FirstOrDefault(item => name.Equals(item.name, StringComparison.CurrentCultureIgnoreCase));
          
-        /// <summary>
-        /// If you specifically want a Get(int x) function (though not required given the implicit conversion)
-        /// </summary>
-        /// <param name="foo"></param>
-        /// <returns></returns>
-        public Column Get(int foo) => foo; //(implicit conversion will take care of the conversion for you)
+        ///// <summary>
+        ///// If you specifically want a Get(int x) function (though not required given the implicit conversion)
+        ///// </summary>
+        ///// <param name="foo"></param>
+        ///// <returns></returns>
+        //public Column Get(int foo) => foo; //(implicit conversion will take care of the conversion for you)
 
         #endregion
 
