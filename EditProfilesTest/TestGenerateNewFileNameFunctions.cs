@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using EditProfiles.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,10 +11,10 @@ namespace EditProfilesTest
     [TestClass]
     public class TestGenerateNewFileNameFunctions
     {
-        string FileNameWithPath = $@"\\VOLTA\Eng_Lab\Software Updates\EditProfiles\M-6280A Tests\M-6280A_Profile1_Var Control VT Correction & Phase Compensation(LPS) (SV, Fwd Pwr).occ";
-        string ExpectedTestName = $"Runup";
+        string FileNameWithPath = $@"C:\Users\TBircek\Desktop\Test Profile Test\actual test files\m6200a\M-6200A P1 Forward Power Bandwidth Test 60Hz Rev1.occ";
+        string ExpectedTestName = $"Bandwidth";
 
-        string FileNameWithoutRevision = $"M-6200B Runup AD 60Hz";
+        string FileNameWithoutRevision = $"M-6200A P1 Forward Power Bandwidth Test 60Hz";
         string ExpectedKeywords = $"M-6200B_AD_60Hz";
 
         string ExpectedSubFolderName = $"Runup";
@@ -28,8 +30,10 @@ namespace EditProfilesTest
             // temp storage to keep replacement words.
             string keywords = new AnalyzeValues().Replace(input: FileNameWithoutRevision, pattern: new AnalyzeValues().TestFileNamePatterns, keywords: new AnalyzeValues().FileNameKeywords);
 
+            List<string> words = new List<string>(keywords.Split('_').ToList());
+
             //Assert.AreEqual(ExpectedKeywords, keywords);
-            
+
             // temp storage to keep replacement words.
             string testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
 

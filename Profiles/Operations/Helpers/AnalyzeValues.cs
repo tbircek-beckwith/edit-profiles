@@ -29,6 +29,11 @@ namespace EditProfiles.Operations
         public readonly string RegulatorPatterns = @"(?<regulatorKeyword>(?:REG_IDX_\d))+";
 
         /// <summary>
+        /// Holds patterns to retrieve regulator number from a .csv file
+        /// </summary>
+        public readonly string GroupFolderPatterns = @"(?<groupSetKeyword>(?:Set))+|(?<groupProfileKeyword>(?:Profile \d))+";
+
+        /// <summary>
         /// Holds patterns to generate test module titles
         /// </summary>
         public readonly string TitlePatterns = @"(?<powerKeyword>\b(([Ff]orward\s)|(([Ss]mart\s)?([Ss]rc\s)?([Rr]everse\s)))([Pp]ower)\b\w*)|(?<product>\b([Mm]-6200[A-Za-z]?)\b\w*)|(?<powerInitials>\b([Ff][Pp]|([Rr][Pp]))\b\w*)|(?<srcReverse>\b([Ss]rc\s)([Rr]everse)\b\w*)|(?<src>\b([Ss]rc)\b\w*)";
@@ -234,7 +239,11 @@ namespace EditProfiles.Operations
         /// <returns>Returns true if there is a match</returns>
         public bool IsMatch(string input, string pattern)
         {
-
+            // return false if input is null
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return false;
+            }
             return Regex.IsMatch(input, pattern, RegexOptions.None, TimeSpan.FromMilliseconds(100));
         }
 

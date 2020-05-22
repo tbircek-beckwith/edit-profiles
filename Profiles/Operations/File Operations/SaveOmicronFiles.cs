@@ -48,16 +48,16 @@ namespace EditProfiles.Operations
                     throw new ArgumentNullException("oldFileName");
                 }
 
-                this.OldFileName = GenerateNewFileName(oldFileName);
-                this.SaveAs = saveAs;
+                OldFileName = GenerateNewFileName(oldFileName);
+                SaveAs = saveAs;
 
-                this.SaveOmicronFile();
+                SaveOmicronFile();
 
             }
             catch (ArgumentNullException ae)
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log(ae, this.OldFileName);
+                ErrorHandler.Log(ae, OldFileName);
                 return;
             }
             catch (PathTooLongException ex)
@@ -87,9 +87,9 @@ namespace EditProfiles.Operations
                 // Setting new password to original password so the user can still have same level protection in the modified files.
                 // For more info: http://briannoyesblog.azurewebsites.net/2015/03/04/wpf-using-passwordbox-in-mvvm/
                 ISecurePasswordToString secureToString = new SecurePasswordToString();
-                string insecurePassword = secureToString.ConvertToInsecureString(this.ViewModel.Password);
+                string insecurePassword = secureToString.ConvertToInsecureString(ViewModel.Password);
 
-                bool protectionChanged = this.OmicronDocument.ChangeProtection(this.ProtectionLevel, string.Empty, insecurePassword);
+                bool protectionChanged = OmicronDocument.ChangeProtection(ProtectionLevel, string.Empty, insecurePassword);
 
                 // Clear insecurePassword.
                 insecurePassword = string.Empty;
@@ -104,20 +104,20 @@ namespace EditProfiles.Operations
                 {
                     // Depending file exists and saveAs value,
                     // Save the files.
-                    if (File.Exists(this.OldFileName))
+                    if (File.Exists(OldFileName))
                     {
-                        if (this.SaveAs)
+                        if (SaveAs)
                         {
-                            this.OmicronDocument.SaveAs(this.OldFileName);
+                            OmicronDocument.SaveAs(OldFileName);
                         }
                         else
                         {
-                            this.OmicronDocument.Save();
+                            OmicronDocument.Save();
                         }
                     }
                     else
                     {
-                        this.OmicronDocument.SaveAs(this.OldFileName);
+                        OmicronDocument.SaveAs(OldFileName);
                     }
 
                     // Update DetailsTextBoxText.
@@ -137,19 +137,19 @@ namespace EditProfiles.Operations
             }
             catch (System.Runtime.InteropServices.COMException ae)
             {
-                ErrorHandler.Log(ae, this.OldFileName);
+                ErrorHandler.Log(ae, OldFileName);
                 return;
             }
             catch (ArgumentException ae)
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log(ae, this.OldFileName);
+                ErrorHandler.Log(ae, OldFileName);
                 return;
             }
             catch (NullReferenceException ne)
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                ErrorHandler.Log(ne, this.OldFileName);
+                ErrorHandler.Log(ne, OldFileName);
                 return;
             }
             catch (AggregateException ae)
@@ -157,7 +157,7 @@ namespace EditProfiles.Operations
                 foreach (Exception ex in ae.InnerExceptions)
                 {
                     // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                    ErrorHandler.Log(ex, this.OldFileName);
+                    ErrorHandler.Log(ex, OldFileName);
                 }
                 return;
             }

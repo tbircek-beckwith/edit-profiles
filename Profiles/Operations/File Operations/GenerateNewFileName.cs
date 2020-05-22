@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using EditProfiles.Properties;
@@ -91,6 +92,8 @@ namespace EditProfiles.Operations
 
             // temp storage to keep replacement words.
             string keywords = new AnalyzeValues().Replace(input: fileNameWithoutRevision, pattern: new AnalyzeValues().TestFileNamePatterns, keywords: new AnalyzeValues().FileNameKeywords);
+            // words[0]: ProductName, words[1]: P1, words[2]: PowerScheme, words[3]: Frequency
+            List<string> words = new List<string>(keywords.Split('_').ToList());
 
             // temp storage to keep replacement words.
             string testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
@@ -99,12 +102,31 @@ namespace EditProfiles.Operations
             int productNameLength = keywords.IndexOf('_') + 1;
 
             // split replacement words to insert test file name and new short name for "Regulator #" in the file name, also append file extension.
-            // CurrentRegulatorValue is 0 based.
+            // regulator is 1 based.
             string modifiedFolderName = Path.Combine(MyResources.Strings_ModifedFolderName, testSubFolderName);
-            string regulatorFolderName = $"regulator {CurrentRegulatorValue + 1}";
-            string profileFolderName = $"profile {keywords.Substring(productNameLength + 1, 1)}";
-            string testFolderName = Path.Combine(modifiedFolderName, Path.Combine(regulatorFolderName, new Regex(@"(?<profile>\b[Pp](\d)\b\w*)", RegexOptions.None, TimeSpan.FromMilliseconds(100)).IsMatch(fileNameWithoutRevision) ? profileFolderName : string.Empty)).ToLower();
-            string newFileName = Path.Combine(Path.Combine(Path.GetDirectoryName(FileNameWithPath), testFolderName), $"{keywords.Substring(0, productNameLength)}{testName}_Reg {CurrentRegulatorValue + 1}_{keywords.Substring(productNameLength, keywords.Length - productNameLength)}{Path.GetExtension(FileNameWithPath)}");
+
+            // generate new values 
+            // TODO: Add a logic check to verify the source of the changes if .csv file generate new file names per profile/regulator
+            string regulatorFolderName = $"regulator {regulator}";
+            string profileFolderName = activeProfile > 0 ? $"profile {activeProfile}" : string.Empty;
+            words[1] = $"P{activeProfile}";
+
+            // string testFolderName = Path.Combine(modifiedFolderName, Path.Combine(regulatorFolderName, new Regex(@"(?<profile>\b[Pp](\d)\b\w*)", RegexOptions.None, TimeSpan.FromMilliseconds(100)).IsMatch(fileNameWithoutRevision) ? profileFolderName : string.Empty)).ToLower();
+            string testFolderName = Path.Combine(path1: modifiedFolderName,
+                                                 path2: regulatorFolderName,
+                                                 path3: profileFolderName).ToLower();
+
+            //string newFileName = Path.Combine(path1: Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath), 
+            //                                                      path2: testFolderName), 
+            //                                  path2: $"{keywords.Substring(0, productNameLength)}{testName}_Reg {regulator}_{keywords.Substring(productNameLength, keywords.Length - productNameLength)}{Path.GetExtension(FileNameWithPath)}");
+
+            string fileNameString = $"{words[0]}_{testName}_Reg {regulator}_{words[1]}_{words[2]}_{words[3]}{Path.GetExtension(FileNameWithPath)}";
+
+            string newFileName = Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath),
+                                              path2: testFolderName,
+                                              path3: fileNameString);
+
+
 
             // let's limit file name length > MaxFileNameLength omicron test universe fails to save modified files.
             // just add a sub folder named "modified files" with original file name

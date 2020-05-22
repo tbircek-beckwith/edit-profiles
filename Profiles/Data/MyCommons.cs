@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EditProfiles.Properties;
-using System.Diagnostics;
-using System.Globalization;
 using EditProfiles.Operations;
-using System.Collections.ObjectModel;
+using EditProfiles.Properties;
 
 namespace EditProfiles.Data
 {
@@ -163,19 +162,20 @@ namespace EditProfiles.Data
         internal static OMICRON.OCCenter.OLEObject OccOleObject { get; set; }
 
         /// <summary>
-        /// Holds collection of <see cref="Regulator"/>s.
+        /// Holds <see cref="Regulator"/>s
         /// </summary>
-        internal static ObservableCollection<Regulator> Regulators { get; set; }
+        internal static ObservableCollection<Regulator> Regulators { get; set; } = new ObservableCollection<Regulator>() { };
 
         /// <summary>
-        /// Holds collection of <see cref="Profile"/>s.
+        /// Sets and gets <see cref="Profile.Registers"/>.Items(<see cref="Register.ReplacementValue"/>)
         /// </summary>
-        internal static ObservableCollection<Profile> Profiles { get; set; }
+        internal static string ReplaceProfile { get; set; } = string.Empty;
 
         /// <summary>
-        /// Holds collection of <see cref="Register"/>s.
+        /// Sets and gets <see cref="Profile.Registers"/>.Items(<see cref="Register.OriginalSettingValue"/>) 
+        /// or <see cref="Profile.Registers"/>.Items(<see cref="Register.OriginalTestValue"/>)
         /// </summary>
-        internal static ObservableCollection<Register> Registers { get; set; }
-        
+        internal static string FindProfile { get; set; } = string.Empty;
+
     }
 }

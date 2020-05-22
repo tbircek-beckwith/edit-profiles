@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace EditProfiles.Operations
 {
@@ -16,6 +15,11 @@ namespace EditProfiles.Operations
         public int Id { get; set; }
 
         /// <summary>
+        /// Regulator Id
+        /// </summary>
+        public int RegulatorId { get; set; }
+
+        /// <summary>
         /// The name of the profile.
         /// </summary>
         public string Name { get; set; }
@@ -23,7 +27,7 @@ namespace EditProfiles.Operations
         /// <summary>
         /// Collection of <see cref="Registers"/>
         /// </summary>
-        public ObservableCollection<Register> Registers { get; set; }
+        public ObservableCollection<Register> Registers { get; set; } = new ObservableCollection<Register>() { };
 
         #endregion
 
@@ -34,7 +38,7 @@ namespace EditProfiles.Operations
         /// </summary>
         public Profile()
         {
-
+           
         }
 
         #endregion
