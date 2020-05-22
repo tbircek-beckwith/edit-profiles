@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -26,7 +27,12 @@ namespace EditProfiles.Operations
         /// <summary>
         /// Holds the current regulator value.
         /// </summary>
-        public int CurrentRegulatorValue = 0;
+        public int regulator = 0;
+
+        /// <summary>
+        /// Holds the active <see cref="Profile.Id"/> value.
+        /// </summary>
+        public int activeProfile = 1;
 
         /// <summary>
         /// Holds protection level of the omicron test file.
@@ -62,13 +68,15 @@ namespace EditProfiles.Operations
             FileNames = fileNames;
             ViewModel = viewModel;
 
-            // Following items are not allowed to be modified after "Find & Replace" button clicked.
-            ItemsToFind = new List<string>(ViewModel.FindWhatTextBoxText.Split('|'));
-            ItemsToReplace = new List<string>(ViewModel.ReplaceWithTextBoxText.Split('|'));
+            //// Following items are not allowed to be modified after "Find & Replace" button clicked.
+            //ItemsToFind = new List<string>(ViewModel.FindWhatTextBoxText.Split('|'));
+            //ItemsToReplace = new List<string>(ViewModel.ReplaceWithTextBoxText.Split('|'));
+            //ProfileItemsToReplace = new List<string>(ViewModel.FindProfile.Split('|'));
 
-            ItemsToRemove = new Dictionary<string, string>(ListOfTestModulesToDelete(ViewModel.FindWhatTextBoxText.Split('|')));
+            //ItemsToRemove = new Dictionary<string, string>(ListOfTestModulesToDelete(ViewModel.FindWhatTextBoxText.Split('|')));
 
-            ItemsToRename = new Dictionary<string, string>(ListOfTestModulesToRename(ItemsToFind));
+            //ItemsToRename = new Dictionary<string, string>(ListOfTestModulesToRename(ItemsToFind));
+            SetSearchItems();
 
             StartProcessingFiles();
         }
@@ -76,6 +84,20 @@ namespace EditProfiles.Operations
         #endregion
 
         #region Private Methods
+
+        private void SetSearchItems()
+        {
+
+            // Following items are not allowed to be modified after "Find & Replace" button clicked.
+            ItemsToFind = new List<string>(ViewModel.FindWhatTextBoxText.Split('|'));
+            ItemsToReplace = new List<string>(ViewModel.ReplaceWithTextBoxText.Split('|'));
+            // ProfileItemsToReplace = new List<string>(ViewModel.FindProfile.Split('|'));
+
+            ItemsToRemove = new Dictionary<string, string>(ListOfTestModulesToDelete(ViewModel.FindWhatTextBoxText.Split('|')));
+
+            ItemsToRename = new Dictionary<string, string>(ListOfTestModulesToRename(ItemsToFind));
+
+        }
 
         /// <summary>
         /// Start processing the user selected Omicron Test Files.
@@ -86,271 +108,296 @@ namespace EditProfiles.Operations
             MyCommons.CurrentFileNumber = 0;
 
             // Update FileProcessBar;
-            MyCommons.TotalFileNumber = FileNames.Count;
-            MyCommons.MyViewModel.FileProgressBarMax = FileNames.Count;
+            MyCommons.TotalFileNumber = FileNames.Count * MaximumRegulatorNumber * 4;
+            ViewModel.FileProgressBarMax = FileNames.Count;
 
             // Refresh Process bars.
-            MyCommons.MyViewModel.UpdateCommand.Execute(null);
+            ViewModel.UpdateCommand.Execute(null);
+
+            //// would have Profile x only
+            //ViewModel.ReplaceProfile = new Regulator().GetValues(MyCommons.Regulators, 1, 2, Column.ReplacementValue);
 
             try
             {
-
-                for (CurrentRegulatorValue = 0; CurrentRegulatorValue < MaximumRegulatorNumber; CurrentRegulatorValue++)
+                // make regulator files.
+                for (regulator = 1; regulator <= MaximumRegulatorNumber; regulator++)
                 {
+                    // since original files are always profile 1 need to update this only when regulator changes.
+                    ViewModel.FindWhatTextBoxText = new Regulator().GetValues(MyCommons.Regulators, regulator, 0, Column.OriginalSettingValue); // would have every profiles
+                    ViewModel.ReplaceWithTextBoxText = new Regulator().GetValues(MyCommons.Regulators, regulator, 0, Column.ReplacementValue);  // would have every profiles
+
+                    // since original files are always profile 1. Change 1 -> whatever is the file profile is.
+                    MyCommons.FindProfile = new Regulator().GetValues(MyCommons.Regulators, regulator, 1, Column.OriginalTestValue);
+
                     Parallel.ForEach(FileNames, MyCommons.ParallelingOptions, (currentFile) =>
-                            {
-                                // Increment current file number;
-                                MyCommons.CurrentFileNumber++;
-                                MyCommons.CurrentModuleNumber = 0;
-                                MyCommons.MyViewModel.UpdateCommand.Execute(null);
+                    {
+                        // for (int profile = 1; profile <= 4; profile++)
+                        Parallel.For(1, 5, MyCommons.ParallelingOptions, (profile) =>
+                         {
+                             // would have Profile x only
+                             MyCommons.ReplaceProfile = new Regulator().GetValues(MyCommons.Regulators, regulator, profile, Column.ReplacementValue);
 
-                                CurrentFileName = currentFile;
-                                MyCommons.FileName = Path.GetFileName(CurrentFileName);
+                             activeProfile = profile;
 
-                                try
-                                {
-                                    // opens the document
-                                    Task.Factory.StartNew(() =>
-                                                {
-                                                    try
-                                                    {
-                                                        // Polling CancellationToken's status.
-                                                        // If cancellation requested throw error and exit loop.
-                                                        if (MyCommons.CancellationToken.IsCancellationRequested == true)
-                                                        {
-                                                            MyCommons.CancellationToken.ThrowIfCancellationRequested();
-                                                        }
+                             SetSearchItems();
 
-                                                        // Update DetailsTextBoxText.
-                                                        MyCommons.MyViewModel.DetailsTextBoxText =
-                                                                    MyCommons.LogProcess.Append(
-                                                                        string.Format(
-                                                                                CultureInfo.InvariantCulture,
-                                                                                MyResources.Strings_CurrentFileName,
-                                                                                Environment.NewLine,
-                                                                                Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber),
-                                                                                Path.GetFileName(CurrentFileName),
-                                                                                string.Format(CultureInfo.InvariantCulture,
-                                                                                        MyResources.Strings_TestStart,
-                                                                                        DateTime.Now)))
-                                                                    .ToString();
+                             // Increment current file number;
+                             MyCommons.CurrentFileNumber++;
+                             MyCommons.CurrentModuleNumber = 0;
+                             ViewModel.UpdateCommand.Execute(null);
 
-                                                        // Open Omicron Document.
-                                                        // this.OmicronDocument = OpenDocument ( this.CurrentFileName, "" ); 
-                                                        OmicronDocument = OpenDocument(CurrentFileName);
+                             CurrentFileName = currentFile;
+                             MyCommons.FileName = Path.GetFileName(CurrentFileName);
 
-                                                    }
-                                                    catch (ArgumentException ae)
-                                                    {
-                                                        // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                                        ErrorHandler.Log(ae, CurrentFileName);
-                                                        return;
-                                                    }
-                                                    catch (AggregateException ae)
-                                                    {
-                                                        foreach (Exception ex in ae.InnerExceptions)
-                                                        {
-                                                            // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                                            ErrorHandler.Log(ex, CurrentFileName);
-                                                        }
-                                                        return;
-                                                    }
-                                                }
-                                                , MyCommons.CancellationToken)
-                                                .ContinueWith(scanThread =>
-                                            {
+                             try
+                             {
+                                 // opens the document
+                                 Task.Factory.StartNew(() =>
+                                 {
+                                     try
+                                     {
+                                         // Polling CancellationToken's status.
+                                         // If cancellation requested throw error and exit loop.
+                                         if (MyCommons.CancellationToken.IsCancellationRequested == true)
+                                         {
+                                             MyCommons.CancellationToken.ThrowIfCancellationRequested();
+                                         }
 
-                                                // scans the document
-                                                try
-                                                {
-                                                    // Polling CancellationToken's status.
-                                                    // If cancellation requested throw error and exit loop.
-                                                    if (MyCommons.CancellationToken.IsCancellationRequested == true)
-                                                    {
-                                                        MyCommons.CancellationToken.ThrowIfCancellationRequested();
-                                                    }
+                                         // Update DetailsTextBoxText.
+                                         ViewModel.DetailsTextBoxText =
+                                                     MyCommons.LogProcess.Append(
+                                                         string.Format(
+                                                                 CultureInfo.InvariantCulture,
+                                                                 MyResources.Strings_CurrentFileName,
+                                                                 Environment.NewLine,
+                                                                 Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber),
+                                                                 Path.GetFileName(CurrentFileName),
+                                                                 string.Format(CultureInfo.InvariantCulture,
+                                                                         MyResources.Strings_TestStart,
+                                                                         DateTime.Now)))
+                                                     .ToString();
 
-                                                    // Scan the Test Document for the Test Modules.
-                                                    Scan();
+                                         // Open Omicron Document.
+                                         // this.OmicronDocument = OpenDocument ( this.CurrentFileName, "" ); 
+                                         OmicronDocument = OpenDocument(CurrentFileName);
 
-                                                }
-                                                catch (AggregateException ae)
-                                                {
-                                                    foreach (Exception ex in ae.InnerExceptions)
-                                                    {
-                                                        // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                                        ErrorHandler.Log(ex, CurrentFileName);
-                                                    }
-                                                    return;
-                                                }
-                                            }
-                                            , MyCommons.CancellationToken)
-                                            .Wait();
+                                     }
+                                     catch (ArgumentException ae)
+                                     {
+                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                         ErrorHandler.Log(ae, CurrentFileName);
+                                         return;
+                                     }
+                                     catch (AggregateException ae)
+                                     {
+                                         foreach (Exception ex in ae.InnerExceptions)
+                                         {
+                                             // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                             ErrorHandler.Log(ex, CurrentFileName);
+                                         }
+                                         return;
+                                     }
+                                 }
+                                 , MyCommons.CancellationToken)
+                                 .ContinueWith(scanThread =>
+                                 {
 
-                                    // Save the new file with a different name.
-                                    Task.Factory.StartNew(() =>
-                                                {
-                                                    try
-                                                    {
+                                     // scans the document
+                                     try
+                                     {
+                                         // Polling CancellationToken's status.
+                                         // If cancellation requested throw error and exit loop.
+                                         if (MyCommons.CancellationToken.IsCancellationRequested == true)
+                                         {
+                                             MyCommons.CancellationToken.ThrowIfCancellationRequested();
+                                         }
 
-                                                        // Polling CancellationToken's status.
-                                                        // If cancellation requested throw error and exit loop.
-                                                        if (MyCommons.CancellationToken.IsCancellationRequested == true)
-                                                        {
-                                                            MyCommons.CancellationToken.ThrowIfCancellationRequested();
-                                                        }
+                                         // Scan the Test Document for the Test Modules.
+                                         Scan();
 
-                                                        // Save the new file.
-                                                        SaveOmicronFiles(OmicronDocument.FullName, true);
+                                     }
+                                     catch (AggregateException ae)
+                                     {
+                                         foreach (Exception ex in ae.InnerExceptions)
+                                         {
+                                             // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                             ErrorHandler.Log(ex, CurrentFileName);
+                                         }
+                                         return;
+                                     }
+                                 }
+                             , MyCommons.CancellationToken)
+                             .Wait();
 
-                                                    }
-                                                    catch (AggregateException ae)
-                                                    {
-                                                        foreach (Exception ex in ae.InnerExceptions)
-                                                        {
-                                                            // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                                            ErrorHandler.Log(ex, CurrentFileName);
-                                                        }
-                                                        return;
-                                                    }
-                                                }
-                                                , MyCommons.CancellationToken)
-                                                .ContinueWith(closeThread =>
-                                                    {
+                                 // Save the new file with a different name.
+                                 Task.Factory.StartNew(() =>
+                                 {
+                                     try
+                                     {
 
-                                                        // close the document
-                                                        try
-                                                        {
+                                         // Polling CancellationToken's status.
+                                         // If cancellation requested throw error and exit loop.
+                                         if (MyCommons.CancellationToken.IsCancellationRequested == true)
+                                         {
+                                             MyCommons.CancellationToken.ThrowIfCancellationRequested();
+                                         }
 
-                                                            // Polling CancellationToken's status.
-                                                            // If cancellation requested throw error and exit loop.
-                                                            if (MyCommons.CancellationToken.IsCancellationRequested == true)
-                                                            {
-                                                                MyCommons.CancellationToken.ThrowIfCancellationRequested();
-                                                            }
+                                         // Save the new file.
+                                         SaveOmicronFiles(OmicronDocument.FullName, true);
 
-                                                            // Close Omicron Control Center without saving any changes to the original file.
-                                                            OmicronDocument.Close(false);
+                                     }
+                                     catch (AggregateException ae)
+                                     {
+                                         foreach (Exception ex in ae.InnerExceptions)
+                                         {
+                                             // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                             ErrorHandler.Log(ex, CurrentFileName);
+                                         }
+                                         return;
+                                     }
+                                 }
+                                 , MyCommons.CancellationToken)
+                                 .ContinueWith(closeThread =>
+                                 {
 
-                                                        }
-                                                        catch (COMException ae)
-                                                        {
-                                                            ErrorHandler.Log(ae, CurrentFileName);
-                                                            return;
-                                                        }
-                                                        catch (AggregateException ae)
-                                                        {
-                                                            foreach (Exception ex in ae.InnerExceptions)
-                                                            {
-                                                                // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                                                ErrorHandler.Log(ex, CurrentFileName);
-                                                            }
-                                                            return;
-                                                        }
-                                                    }
-                                            , MyCommons.CancellationToken)
-                                            .ContinueWith(threadCloseApp =>
-                                                {
+                                     // close the document
+                                     try
+                                     {
 
-                                                    // quit the application
-                                                    try
-                                                    {
-                                                        // Polling CancellationToken's status.
-                                                        // If cancellation requested throw error and exit loop.
-                                                        if (MyCommons.CancellationToken.IsCancellationRequested == true)
-                                                        {
-                                                            MyCommons.CancellationToken.ThrowIfCancellationRequested();
-                                                        }
+                                         // Polling CancellationToken's status.
+                                         // If cancellation requested throw error and exit loop.
+                                         if (MyCommons.CancellationToken.IsCancellationRequested == true)
+                                         {
+                                             MyCommons.CancellationToken.ThrowIfCancellationRequested();
+                                         }
 
-                                                        // Close Omicron Control Center Application
-                                                        OmicronApplication.Quit();
+                                         // Close Omicron Control Center without saving any changes to the original file.
+                                         OmicronDocument.Close(false);
 
-                                                    }
-                                                    catch (COMException ae)
-                                                    {
-                                                        ErrorHandler.Log(ae, CurrentFileName);
-                                                    }
-                                                    catch (ObjectDisposedException ae)
-                                                    {
-                                                        ErrorHandler.Log(ae, CurrentFileName);
-                                                    }
-                                                    catch (AggregateException ae)
-                                                    {
-                                                        foreach (Exception ex in ae.InnerExceptions)
-                                                        {
-                                                            // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                                            ErrorHandler.Log(ex, CurrentFileName);
-                                                        }
-                                                        return;
-                                                    }
-                                                }
-                                            , MyCommons.CancellationToken)
-                                            .Wait();
+                                     }
+                                     catch (COMException ae)
+                                     {
+                                         ErrorHandler.Log(ae, CurrentFileName);
+                                         return;
+                                     }
+                                     catch (AggregateException ae)
+                                     {
+                                         foreach (Exception ex in ae.InnerExceptions)
+                                         {
+                                             // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                             ErrorHandler.Log(ex, CurrentFileName);
+                                         }
+                                         return;
+                                     }
+                                 }
+                             , MyCommons.CancellationToken)
+                             .ContinueWith(threadCloseApp =>
+                             {
 
-                                    // terminate omicron processes.
-                                    Task.Factory.StartNew(() =>
-                                                {
-                                                    try
-                                                    {
-                                                        // Garbage Collection.
-                                                        OmicronApplication = null;
-                                                        OmicronDocument = null;
+                                 // quit the application
+                                 try
+                                 {
+                                     // Polling CancellationToken's status.
+                                     // If cancellation requested throw error and exit loop.
+                                     if (MyCommons.CancellationToken.IsCancellationRequested == true)
+                                     {
+                                         MyCommons.CancellationToken.ThrowIfCancellationRequested();
+                                     }
 
-                                                        // Polling CancellationToken's status.
-                                                        // If cancellation requested throw error and exit loop.
-                                                        if (MyCommons.CancellationToken.IsCancellationRequested == true)
-                                                        {
-                                                            MyCommons.CancellationToken.ThrowIfCancellationRequested();
-                                                        }
+                                     // Close Omicron Control Center Application
+                                     OmicronApplication.Quit();
 
-                                                        // Terminate Omicron Processes.
-                                                        KillOmicronProcesses();
-                                                    }
-                                                    catch (COMException ae)
-                                                    {
-                                                        ErrorHandler.Log(ae, CurrentFileName);
-                                                    }
-                                                    catch (ObjectDisposedException ae)
-                                                    {
-                                                        ErrorHandler.Log(ae, CurrentFileName);
-                                                    }
-                                                    catch (AggregateException ae)
-                                                    {
-                                                        foreach (Exception ex in ae.InnerExceptions)
-                                                        {
-                                                            // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                                            ErrorHandler.Log(ex, CurrentFileName);
-                                                        }
-                                                        return;
-                                                    }
-                                                }
-                                                , MyCommons.CancellationToken)
-                                                .Wait();
+                                 }
+                                 catch (COMException ae)
+                                 {
+                                     ErrorHandler.Log(ae, CurrentFileName);
+                                 }
+                                 catch (ObjectDisposedException ae)
+                                 {
+                                     ErrorHandler.Log(ae, CurrentFileName);
+                                 }
+                                 catch (AggregateException ae)
+                                 {
+                                     foreach (Exception ex in ae.InnerExceptions)
+                                     {
+                                         // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                         ErrorHandler.Log(ex, CurrentFileName);
+                                     }
+                                     return;
+                                 }
+                             }
+                             , MyCommons.CancellationToken)
+                             .Wait();
 
-                                    MyCommons.MyViewModel.FileSideCoverText = MyResources.Strings_FormEndTest;
+                                 // terminate omicron processes.
+                                 Task.Factory.StartNew(() =>
+                                 {
+                                     try
+                                     {
+                                         // Garbage Collection.
+                                         OmicronApplication = null;
+                                         OmicronDocument = null;
 
-                                    // Refresh Process bars.
-                                    MyCommons.MyViewModel.UpdateCommand.Execute(null);
+                                         // Polling CancellationToken's status.
+                                         // If cancellation requested throw error and exit loop.
+                                         if (MyCommons.CancellationToken.IsCancellationRequested == true)
+                                         {
+                                             MyCommons.CancellationToken.ThrowIfCancellationRequested();
+                                         }
 
-                                }
-                                catch (COMException ae)
-                                {
-                                    ErrorHandler.Log(ae, CurrentFileName);
-                                }
-                                catch (ObjectDisposedException ae)
-                                {
-                                    ErrorHandler.Log(ae, CurrentFileName);
-                                }
-                                catch (AggregateException ae)
-                                {
-                                    foreach (Exception ex in ae.InnerExceptions)
-                                    {
-                                        // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
-                                        ErrorHandler.Log(ex, CurrentFileName);
-                                    }
-                                    return;
-                                }
-                            });
+                                         // Terminate Omicron Processes.
+                                         KillOmicronProcesses();
+                                     }
+                                     catch (COMException ae)
+                                     {
+                                         ErrorHandler.Log(ae, CurrentFileName);
+                                     }
+                                     catch (ObjectDisposedException ae)
+                                     {
+                                         ErrorHandler.Log(ae, CurrentFileName);
+                                     }
+                                     catch (AggregateException ae)
+                                     {
+                                         foreach (Exception ex in ae.InnerExceptions)
+                                         {
+                                             // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                             ErrorHandler.Log(ex, CurrentFileName);
+                                         }
+                                         return;
+                                     }
+                                 }
+                             , MyCommons.CancellationToken)
+                             .Wait();
+
+                                 ViewModel.FileSideCoverText = MyResources.Strings_FormEndTest;
+
+                                 // Refresh Process bars.
+                                 ViewModel.UpdateCommand.Execute(null);
+
+                             }
+                             catch (COMException ae)
+                             {
+                                 ErrorHandler.Log(ae, CurrentFileName);
+                             }
+                             catch (ObjectDisposedException ae)
+                             {
+                                 ErrorHandler.Log(ae, CurrentFileName);
+                             }
+                             catch (AggregateException ae)
+                             {
+                                 foreach (Exception ex in ae.InnerExceptions)
+                                 {
+                                     // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
+                                     ErrorHandler.Log(ex, CurrentFileName);
+                                 }
+                                 return;
+                             }
+
+                         });
+
+
+                    });
+
                 }
 
             }

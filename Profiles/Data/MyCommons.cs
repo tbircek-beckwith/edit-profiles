@@ -166,15 +166,16 @@ namespace EditProfiles.Data
         /// </summary>
         internal static ObservableCollection<Regulator> Regulators { get; set; } = new ObservableCollection<Regulator>() { };
 
-        ///// <summary>
-        ///// Holds collection of <see cref="Profile"/>s.
-        ///// </summary>
-        //internal static List<Profile> Profiles { get; set; }
+        /// <summary>
+        /// Sets and gets <see cref="Profile.Registers"/>.Items(<see cref="Register.ReplacementValue"/>)
+        /// </summary>
+        internal static string ReplaceProfile { get; set; } = string.Empty;
 
-        ///// <summary>
-        ///// Holds collection of <see cref="Register"/>s.
-        ///// </summary>
-        //internal static List<Register> Registers { get; set; }
+        /// <summary>
+        /// Sets and gets <see cref="Profile.Registers"/>.Items(<see cref="Register.OriginalSettingValue"/>) 
+        /// or <see cref="Profile.Registers"/>.Items(<see cref="Register.OriginalTestValue"/>)
+        /// </summary>
+        internal static string FindProfile { get; set; } = string.Empty;
 
     }
 }

@@ -23,9 +23,22 @@ namespace EditProfiles.Operations
 
         private IDictionary<string, string> ItemsToRename = new Dictionary<string, string>();
 
+        /// <summary>
+        /// Holds information about items to be find in <see cref="OMICRON.OCCenter.IAutoTM"/>
+        /// </summary>
         private List<string> ItemsToFind { get; set; }
 
+        /// <summary>
+        /// Holds information about items to be replaced in <see cref="OMICRON.OCCenter.IAutoTM"/>
+        /// </summary>
         private List<string> ItemsToReplace { get; set; }
+
+        /// <summary>
+        /// Holds information about items to be replaced in <see cref="OMICRON.OCCenter.IAutoTM"/>
+        /// <para>This is special case list to generate <see cref="Profile"/> given test file
+        /// where every value is belong to <see cref="Profile"/> 1.</para>
+        /// </summary>
+        private List<string> ProfileItemsToReplace { get; set; }
 
         #endregion
 
@@ -142,10 +155,10 @@ namespace EditProfiles.Operations
                                 // take original value
                                 oldExecuteParameters.TryGetValue(currentKey, out int originalValue);
 
-                                // add new key with old value.
-                                if (!newExecuteParameters.ContainsKey(replacementKey))
-                                    newExecuteParameters.Add(replacementKey > 39999 && replacementKey < UInt16.MaxValue ? replacementKey : replacementKey + (CurrentRegulatorValue * 10000), originalValue);
-
+                                //// add new key with old value.
+                                //if (!newExecuteParameters.ContainsKey(replacementKey))
+                                //    newExecuteParameters.Add(replacementKey > 39999 && replacementKey < UInt16.MaxValue ? replacementKey : replacementKey + ((regulator - 1) * 10000), originalValue);
+                                newExecuteParameters.Add(replacementKey, originalValue);
                                 // stop scanning and move on to next entry.
                                 break;
                             }
@@ -159,8 +172,9 @@ namespace EditProfiles.Operations
 
             }
 
+            Debug.WriteLine($"find: {FindParam}\r\nrep: {NewParameterString}");
             Debug.WriteLine($"-----------------------------------------------------> total time: {stopwatch.ElapsedMilliseconds}");
-
+            
             // return new StringBuilder
             return NewParameterString;
         }
@@ -178,8 +192,7 @@ namespace EditProfiles.Operations
             {
                 if (Equals(item.Key, ItemsToFind.ElementAt(currentIndex)))
                 {
-                    // ItemsToReplace.ElementAt(item.ElementAt(CurrentRegulatorValue).Index)
-                    result = item.ElementAt(CurrentRegulatorValue).Index;
+                    result = item.ElementAt(regulator - 1).Index;
                     Debug.WriteLine($"something found: {item.Key}");
 
                     // canRegisterAdded = false;

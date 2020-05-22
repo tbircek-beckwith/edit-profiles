@@ -64,16 +64,16 @@ namespace EditProfiles.Operations
                 for (int c = 0; c <= registers.Select(a => a.Profile).Distinct().Count() - 1; c++)
                 {
 
-                    // filter register per profile #
-                    IEnumerable<Register> filter = from x in registers
-                                                   where !string.IsNullOrWhiteSpace(x.Location)
-                                                   where !string.Equals(x.Location, "&dummy")
-                                                   where !string.Equals(x.OriginalSettingValue, "0")
-                                                   where x.Profile == $"{c}"
-                                                   select x;
+                    // query register per profile #
+                    IEnumerable<Register> query = from x in registers
+                                                  where !string.IsNullOrWhiteSpace(x.Location)
+                                                  where !string.Equals(x.Location, "&dummy")
+                                                  where !string.Equals(x.OriginalSettingValue, "0")
+                                                  where x.Profile == $"{c}"
+                                                  select x;
 
                     // retrieve filtered Registers
-                    ObservableCollection<Register> FilteredRegisters = new ObservableCollection<Register>(GetProfile(filter, i));
+                    ObservableCollection<Register> FilteredRegisters = new ObservableCollection<Register>(GetProfile(query, i));
 
                     // generated a new profile out of filtered Registers
                     profiles.Add(new Profile
@@ -92,33 +92,48 @@ namespace EditProfiles.Operations
                     Name = $"Regulator {i}",
                     Profiles = profiles,
                 });
-
-
             }
 
             return regulators;
         }
-        
+
         /// <summary>
         /// Scans through <see cref="Regulator"/>
         /// <para>Returns a string contains all available <see cref="Register"/> for each specified <see cref="Profile"/> and <see cref="Regulator"/>.</para>
         /// </summary>
-        /// <param name="regulator"></param>
-        /// <param name="profile"></param>
-        /// <param name="property"></param>
+        /// <param name="regulatorcollection"><see cref="Regulator"/></param>
+        /// <param name="regulator"><see cref="Id"/></param>
+        /// <param name="profile"><see cref="Profile.Id"/></param>
+        /// <param name="property"><see cref="Column"/></param>
         /// <returns>Returns a string contains all available <see cref="Register"/> for each specified <see cref="Profile"/> and <see cref="Regulator"/>.</returns>
-        public string GetValues(int regulator, int profile, Column property)
+        public string GetValues(ObservableCollection<Regulator> regulatorcollection, int regulator, int profile, Column property)
         {
             StringBuilder values = new StringBuilder();
-            ObservableCollection<Regulator> regulators = new ObservableCollection<Regulator>(MyCommons.Regulators) { };
+            ObservableCollection<Regulator> regulators = new ObservableCollection<Regulator>(regulatorcollection) { };
 
-            // filter register per profile #
-            IEnumerable<Profile> filter = from x in regulators
-                                           .Where(x => x.Id == regulator)
-                                           .SelectMany(x => new[] { x.Profiles[0], x.Profiles[profile] })
-                                          select x;
+            // query register per profile #
+            IEnumerable<Profile> query;
 
-            foreach (Profile item in filter)
+            // UseDefaultSettingBehavior == true
+            if (profile == 0)
+            {
+                query = from x in regulators
+                        .Where(x => x.Id == regulator)
+                        .SelectMany(x => new[]
+                        {
+                            x.Profiles[0], x.Profiles[1], x.Profiles[2], x.Profiles[3], x.Profiles[4]
+                        })
+                        select x;  //select x.Profiles[profile];
+            }
+            // UseDefaultSettingBehavior == false
+            else
+            {
+                query = from x in regulators
+                        .Where(x => x.Id == regulator)
+                        select x.Profiles[profile];
+            }
+
+            foreach (Profile item in query)
             {
                 foreach (Register register in item.Registers)
                 {
@@ -136,19 +151,19 @@ namespace EditProfiles.Operations
         #region Private Functions
 
         /// <summary>
-        /// Gets a <see cref="Register"/> collection per specified <paramref name="filter"/> and <paramref name="regulatorValue"/>
+        /// Gets a <see cref="Register"/> collection per specified <paramref name="query"/> and <paramref name="regulatorValue"/>
         /// <para>Returns a collection of <see cref="Register"/></para>
         /// </summary>
-        /// <param name="filter">Query to filter <see cref="Register"/>s</param>
+        /// <param name="query">Query to query <see cref="Register"/>s</param>
         /// <param name="regulatorValue">the current <see cref="Regulator"/> value </param>
         /// <returns>Returns a collection of <see cref="Register"/></returns>
-        private ObservableCollection<Register> GetProfile(IEnumerable<Register> filter, int regulatorValue)
+        private ObservableCollection<Register> GetProfile(IEnumerable<Register> query, int regulatorValue)
         {
 
             ObservableCollection<Register> profileRegisters = new ObservableCollection<Register>() { };
 
-            // generate temp collection of register per filter
-            foreach (Register item in filter)
+            // generate temp collection of register per query
+            foreach (Register item in query)
             {
                 // Debug.Write($"profile: {item.Profile} origSetValue: {item.OriginalSettingValue} origTestValue: {item.OriginalTestValue} oldValue: {item.ReplacementValue}");
 

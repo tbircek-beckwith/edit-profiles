@@ -82,7 +82,7 @@ namespace EditProfiles
         }
 
         #endregion
-
+        
         #region FindWhat Label & Textbox
 
         /// <summary>
@@ -122,23 +122,6 @@ namespace EditProfiles
             }
         }
 
-        /// <summary>
-        /// Sets and gets <see cref="Model.FindOriginalTestValues"/>
-        /// </summary>
-        public string FindOriginalTestValues
-        {
-            get => model.FindOriginalTestValues ?? string.Empty;
-            set
-            {
-                if (model.FindOriginalTestValues != value)
-                {
-                    model.FindOriginalTestValues = value;
-
-                    OnPropertyChanged("FindOriginalTestValues");
-                    OnPropertyChanged("IsEnabled");
-                }
-            }
-        }
         #endregion
 
         #region ReplaceWith Label & Text

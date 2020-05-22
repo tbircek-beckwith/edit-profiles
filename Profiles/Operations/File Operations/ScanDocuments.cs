@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EditProfiles.Data;
@@ -9,11 +11,31 @@ using OMICRON.OCCenter;
 
 namespace EditProfiles.Operations
 {
-    /// <summary>
-    /// Scans Omicron test documents to locate the user specified keywords.
-    /// </summary>
+    ///// <summary>
+    ///// Scans Omicron test documents to locate the user specified keywords.
+    ///// </summary>
+    /// <inheritdoc/>
     partial class ProcessFiles : IStartProcessInterface
     {
+        #region Public Properties
+
+        /// <summary>
+        /// sets default behavior for processing of execute parameter replacements.
+        /// <para></para>
+        /// <list type="bullet">
+        /// <item>
+        /// <term><see langword="true"/>: </term>
+        /// <description>Old parameters will replace with new parameters.</description>
+        /// </item>
+        /// <item>
+        /// <term><see langword="false"/>: </term>
+        /// <description>Old parameters (which are expected to be Profile 1) replace with new Profile values.</description>
+        /// </item>
+        /// </list>
+        /// </summary>
+        private bool? UseDefaultSettingBehavior { get; set; } = null;
+
+        #endregion
 
         #region Properties
 
@@ -63,7 +85,7 @@ namespace EditProfiles.Operations
                 // TestModules testModules = this.OmicronDocument.TestModules;
 
                 // Parallel.For (fromInclusive Int32, toExclusive Int32, parallelOptions, body)
-                // totalModelNumber IS EXCLUSIVE SO MUST ADD 1 TO IT.
+                // TotalModelNumber IS EXCLUSIVE SO MUST ADD 1 TO IT.
                 // Otherwise the last Test Module will never be processed.
                 Parallel.For(startPosition, MyCommons.TotalModuleNumber + 1, MyCommons.ParallelingOptions, testModule =>
                 {
@@ -85,6 +107,7 @@ namespace EditProfiles.Operations
                     Debug.WriteLine(string.Format("{0}", new String(Settings.Default.RepeatChar, Settings.Default.RepeatNumber)));
                     Debug.WriteLine("Making a decision if the user wants to delete this test module.....");
 
+                    // REMOVE named Module(s)
                     if (ItemsToRemove.TryGetValue(OmicronProgramName, out string tempValue))
                     {
                         if (tempValue == OmicronProgramId)
@@ -118,13 +141,13 @@ namespace EditProfiles.Operations
                     Debug.WriteLine($"--------------------------> old title: {title}");
                     // update title.
                     OmicronDocument.OLEObjects.get_Item(moduleCounter).Name = new AnalyzeValues().Change(input: title, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords);
-                    Debug.WriteLine($"--------------------------> new title: {OmicronDocument.OLEObjects.get_Item(moduleCounter).Name}");
+                    Debug.WriteLine($"--------------------------> new title: {OmicronDocument.OLEObjects.get_Item(moduleCounter).Name} group mod: {(Convert.ToBoolean(UseDefaultSettingBehavior) ? "Using Settings" : "Using Tests")}");
 
-
+                    // Categorize Omicron Modules
                     if (OmicronDocument.OLEObjects.get_Item(moduleCounter).IsTestModule)
                     {
                         TestModule currentModule = OmicronDocument.OLEObjects.get_Item(moduleCounter).TestModule; //testModules.Item[moduleCounter];
-                        
+
                         //// update current test module title if needed.
                         // currentModule.Name = new AnalyzeValues().Change(input: currentModule.Name, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords);
 
@@ -147,6 +170,8 @@ namespace EditProfiles.Operations
                                     Debug.WriteLine("--- Add option to modify 'Path' --- DONE");
                                     Debug.WriteLine("--- Add option to modify 'Execution Options' ---");
                                     Debug.WriteLine("--- as of 10/30/2018 ---");
+                                    Debug.WriteLine($"--------------------------> group mod: {(Convert.ToBoolean(UseDefaultSettingBehavior) ? "Using Settings" : "Using Tests")}");
+
                                     // Retrieve parameters and save.
                                     Retrieve(currentModule);
                                 }
@@ -207,7 +232,7 @@ namespace EditProfiles.Operations
                                     Debug.WriteLine("--- Add options to link each item to 'XRio Block' ---");
                                     Debug.WriteLine("--- Add option to modify 'Title' ---");
                                     Debug.WriteLine("--- as of 10/30/2018 ---");
-                                    
+
                                     // Retrieve parameters and save.
                                     // Retrieve(currentTestModule);
                                     currentModule.Clear();
@@ -247,8 +272,11 @@ namespace EditProfiles.Operations
                                 }
                                 Debug.WriteLine("--- Future use object 'XRio Block' ---");
                                 Debug.WriteLine("--- Add option to modify 'Title' ---");
-                                Debug.WriteLine("--- Add a new 'Custom Block' for 'Nominal Frequency' ---");
                                 Debug.WriteLine("--- as of 10/30/2018 ---");
+
+                                // future use.
+                                var xrio = OmicronDocument.OLEObjects.get_Item(moduleCounter);
+
                                 break;
                             case ProgId.Hardware:
                                 // Polling CancellationToken's status.
@@ -268,9 +296,31 @@ namespace EditProfiles.Operations
                                 {
                                     MyCommons.CancellationToken.ThrowIfCancellationRequested();
                                 }
+
                                 Debug.WriteLine("--- Future use object 'Groups' ---");
                                 Debug.WriteLine("--- Add option to modify 'Title' ---");
                                 Debug.WriteLine("--- as of 10/30/2018 ---");
+
+                                Group group = OmicronDocument.OLEObjects.get_Item(moduleCounter).Group;
+
+                                UseDefaultSettingBehavior = new AnalyzeValues().IsMatch(group.Name, new AnalyzeValues().GroupFolderPatterns);
+
+                                // decide which behavior to use based on the folder name.
+                                if (Convert.ToBoolean(UseDefaultSettingBehavior))
+                                {
+                                    // true: Old method where point read and replaced per Execute parameters.
+                                    ItemsToFind = new List<string>(ViewModel.FindWhatTextBoxText.Split('|'));
+                                    ItemsToReplace = new List<string>(ViewModel.ReplaceWithTextBoxText.Split('|'));
+                                }
+                                else
+                                {
+                                    // false: New method where point read is always Profile 1 and replaced per active Profile generating process
+                                    ItemsToFind = new List<string>(MyCommons.FindProfile.Split('|'));
+                                    ItemsToReplace = new List<string>(MyCommons.ReplaceProfile.Split('|'));
+                                }
+
+                                Debug.WriteLine($"ItemsToFind: {ItemsToFind[5]}-{ItemsToFind[10]}-{ItemsToFind[15]}, ItemsToReplace: {ItemsToReplace[5]}-{ItemsToReplace[10]}-{ItemsToReplace[15]}");
+
                                 break;
                             default:
                                 break;
