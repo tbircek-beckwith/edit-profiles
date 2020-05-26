@@ -68,14 +68,7 @@ namespace EditProfiles.Operations
             FileNames = fileNames;
             ViewModel = viewModel;
 
-            //// Following items are not allowed to be modified after "Find & Replace" button clicked.
-            //ItemsToFind = new List<string>(ViewModel.FindWhatTextBoxText.Split('|'));
-            //ItemsToReplace = new List<string>(ViewModel.ReplaceWithTextBoxText.Split('|'));
-            //ProfileItemsToReplace = new List<string>(ViewModel.FindProfile.Split('|'));
-
-            //ItemsToRemove = new Dictionary<string, string>(ListOfTestModulesToDelete(ViewModel.FindWhatTextBoxText.Split('|')));
-
-            //ItemsToRename = new Dictionary<string, string>(ListOfTestModulesToRename(ItemsToFind));
+            // TODO: this codes needs to handle manually entered user inputs
             SetSearchItems();
 
             StartProcessingFiles();
@@ -90,11 +83,8 @@ namespace EditProfiles.Operations
 
             // Following items are not allowed to be modified after "Find & Replace" button clicked.
             ItemsToFind = new List<string>(ViewModel.FindWhatTextBoxText.Split('|'));
-            ItemsToReplace = new List<string>(ViewModel.ReplaceWithTextBoxText.Split('|'));
-            // ProfileItemsToReplace = new List<string>(ViewModel.FindProfile.Split('|'));
-
+            ItemsToReplace = new List<string>(ViewModel.ReplaceWithTextBoxText.Split('|'));            
             ItemsToRemove = new Dictionary<string, string>(ListOfTestModulesToDelete(ViewModel.FindWhatTextBoxText.Split('|')));
-
             ItemsToRename = new Dictionary<string, string>(ListOfTestModulesToRename(ItemsToFind));
 
         }
@@ -108,14 +98,13 @@ namespace EditProfiles.Operations
             MyCommons.CurrentFileNumber = 0;
 
             // Update FileProcessBar;
-            MyCommons.TotalFileNumber = FileNames.Count * MaximumRegulatorNumber * 4;
-            ViewModel.FileProgressBarMax = FileNames.Count;
-
+            ViewModel.FileProgressBarMax = MyCommons.TotalFileNumber = FileNames.Count * MaximumRegulatorNumber * 4;
+            
             // Refresh Process bars.
             ViewModel.UpdateCommand.Execute(null);
 
-            //// would have Profile x only
-            //ViewModel.ReplaceProfile = new Regulator().GetValues(MyCommons.Regulators, 1, 2, Column.ReplacementValue);
+            // get Change Active Profile value.
+            ViewModel.ChangeActiveProfile = MyCommons.ChangeActiveProfileValue;
 
             try
             {
@@ -123,11 +112,12 @@ namespace EditProfiles.Operations
                 for (regulator = 1; regulator <= MaximumRegulatorNumber; regulator++)
                 {
                     // since original files are always profile 1 need to update this only when regulator changes.
-                    ViewModel.FindWhatTextBoxText = new Regulator().GetValues(MyCommons.Regulators, regulator, 0, Column.OriginalSettingValue); // would have every profiles
-                    ViewModel.ReplaceWithTextBoxText = new Regulator().GetValues(MyCommons.Regulators, regulator, 0, Column.ReplacementValue);  // would have every profiles
-
+                    ViewModel.FindWhatTextBoxText = new Regulator().GetValues(regulator, 0, Column.OriginalSettingValue); // would have every profiles
+                    ViewModel.ReplaceWithTextBoxText = new Regulator().GetValues(regulator, 0, Column.ReplacementValue);  // would have every profiles
+                    
                     // since original files are always profile 1. Change 1 -> whatever is the file profile is.
-                    MyCommons.FindProfile = new Regulator().GetValues(MyCommons.Regulators, regulator, 1, Column.OriginalTestValue);
+                    MyCommons.FindProfile = new Regulator().GetValues(regulator, 1, Column.OriginalTestValue);
+                    // MyCommons.FindProfile = new Regulator().GetValues(MyCommons.Regulators, regulator, 1, Column.OriginalTestValue);
 
                     Parallel.ForEach(FileNames, MyCommons.ParallelingOptions, (currentFile) =>
                     {
@@ -135,7 +125,8 @@ namespace EditProfiles.Operations
                         Parallel.For(1, 5, MyCommons.ParallelingOptions, (profile) =>
                          {
                              // would have Profile x only
-                             MyCommons.ReplaceProfile = new Regulator().GetValues(MyCommons.Regulators, regulator, profile, Column.ReplacementValue);
+                             MyCommons.ReplaceProfile = new Regulator().GetValues(regulator, profile, Column.ReplacementValue);
+                             //MyCommons.ReplaceProfile = new Regulator().GetValues(MyCommons.Regulators, regulator, profile, Column.ReplacementValue);
 
                              activeProfile = profile;
 

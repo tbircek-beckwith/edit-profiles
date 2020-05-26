@@ -152,13 +152,13 @@ namespace EditProfiles.Operations
                                     int.TryParse(ItemsToReplace.ElementAt(i), out replacementKey);
                                 }
 
-                                // take original value
+                                // retrieve original value
                                 oldExecuteParameters.TryGetValue(currentKey, out int originalValue);
 
-                                //// add new key with old value.
-                                //if (!newExecuteParameters.ContainsKey(replacementKey))
-                                //    newExecuteParameters.Add(replacementKey > 39999 && replacementKey < UInt16.MaxValue ? replacementKey : replacementKey + ((regulator - 1) * 10000), originalValue);
-                                newExecuteParameters.Add(replacementKey, originalValue);
+                                // modify MB_ActiveProfile instead of using original value
+                                // TODO: This should be aware of if the user entry or a .csv file in use.
+                                newExecuteParameters.Add(replacementKey, ViewModel.ChangeActiveProfile == currentKey ? activeProfile - 1 : originalValue);
+
                                 // stop scanning and move on to next entry.
                                 break;
                             }

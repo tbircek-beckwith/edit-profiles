@@ -31,16 +31,11 @@ namespace EditProfiles
         #endregion
 
         #region Program
-
-        ///// <summary>
-        ///// Holds <see cref="Register"/>s
-        ///// </summary>
-        //public ObservableCollection<Profile> Profiles { get; set; } = new ObservableCollection<Profile>() { };
-
-        ///// <summary>
-        ///// Holds <see cref="Register"/>s
-        ///// </summary>
-        //public ObservableCollection<Register> Registers { get; set; } = new ObservableCollection<Register>() { };
+        
+        /// <summary>
+        /// Holds <see cref="Operations.Register.OriginalSettingValue"/> where <see cref="Operations.Register.MBFunction"/> == "MB_ChangeActiveProfile" 
+        /// </summary>
+        public int ChangeActiveProfile { get; set; }
 
         /// <summary>
         /// Sets and gets ProgramTitle.

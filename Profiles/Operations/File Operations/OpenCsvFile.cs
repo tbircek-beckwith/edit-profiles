@@ -139,6 +139,12 @@ namespace EditProfiles.Operations
 
                             //  Debug.WriteLine($"record #:{registers.Count}\t index:{register.Index}\t row: {register.Row}\t repl: {register.ReplacementValue}\t ori: {register.OriginalSettingValue}\t profile: {register.Profile}\t opt: {register.OptionalName}\t loc: {register.Location}");
 
+                            // update "ChangeActiveProfileValue"
+                            if(register.MBFunction.StartsWith("MB_ChangeActiveProfile"))
+                            {
+                                MyCommons.ChangeActiveProfileValue = Convert.ToInt32(register.OriginalSettingValue);
+                            }
+
                             // add new register to the collection
                             registers.Add(register);
 

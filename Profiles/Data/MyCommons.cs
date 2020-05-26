@@ -177,5 +177,11 @@ namespace EditProfiles.Data
         /// </summary>
         internal static string FindProfile { get; set; } = string.Empty;
 
+
+        /// <summary>
+        /// Holds value of <see cref="Register.OriginalSettingValue"/> where <see cref="Register.MBFunction"/> is "MB_ChangeActiveProfile".
+        /// </summary>
+        internal static int ChangeActiveProfileValue { get; set; } = 0;
+
     }
 }
