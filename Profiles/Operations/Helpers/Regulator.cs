@@ -101,11 +101,68 @@ namespace EditProfiles.Operations
         /// Scans through <see cref="Regulator"/>
         /// <para>Returns a string contains all available <see cref="Register"/> for each specified <see cref="Profile"/> and <see cref="Regulator"/>.</para>
         /// </summary>
+        /// <param name="regulator"><see cref="Id"/></param>
+        /// <param name="profile"><see cref="Profile.Id"/></param>
+        /// <param name="property"><see cref="Column"/></param>
+        /// <returns>Returns a string contains all available <see cref="Register"/> for each specified <see cref="Profile"/> and <see cref="Regulator"/>.</returns>
+        public string GetValues(int regulator, int profile, Column property)
+        {
+            StringBuilder values = new StringBuilder();
+            ObservableCollection<Regulator> regulators = new ObservableCollection<Regulator>(MyCommons.Regulators) { };
+
+            // query register per profile #
+            IEnumerable<Profile> query;
+
+            // UseDefaultSettingBehavior == true
+            if (profile == 0)
+            {
+                query = from x in regulators
+                        // grab the specified regulator
+                        .Where(x => x.Id == regulator)
+                        // if it doesn't grab every profile it would miss some values.
+                        .SelectMany(x => new[]
+                        {
+                            // grab every profiles
+                            x.Profiles[0], x.Profiles[1], x.Profiles[2], x.Profiles[3], x.Profiles[4]
+                        })
+                        // return every profiles
+                        select x;
+            }
+            // UseDefaultSettingBehavior == false
+            else
+            {
+                query = from x in regulators
+                        // grab the specified regulator
+                        .Where(x => x.Id == regulator)
+                        // grab a single profile
+                        select x.Profiles[profile];
+            }
+
+            // scan through every profile it got
+            foreach (Profile item in query)
+            {
+                // 
+                foreach (Register register in item.Registers)
+                {
+                    // gets value of "Column" property out of the collection of properties for current Register.
+                    values.Append($"{TypeDescriptor.GetProperties(register)[property.ToString()].GetValue(register)}|");
+                }
+            }
+
+            // remove last "|" from the string.
+            return values.Remove(values.Length - 1, 1).ToString();
+        }
+
+        /// <summary>
+        /// Scans through <see cref="Regulator"/>
+        /// <para>Returns a string contains all available <see cref="Register"/> for each specified <see cref="Profile"/> and <see cref="Regulator"/>.</para>
+        /// </summary>
         /// <param name="regulatorcollection"><see cref="Regulator"/></param>
         /// <param name="regulator"><see cref="Id"/></param>
         /// <param name="profile"><see cref="Profile.Id"/></param>
         /// <param name="property"><see cref="Column"/></param>
         /// <returns>Returns a string contains all available <see cref="Register"/> for each specified <see cref="Profile"/> and <see cref="Regulator"/>.</returns>
+        [Obsolete("GetValues(int regulator, int profile, Column property)",true)]
         public string GetValues(ObservableCollection<Regulator> regulatorcollection, int regulator, int profile, Column property)
         {
             StringBuilder values = new StringBuilder();
