@@ -141,7 +141,27 @@ namespace EditProfiles.Operations
                     Debug.WriteLine($"--------------------------> old title: {title}");
                     // update title.
                     OmicronDocument.OLEObjects.get_Item(moduleCounter).Name = new AnalyzeValues().Change(input: title, pattern: new AnalyzeValues().TitlePatterns, keywords: new AnalyzeValues().TitleKeywords);
-                    Debug.WriteLine($"--------------------------> new title: {OmicronDocument.OLEObjects.get_Item(moduleCounter).Name} group mod: {(Convert.ToBoolean(UseDefaultSettingBehavior) ? "Using Settings" : "Using Tests")}");
+
+
+                    // temp storage to keep replacement words.
+                    if (new AnalyzeValues().IsMatch(title, new AnalyzeValues().ProfilePatterns))
+                    {
+                        string keywords = new AnalyzeValues().Match(input: title, pattern: new AnalyzeValues().ProfilePatterns);
+                        string replacementTitle = System.Text.RegularExpressions.Regex.Split(input: keywords,
+                                                                                      pattern: "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)",
+                                                                                      options: System.Text.RegularExpressions.RegexOptions.None,
+                                                                                      matchTimeout: TimeSpan.FromMilliseconds(100))[0];
+
+                        Dictionary<string,string> what = new Dictionary<string, string>() { { keywords, $"{replacementTitle}{activeProfile}"} };
+
+                        string newTitle = new AnalyzeValues().Change(input: title, pattern: new AnalyzeValues().ProfilePatterns, keywords: what); // System.Text.RegularExpressions.Regex.Replace(input: title, pattern: "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)", replacement: replacementTitle); 
+                        Debug.WriteLine($"--------------------------> keywords: {keywords}, replacementTitle: {replacementTitle}, newTitle: {newTitle}");
+
+                        OmicronDocument.OLEObjects.get_Item(moduleCounter).Name = newTitle;
+                    }
+
+                    Debug.WriteLine($"--------------------------> new title: {OmicronDocument.OLEObjects.get_Item(moduleCounter).Name} ");
+                    Debug.WriteLine($"--------------------------> group mod: {(Convert.ToBoolean(UseDefaultSettingBehavior) ? "Using Settings" : "Using Tests")}");
 
                     // Categorize Omicron Modules
                     if (OmicronDocument.OLEObjects.get_Item(moduleCounter).IsTestModule)

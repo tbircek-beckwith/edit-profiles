@@ -29,6 +29,11 @@ namespace EditProfiles.Operations
         public readonly string RegulatorPatterns = @"(?<regulatorKeyword>(?:REG_IDX_\d))+";
 
         /// <summary>
+        /// Holds patterns to retrieve Profile 1 or P1 like strings.
+        /// </summary>
+        public readonly string ProfilePatterns = @"(?<p1Keyword>(?:P\d))+|(?<profileKeyword>(?:Profile \d))+";
+
+        /// <summary>
         /// Holds patterns to retrieve regulator number from a .csv file
         /// </summary>
         public readonly string GroupFolderPatterns = @"(?<groupSetKeyword>(?:Set))+|(?<groupProfileKeyword>(?:Profile \d))+";
