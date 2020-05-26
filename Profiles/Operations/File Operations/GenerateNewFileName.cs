@@ -52,7 +52,7 @@ namespace EditProfiles.Operations
 
                 NewFileName = new StringBuilder();
 
-                return GenerateTheFileName();
+                return GenerateFolderAndFileName();
             }
             catch (ArgumentNullException ae)
             {
@@ -68,10 +68,10 @@ namespace EditProfiles.Operations
         #region Private Methods
 
         /// <summary>
-        /// Generates a new file name from original file name.
+        /// Parses old file name  to generate a new file name.
         /// </summary>
         /// <returns>Returns new file name with a different order of words per team meeting requests.</returns>
-        private string ProcessFileName()
+        private string ParseFileName()
         {
 
             // Remove every matching pattern to exposed root test name like "Bandwidth"
@@ -116,10 +116,6 @@ namespace EditProfiles.Operations
                                                  path2: regulatorFolderName,
                                                  path3: profileFolderName).ToLower();
 
-            //string newFileName = Path.Combine(path1: Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath), 
-            //                                                      path2: testFolderName), 
-            //                                  path2: $"{keywords.Substring(0, productNameLength)}{testName}_Reg {regulator}_{keywords.Substring(productNameLength, keywords.Length - productNameLength)}{Path.GetExtension(FileNameWithPath)}");
-
             string fileNameString = $"{words[0]}_{testName}_Reg {regulator}_{words[1]}_{words[2]}_{words[3]}{Path.GetExtension(FileNameWithPath)}";
 
             string newFileName = Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath),
@@ -151,17 +147,17 @@ namespace EditProfiles.Operations
         }
 
         /// <summary>
-        /// Generates a new file name based on the original file name.
+        /// Generates folders for the newly generated file(s).
         /// </summary>
         /// <returns>Returns a new file name.</returns>
-        private string GenerateTheFileName()
+        private string GenerateFolderAndFileName()
         {
 
             try
             {
 
                 // Generate a new file name.
-                NewFileName.Append(ProcessFileName());
+                NewFileName.Append(ParseFileName());
 
                 // If the file name does not contain "rev" followed by a number or a space add 
                 // "Rev1" string to the file name.

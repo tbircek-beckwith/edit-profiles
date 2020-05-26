@@ -20,25 +20,7 @@
         public bool Editable { get; set; }
 
         #endregion
-
-        //#region Non-Visible Items
-
-        ///// <summary>
-        ///// Holds only single <see cref="Operations.Profile"/> register values to find.
-        ///// <para>This is special case where original test file has only
-        ///// Profile 1 values and the application is generating other profiles.</para>
-        ///// </summary>
-        //public string FindProfile { get; set; }
         
-        ///// <summary>
-        ///// Holds only single <see cref="Operations.Profile"/> register values to replace.
-        ///// <para>This is special case where original test file has only
-        ///// Profile 1 values and the application is generating other profiles.</para>
-        ///// </summary>
-        //public string ReplaceProfile { get; set; }
-
-        //#endregion
-
         #region FindWhat Label & TextBox
 
         /// <summary>

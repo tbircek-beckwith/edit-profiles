@@ -178,7 +178,7 @@ namespace EditProfiles.Operations
                 Document.Path = @"C:\DRSendIPNET\DRSendIPNET.exe";
                 // prepends DRSendIPNET command to the parameter.
                 // document.Parameters = $"{MyResources.Strings_DrIPNet_prepend},{testModuleParameters.ToString()}";
-                TestModuleParameters.Insert(0, MyResources.Strings_DrIPNet_prepend, 1);
+                // TestModuleParameters.Insert(0, MyResources.Strings_DrIPNet_prepend, 1);
             }
             Document.Parameters = TestModuleParameters.ToString();
 
