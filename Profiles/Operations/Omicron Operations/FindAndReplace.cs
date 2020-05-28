@@ -107,8 +107,8 @@ namespace EditProfiles.Operations
             // is there any matching parameters?
             if (!oldExecuteParameters.Keys.Any(x => ItemsToFind.Contains(x.ToString())))
             {
-                // NO. return old parameters.
-                NewParameterString = new StringBuilder(FindParam);
+                // NO. return old parameters. 
+                NewParameterString = new StringBuilder(MyResources.Strings_DrIPNet_prepend + string.Join(",", FindParam)); //new StringBuilder(FindParam); //
             }
             else
             {
