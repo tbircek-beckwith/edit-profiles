@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EditProfiles", "Profiles\EditProfiles.csproj", "{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edit-profiles.wpf", "Profiles\edit-profiles.wpf.csproj", "{FA8960F4-41A4-410D-8EBD-A56A4531A14D}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "edit-profiles-setup", "EditProfilesSetup\EditProfilesSetup.vdproj", "{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}"
 EndProject
@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edit-profiles-test", "EditProfilesTest\edit-profiles-test.csproj", "{708BE493-4A0C-43AB-A807-78EB1CE9572C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edit-profiles.test", "EditProfilesTest\edit-profiles.test.csproj", "{708BE493-4A0C-43AB-A807-78EB1CE9572C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "edit-profiles.package", "edit-profiles.package\edit-profiles.package.csproj", "{1E60DA1E-3635-40EA-AE82-4DB23A34633D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,7 +45,6 @@ Global
 		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Release|Mixed Platforms.ActiveCfg = Release
 		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Release|Mixed Platforms.Build.0 = Release
 		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Release|x86.ActiveCfg = Release
-		{A313B7CD-8E49-4DCF-A2F8-25A208D4CA88}.Release|x86.Build.0 = Release
 		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -55,7 +56,18 @@ Global
 		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|x86.ActiveCfg = Release|Any CPU
-		{708BE493-4A0C-43AB-A807-78EB1CE9572C}.Release|x86.Build.0 = Release|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Debug|x86.Build.0 = Debug|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E60DA1E-3635-40EA-AE82-4DB23A34633D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

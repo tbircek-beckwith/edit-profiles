@@ -155,6 +155,8 @@ publish/
 *.nuget.props
 *.nuget.targets
 *.nuget.NuGet.exe
+/edit-profiles.package/nuget.exe
+
 
 # Microsoft Azure Build Output
 csx/
