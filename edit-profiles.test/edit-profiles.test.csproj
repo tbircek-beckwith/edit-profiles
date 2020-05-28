@@ -60,7 +60,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Profiles\edit-profiles.wpf.csproj">
+    <ProjectReference Include="..\edit-profiles.wpf\edit-profiles.wpf.csproj">
       <Project>{FA8960F4-41A4-410D-8EBD-A56A4531A14D}</Project>
       <Name>edit-profiles.wpf</Name>
     </ProjectReference>

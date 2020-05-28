@@ -51,7 +51,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Profiles\edit-profiles.wpf.csproj">
+    <ProjectReference Include="..\edit-profiles.wpf\edit-profiles.wpf.csproj">
       <Project>{fa8960f4-41a4-410d-8ebd-a56a4531a14d}</Project>
       <Name>edit-profiles.wpf</Name>
     </ProjectReference>
@@ -71,7 +71,7 @@
     </GetAssemblyIdentity>
     <!-- nuget pack "C:\Users\TBircek\source\repos\metering\metering.package\metering.package.csproj" -OutputDirectory C:\Users\TBircek\source\repos\metering\metering.package\wpf.package\nupkgs -Properties Configuration=Release -->
     <Exec Command="nuget pack $(ProjectDir)$(ProjectName).csproj -Version %(myAssemblyInfo.Version) -Properties Configuration=$(Configuration) -OutputDirectory $(ProjectDir)profiles.package\nupkgs" />
-    <Exec Command="$(SolutionDir)packages\ppy.squirrel.windows.1.9.0.4\tools\squirrel.exe --releasify $(ProjectDir)profiles.package\nupkgs\$(SolutionName).$([System.Version]::Parse(%(myAssemblyInfo.Version)).ToString(3)).nupkg --no-msi --no-delta --icon $(SolutionDir)Profiles\ProfileChanger.ico --setupicon $(SolutionDir)Profiles\ProfileChanger.ico --releaseDir $(ProjectDir)profiles.package\$(Configuration)" />
+    <Exec Command="$(SolutionDir)packages\ppy.squirrel.windows.1.9.0.4\tools\squirrel.exe --releasify $(ProjectDir)profiles.package\nupkgs\$(SolutionName).$([System.Version]::Parse(%(myAssemblyInfo.Version)).ToString(3)).nupkg --no-msi --no-delta --icon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --setupicon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --releaseDir $(ProjectDir)profiles.package\$(Configuration)" />
     <!-- <Copy SourceFiles=" $(ProjectDir)Releases\*.*" DestinationFolder="\\volta\Eng_Lab\Software Updates\metering\" /> -->
   </Target>
   <PropertyGroup>

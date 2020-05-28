@@ -68,9 +68,6 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>tb-strong-name-key-file.pfx</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
     <ApplicationIcon>ProfileChanger.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
@@ -81,9 +78,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>1B7240826AD359E15DACAB42DDAC67AF61E3411B</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>C:\Users\tbircek\Documents\strong-key\tb-strong-name-key-file.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestTimestampUrl>http://time.certum.pl</ManifestTimestampUrl>
