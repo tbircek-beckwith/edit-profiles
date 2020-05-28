@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1E60DA1E-3635-40EA-AE82-4DB23A34633D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>edit_profiles.package</RootNamespace>
+    <AssemblyName>edit-profiles</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="edit-profiles.package.nuspec">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\edit-profiles.wpf\edit-profiles.wpf.csproj">
+      <Project>{fa8960f4-41a4-410d-8ebd-a56a4531a14d}</Project>
+      <Name>edit-profiles.wpf</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <SquirrelLocation>$(SolutionDir)packages\squirrel.windows.1.9.1\tools\squirrel.exe</SquirrelLocation>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- For more information https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets -->
+  <!-- <Target Name="CopyPackage" AfterTargets="Pack">     -->
+  <!-- <Copy SourceFiles=" $(OutDir)*.*" DestinationFolder="\\volta\Eng_Lab\Software Updates\metering\" /> -->
+  <!-- </Target> -->
+  <!-- <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release'"> -->
+  <Target Name="AfterBuild">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetDir)$(SolutionName).exe"> 
+      <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
+    </GetAssemblyIdentity>
+    <!-- nuget pack "C:\Users\TBircek\source\repos\metering\metering.package\metering.package.csproj" -OutputDirectory C:\Users\TBircek\source\repos\metering\metering.package\wpf.package\nupkgs -Properties Configuration=Release -->
+    <!-- <Exec Command="nuget pack $(ProjectDir)$(ProjectName).csproj -Version %(myAssemblyInfo.Version) -Properties Configuration=$(Configuration) -OutputDirectory $(ProjectDir)profiles.package\nupkgs" /> -->
+	<Exec Command="nuget pack $(ProjectPath) -Version %(myAssemblyInfo.Version) -Properties Configuration=$(Configuration) -OutputDirectory $(ProjectDir)profiles.package\nupkgs" />
+    <Exec Command="$(SolutionDir)packages\ppy.squirrel.windows.1.9.0.4\tools\squirrel.exe --releasify $(ProjectDir)profiles.package\nupkgs\$(SolutionName).$([System.Version]::Parse(%(myAssemblyInfo.Version)).ToString(3)).nupkg --no-msi --no-delta --icon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --setupicon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --releaseDir $(ProjectDir)profiles.package\$(Configuration)" />
+    <!-- <Copy SourceFiles=" $(ProjectDir)Releases\*.*" DestinationFolder="\\volta\Eng_Lab\Software Updates\metering\" /> -->
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

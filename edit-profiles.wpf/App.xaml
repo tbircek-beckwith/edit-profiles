@@ -1,0 +1,99 @@
+﻿<Application x:Class="EditProfiles.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:System="clr-namespace:System;assembly=mscorlib">
+
+    <Application.Resources>
+
+        <!-- General values -->
+        <System:Double x:Key="TextBoxHeight">30.0</System:Double>
+        <System:Double x:Key="TextBlockHeight">20.0</System:Double>
+        <System:Double x:Key="ProgressBarHeight">25.0</System:Double>
+        <System:Double x:Key="TextBlockWidth">40.0</System:Double>
+        <System:Double x:Key="Opacity">100.0</System:Double>
+        <System:Double x:Key="OtherOpacity">0.0</System:Double>
+        <System:Double x:Key="ToggleButtonHeight">50.0</System:Double>
+        <System:Double x:Key="FontSize">30.0</System:Double>
+        <Thickness x:Key="Margin">5</Thickness>
+
+        
+        <!-- ToggleButton Style per instruction provided here. -->
+        <!-- http://weblogs.asp.net/scottgu/silverlight-tutorial-part-7-using-control-templates-to-customize-a-control-s-look-and-feel -->
+
+        <Style x:Key="RoundToggleButton"
+               TargetType="ToggleButton">
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked"
+                         Value="False">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Grid>
+                                    <!--<Polygon Points="5,10 20, 10 20, 20 30, 3"
+                                             Stroke="Black"
+                                             StrokeThickness="4"
+                                             Fill="Green" />-->
+                                    <Ellipse Width="Auto"
+                                             Height="Auto">
+                                        <Ellipse.Fill>
+                                            <RadialGradientBrush GradientOrigin=".2,.2">
+                                                <GradientStop Offset="0.2"
+                                                              Color="White" />
+                                                <GradientStop Offset="1.0"
+                                                              Color="Green" />
+                                            </RadialGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <!--<Button FontFamily="Segoe UI Symbol"
+                                            Content="&#x26D4;" FontSize="48" />-->
+
+                                    <TextBlock Text="{Binding Path=FindReplaceButtonText}"
+                                               FontSize="{StaticResource ResourceKey=FontSize}"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+
+                <Trigger Property="IsChecked"
+                         Value="True">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Grid>
+                                    <!--<Polygon Points="50,100 200, 100 200, 200 300, 30"
+                                             Stroke="Black"
+                                             StrokeThickness="4"
+                                             Fill="Yellow" />-->
+                                    <Ellipse Width="Auto"
+                                             Height="Auto">
+                                        <Ellipse.Fill>
+                                            <RadialGradientBrush GradientOrigin=".2,.2">
+                                                <GradientStop Offset="0.2"
+                                                              Color="White" />
+                                                <GradientStop Offset="1.0"
+                                                              Color="Red" />
+                                            </RadialGradientBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+
+                                    <TextBlock Text="{Binding Path=StopTestButtonText}"
+                                               FontSize="{StaticResource ResourceKey=FontSize}"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Application.Resources>
+
+
+</Application>
