@@ -112,11 +112,11 @@ namespace EditProfiles.Operations
                 for (regulator = 1; regulator <= MaximumRegulatorNumber; regulator++)
                 {
                     // since original files are always profile 1 need to update this only when regulator changes.
-                    ViewModel.FindWhatTextBoxText = new Regulator().GetValues(regulator, 0, Column.OriginalSettingValue); // would have every profiles
-                    ViewModel.ReplaceWithTextBoxText = new Regulator().GetValues(regulator, 0, Column.ReplacementValue);  // would have every profiles
-                    
+                    ViewModel.FindWhatTextBoxText = new Regulator().GetValues(regulator, 0, Column.OriginalSettingValue) ?? string.Empty; // would have every profiles
+                    ViewModel.ReplaceWithTextBoxText = new Regulator().GetValues(regulator, 0, Column.ReplacementValue) ?? string.Empty;  // would have every profiles
+
                     // since original files are always profile 1. Change 1 -> whatever is the file profile is.
-                    MyCommons.FindProfile = new Regulator().GetValues(regulator, 1, Column.OriginalTestValue);
+                    MyCommons.FindProfile = new Regulator().GetValues(regulator, 1, Column.OriginalTestValue) ?? string.Empty;
                     // MyCommons.FindProfile = new Regulator().GetValues(MyCommons.Regulators, regulator, 1, Column.OriginalTestValue);
 
                     Parallel.ForEach(FileNames, MyCommons.ParallelingOptions, (currentFile) =>
@@ -125,7 +125,7 @@ namespace EditProfiles.Operations
                         Parallel.For(1, 5, MyCommons.ParallelingOptions, (profile) =>
                          {
                              // would have Profile x only
-                             MyCommons.ReplaceProfile = new Regulator().GetValues(regulator, profile, Column.ReplacementValue);
+                             MyCommons.ReplaceProfile = new Regulator().GetValues(regulator, profile, Column.ReplacementValue) ?? string.Empty;
                              //MyCommons.ReplaceProfile = new Regulator().GetValues(MyCommons.Regulators, regulator, profile, Column.ReplacementValue);
 
                              activeProfile = profile;

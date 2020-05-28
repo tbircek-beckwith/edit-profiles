@@ -339,7 +339,11 @@ namespace EditProfiles.Operations
                                     ItemsToReplace = new List<string>(MyCommons.ReplaceProfile.Split('|'));
                                 }
 
-                                Debug.WriteLine($"ItemsToFind: {ItemsToFind[5]}-{ItemsToFind[10]}-{ItemsToFind[15]}, ItemsToReplace: {ItemsToReplace[5]}-{ItemsToReplace[10]}-{ItemsToReplace[15]}");
+                                if (ItemsToFind.Count > 1)
+                                {
+
+                                    Debug.WriteLine($"ItemsToFind: {ItemsToFind[5]}-{ItemsToFind[10]}-{ItemsToFind[15]}, ItemsToReplace: {ItemsToReplace[5]}-{ItemsToReplace[10]}-{ItemsToReplace[15]}");
+                                }
 
                                 break;
                             default:

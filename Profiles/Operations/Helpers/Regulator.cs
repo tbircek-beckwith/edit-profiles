@@ -150,7 +150,7 @@ namespace EditProfiles.Operations
             }
 
             // remove last "|" from the string.
-            return values.Remove(values.Length - 1, 1).ToString();
+            return values.Length > 0 ? values.Remove(values.Length - 1, 1).ToString() : string.Empty;
         }
 
         /// <summary>
