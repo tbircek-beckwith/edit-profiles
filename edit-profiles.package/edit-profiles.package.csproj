@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -66,11 +67,12 @@
   <!-- </Target> -->
   <!-- <Target Name="AfterBuild" Condition=" '$(Configuration)' == 'Release'"> -->
   <Target Name="AfterBuild">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetDir)$(SolutionName).exe">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetDir)$(SolutionName).exe"> 
       <Output TaskParameter="Assemblies" ItemName="myAssemblyInfo" />
     </GetAssemblyIdentity>
     <!-- nuget pack "C:\Users\TBircek\source\repos\metering\metering.package\metering.package.csproj" -OutputDirectory C:\Users\TBircek\source\repos\metering\metering.package\wpf.package\nupkgs -Properties Configuration=Release -->
-    <Exec Command="nuget pack $(ProjectDir)$(ProjectName).csproj -Version %(myAssemblyInfo.Version) -Properties Configuration=$(Configuration) -OutputDirectory $(ProjectDir)profiles.package\nupkgs" />
+    <!-- <Exec Command="nuget pack $(ProjectDir)$(ProjectName).csproj -Version %(myAssemblyInfo.Version) -Properties Configuration=$(Configuration) -OutputDirectory $(ProjectDir)profiles.package\nupkgs" /> -->
+	<Exec Command="nuget pack $(ProjectPath) -Version %(myAssemblyInfo.Version) -Properties Configuration=$(Configuration) -OutputDirectory $(ProjectDir)profiles.package\nupkgs" />
     <Exec Command="$(SolutionDir)packages\ppy.squirrel.windows.1.9.0.4\tools\squirrel.exe --releasify $(ProjectDir)profiles.package\nupkgs\$(SolutionName).$([System.Version]::Parse(%(myAssemblyInfo.Version)).ToString(3)).nupkg --no-msi --no-delta --icon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --setupicon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --releaseDir $(ProjectDir)profiles.package\$(Configuration)" />
     <!-- <Copy SourceFiles=" $(ProjectDir)Releases\*.*" DestinationFolder="\\volta\Eng_Lab\Software Updates\metering\" /> -->
   </Target>

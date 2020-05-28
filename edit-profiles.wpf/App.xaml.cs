@@ -8,6 +8,7 @@ using EditProfiles.Behaviors;
 using EditProfiles.Data;
 using EditProfiles.Operations;
 using EditProfiles.Properties;
+using Squirrel;
 
 namespace EditProfiles
 {
@@ -16,6 +17,58 @@ namespace EditProfiles
     /// </summary>
     public partial class App : Application
     {
+        #region Private Methods
+
+        /// <summary>
+        /// Checks for the updates if there is one updates application for next start up
+        /// </summary>
+        /// <returns>AsyncStateMachine of Squirrel</returns>
+        private async Task CheckForUpdates()
+        {
+            // for future use 
+            // change update location to github
+            // using (var updateManager = UpdateManager.GitHubUpdateManager("https://api.github.com/repos/tbircek/metering/releases"))
+
+            // specify the location of update
+            using (UpdateManager updateManager = new UpdateManager(@"\\volta\Eng_Lab\Software Updates\EditProfiles"))
+            {
+                try
+                {
+                    // check if there is an update
+                    UpdateInfo updateInfo = await updateManager.CheckForUpdate();
+
+                    // prevent error in development computer
+                    if (updateInfo.CurrentlyInstalledVersion != null)
+                        // log the current installed version of the application
+                        Debug.WriteLine($"Current version: {updateInfo.CurrentlyInstalledVersion.Version}", "Informative");
+
+                    // if update location contains update for this application
+                    if (updateInfo.ReleasesToApply.Count > 0)
+                    {
+                        // log the current installed version of the application
+                        Debug.WriteLine($"Update version: {updateInfo.FutureReleaseEntry.Version}", "Informative");
+
+                        // update this application
+                        await updateManager.UpdateApp();
+
+                    }
+                    // no update available
+                    else
+                    {
+                        // log application update message
+                        Debug.WriteLine($"No updates: Update version: {updateInfo.FutureReleaseEntry.Version}", "Informative");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // log application update message
+                    Debug.WriteLine($"Error: {ex.Message}", "Error");
+                    // throw;
+                }
+            }
+        }
+
+        #endregion
 
         #region Startup
 
@@ -23,7 +76,7 @@ namespace EditProfiles
         /// Start up 
         /// </summary>
         /// <param name="e">arguments</param>
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
 
             #region Catch All Unhandled Exceptions
@@ -107,6 +160,16 @@ namespace EditProfiles
             MyCommons.MyViewModel.ModuleSideCoverText = MyResources.Strings_FormStartModuleTest;
 
             MyCommons.MyViewModel.Editable = true;
+
+            // check for the updates
+            await Task.Run(async () =>
+            {
+                // log application update message
+                Debug.WriteLine("Checking for updates", "Informative");
+
+                // await for application update
+                await CheckForUpdates();
+            });
 
             infrastructure.View.Show();
 
