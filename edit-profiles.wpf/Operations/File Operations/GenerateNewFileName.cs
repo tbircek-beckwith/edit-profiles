@@ -95,55 +95,55 @@ namespace EditProfiles.Operations
             // words[0]: ProductName, words[1]: P1, words[2]: PowerScheme, words[3]: Frequency
             List<string> words = new List<string>(keywords.Split('_').ToList());
 
-            // temp storage to keep replacement words.
-            string testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
-
-            // index of first '_' is right after product number
-            int productNameLength = keywords.IndexOf('_') + 1;
+            // regulator
+            string regulatorFolderName = $"regulator {regulator}";
 
             // split replacement words to insert test file name and new short name for "Regulator #" in the file name, also append file extension.
-            // regulator is 1 based.
-            string modifiedFolderName = Path.Combine(MyResources.Strings_ModifedFolderName, testSubFolderName);
+            string modifiedFolderName = Path.Combine(path1: MyResources.Strings_ModifedFolderName.ToLower(),
+                                                     path2: regulatorFolderName);
 
             // generate new values 
-            // TODO: Add a logic check to verify the source of the changes if .csv file generate new file names per profile/regulator
-            string regulatorFolderName = $"regulator {regulator}";
             string profileFolderName = activeProfile > 0 ? $"profile {activeProfile}" : string.Empty;
             words[1] = $"P{activeProfile}";
 
-            // string testFolderName = Path.Combine(modifiedFolderName, Path.Combine(regulatorFolderName, new Regex(@"(?<profile>\b[Pp](\d)\b\w*)", RegexOptions.None, TimeSpan.FromMilliseconds(100)).IsMatch(fileNameWithoutRevision) ? profileFolderName : string.Empty)).ToLower();
+            // temp storage to keep replacement words.
+            string testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
+
+            // test folder
             string testFolderName = Path.Combine(path1: modifiedFolderName,
-                                                 path2: regulatorFolderName,
-                                                 path3: profileFolderName).ToLower();
+                                                 path2: testSubFolderName,
+                                                 path3: profileFolderName);
 
-            string fileNameString = $"{words[0]}_{testName}_Reg {regulator}_{words[1]}_{words[2]}_{words[3]}{Path.GetExtension(FileNameWithPath)}";
+            // new file name
+            string fileNameWithExtension = $"{words[0]}_{testName}_Reg {regulator}_{words[1]}_{words[2]}_{words[3]}{Path.GetExtension(FileNameWithPath)}";
 
-            string newFileName = Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath),
+            // new filename with path
+            string fileNamePathWithExtension = Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath),
                                               path2: testFolderName,
-                                              path3: fileNameString);
-
-
-
+                                              path3: fileNameWithExtension);
+                       
             // let's limit file name length > MaxFileNameLength omicron test universe fails to save modified files.
             // just add a sub folder named "modified files" with original file name
             // do not modify anything else
-            if (newFileName.Length > Settings.Default.MaxFileNameLength)
+            if (fileNamePathWithExtension.Length > Settings.Default.MaxFileNameLength)
             {
                 // mode full filename
-                newFileName = Path.Combine(Path.GetDirectoryName(FileNameWithPath), Path.Combine(MyResources.Strings_ModifedFolderName, Path.GetFileName(FileNameWithPath)));
+                fileNamePathWithExtension = Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath),
+                                           path2: MyResources.Strings_ModifedFolderName.ToLower(),
+                                           path3: Path.GetFileName(FileNameWithPath));
 
                 // if this new file name is still > MaxFileNameLength 
                 // let put this file under user document
-                if (newFileName.Length > Settings.Default.MaxFileNameLength)
+                if (fileNamePathWithExtension.Length > Settings.Default.MaxFileNameLength)
                 {
-                    newFileName = Path.Combine(path1: Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                    fileNamePathWithExtension = Path.Combine(path1: Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                                                path2: typeof(MainWindow).Assembly.GetName().Name,
-                                               path3: $"{MyResources.Strings_ModifedFolderName}",
+                                               path3: MyResources.Strings_ModifedFolderName.ToLower(),
                                                path4: Path.GetFileName(FileNameWithPath));
                 }
             }
 
-            return newFileName;
+            return fileNamePathWithExtension;
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace EditProfiles.Operations
             {
 
                 // Generate a new file name.
-                NewFileName.Append(ParseFileName());
+                NewFileName = new StringBuilder(ParseFileName());
 
                 // If the file name does not contain "rev" followed by a number or a space add 
                 // "Rev1" string to the file name.
@@ -184,7 +184,9 @@ namespace EditProfiles.Operations
             {
                 // Save to the fileOutputFolder and print to Debug window if the project build is in Debug.
                 ErrorHandler.Log(ex, CurrentFileName);
-                return Path.Combine(Path.GetDirectoryName(FileNameWithPath), Path.Combine(MyResources.Strings_ModifedFolderName, Path.GetFileName(FileNameWithPath)));
+                return Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath),
+                                    path2: MyResources.Strings_ModifedFolderName.ToLower(),
+                                    path3: Path.GetFileName(FileNameWithPath));
             }
             catch (FormatException fe)
             {
