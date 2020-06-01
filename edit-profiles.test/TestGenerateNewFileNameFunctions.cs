@@ -11,7 +11,7 @@ namespace EditProfilesTest
     [TestClass]
     public class TestGenerateNewFileNameFunctions
     {
-        private readonly string FileNameWithPath = $@"C:\Users\TBircek\Desktop\Test Profile Test\actual test files\m6200a\M-6200A P1 Forward Power Bandwidth Test 60Hz Rev1.occ";
+        private readonly string FileNameWithPath = $@"C:\Users\msutterfield\Desktop\EditProfiles\NC1\LPS\zM-6280A Neutral Current (LPS) LVL 1 Alarm (Classic) .occ";
         private readonly string ExpectedTestName = $"Bandwidth";
         private readonly string FileNameWithoutRevision = $"M-6200A P1 Forward Power Bandwidth Test 60Hz";
         private readonly string ExpectedKeywords = $"M-6200B_AD_60Hz";
