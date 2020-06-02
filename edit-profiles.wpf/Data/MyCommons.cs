@@ -44,8 +44,8 @@ namespace EditProfiles.Data
             {
                 ParallelOptions parallelingOptions = new ParallelOptions
                 {
-                    MaxDegreeOfParallelism = MyCommons.MaxDegreeOfParallelism,
-                    CancellationToken = MyCommons.CancellationToken
+                    MaxDegreeOfParallelism = MaxDegreeOfParallelism,
+                    CancellationToken = CancellationToken
                 };
 
                 return parallelingOptions;
@@ -182,6 +182,11 @@ namespace EditProfiles.Data
         /// Holds value of <see cref="Register.OriginalSettingValue"/> where <see cref="Register.MBFunction"/> is "MB_ChangeActiveProfile".
         /// </summary>
         internal static int ChangeActiveProfileValue { get; set; } = 0;
+
+        /// <summary>
+        /// Holds true if the selected a .csv file to generate <see cref="Regulator"/> or <see cref="Profile"/>.
+        /// </summary>
+        internal static bool GenerateRegulators { get; set; } = false;
 
     }
 }

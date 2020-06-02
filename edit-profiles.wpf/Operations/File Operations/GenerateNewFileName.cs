@@ -112,7 +112,12 @@ namespace EditProfiles.Operations
             }
 
             // temp storage to keep replacement words.
-            string testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
+            string testSubFolderName = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(keywords))
+            {
+                testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
+            }            
 
             // test folder
             string testFolderName = Path.Combine(path1: modifiedFolderName,
@@ -120,7 +125,7 @@ namespace EditProfiles.Operations
                                                  path3: profileFolderName);
 
             // new file name
-            string fileNameWithExtension = words.Count < 4 ? $"{words[0]}{Path.GetExtension(FileNameWithPath)}" : $"{words[0]}_{testName}_Reg {regulator}_{words[1]}_{words[2]}_{words[3]}{Path.GetExtension(FileNameWithPath)}";
+            string fileNameWithExtension = string.IsNullOrWhiteSpace(keywords) ? $"{testName}{Path.GetExtension(FileNameWithPath)}": words.Count < 4 ? $"{words[0]}{Path.GetExtension(FileNameWithPath)}" : $"{words[0]}_{testName}_Reg {regulator}_{words[1]}_{words[2]}_{words[3]}{Path.GetExtension(FileNameWithPath)}";
 
 
             // new filename with path

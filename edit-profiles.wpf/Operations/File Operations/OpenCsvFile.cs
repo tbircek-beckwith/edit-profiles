@@ -154,6 +154,9 @@ namespace EditProfiles.Operations
                     
                     // generate all regulators with all profiles and registers values using the .csv file.
                     MyCommons.Regulators = new Regulator().GetRegulators(registers);
+
+                    // update the .csv file status
+                    MyCommons.GenerateRegulators = true;
                 }
             }
 
