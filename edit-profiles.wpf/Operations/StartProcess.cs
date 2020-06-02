@@ -94,11 +94,16 @@ namespace EditProfiles.Operations
         /// </summary>
         private void StartProcessingFiles()
         {
+
+            int regulatorGeneration = !MyCommons.GenerateRegulators ? 1 : MaximumRegulatorNumber;
+
+            int profileGeneration = !MyCommons.GenerateRegulators ? 2 : 5;
+
             // Reset File counter.
             MyCommons.CurrentFileNumber = 0;
 
             // Update FileProcessBar;
-            ViewModel.FileProgressBarMax = MyCommons.TotalFileNumber = FileNames.Count * MaximumRegulatorNumber * 4;
+            ViewModel.FileProgressBarMax = MyCommons.TotalFileNumber = FileNames.Count * regulatorGeneration * (profileGeneration - 1);
             
             // Refresh Process bars.
             ViewModel.UpdateCommand.Execute(null);
@@ -108,8 +113,9 @@ namespace EditProfiles.Operations
 
             try
             {
+
                 // make regulator files.
-                for (regulator = 1; regulator <= MaximumRegulatorNumber; regulator++)
+                for (regulator = 1; regulator <= regulatorGeneration; regulator++)
                 {
                     // since original files are always profile 1 need to update this only when regulator changes.
                     ViewModel.FindWhatTextBoxText = new Regulator().GetValues(regulator, 0, Column.OriginalSettingValue) ?? string.Empty; // would have every profiles
@@ -121,8 +127,9 @@ namespace EditProfiles.Operations
 
                     Parallel.ForEach(FileNames, MyCommons.ParallelingOptions, (currentFile) =>
                     {
+
                         // for (int profile = 1; profile <= 4; profile++)
-                        Parallel.For(1, 5, MyCommons.ParallelingOptions, (profile) =>
+                        Parallel.For(1, profileGeneration, MyCommons.ParallelingOptions, (profile) =>
                          {
                              // would have Profile x only
                              MyCommons.ReplaceProfile = new Regulator().GetValues(regulator, profile, Column.ReplacementValue) ?? string.Empty;
