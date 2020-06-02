@@ -403,7 +403,7 @@ namespace EditProfiles.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {1}{2}{1}Completed...: {3}{1}Test end time: {0}{1}{2}{1}.
+        ///   Looks up a localized string similar to {1}{2}{1}Completed...: {3}{1}New file name: {4}{1}Test end time: {0}{1}{2}{1}.
         /// </summary>
         internal static string Strings_TestEnd {
             get {
