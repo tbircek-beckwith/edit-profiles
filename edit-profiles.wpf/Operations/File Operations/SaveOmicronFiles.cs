@@ -129,8 +129,7 @@ namespace EditProfiles.Operations
                                 DateTime.Now,
                                 Environment.NewLine,
                                 Repeat.StringDuplicate(Settings.Default.RepeatChar, Settings.Default.RepeatNumber),
-                                MyCommons.FileName,
-                                OldFileName)
+                                MyCommons.FileName)
                              ))
                         .ToString();
                 }

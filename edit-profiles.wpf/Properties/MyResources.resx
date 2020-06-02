@@ -244,8 +244,8 @@
     <comment>0 = TestModule name, 1 = TestModule ProgID, 2 = Environment.NewLine</comment>
   </data>
   <data name="Strings_TestEnd" xml:space="preserve">
-    <value>{1}{2}{1}Completed...: {3}{1}New file name: {4}{1}Test end time: {0}{1}{2}{1}</value>
-    <comment>0 = DateTime.Now, 1 = Environment.NewLine, 2 = Repeat Char '-', 3 = Old File Name, 4 = New File Name</comment>
+    <value>{1}{2}{1}Completed...: {3}{1}Test end time: {0}{1}{2}{1}</value>
+    <comment>0 = DateTime.Now, 1 = Environment.NewLine, 2 = Repeat Char '-', 3 = File Name</comment>
   </data>
   <data name="Strings_TestStart" xml:space="preserve">
     <value>Test start time: {0}</value>
