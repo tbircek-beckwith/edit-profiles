@@ -73,7 +73,7 @@
     <!-- nuget pack "C:\Users\TBircek\source\repos\metering\metering.package\metering.package.csproj" -OutputDirectory C:\Users\TBircek\source\repos\metering\metering.package\wpf.package\nupkgs -Properties Configuration=Release -->
     <!-- <Exec Command="nuget pack $(ProjectDir)$(ProjectName).csproj -Version %(myAssemblyInfo.Version) -Properties Configuration=$(Configuration) -OutputDirectory $(ProjectDir)profiles.package\nupkgs" /> -->
 	<Exec Command="nuget pack $(ProjectPath) -Version %(myAssemblyInfo.Version) -Properties Configuration=$(Configuration) -OutputDirectory $(ProjectDir)profiles.package\nupkgs" />
-    <Exec Command="$(SolutionDir)packages\ppy.squirrel.windows.1.9.0.4\tools\squirrel.exe --releasify $(ProjectDir)profiles.package\nupkgs\$(SolutionName).$([System.Version]::Parse(%(myAssemblyInfo.Version)).ToString(3)).nupkg --no-msi --no-delta --icon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --setupicon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --releaseDir $(ProjectDir)profiles.package\$(Configuration)" />
+    <Exec Command="$(SolutionDir)packages\ppy.squirrel.windows.1.9.0.4\tools\squirrel.exe --releasify $(ProjectDir)profiles.package\nupkgs\beckwith.lab.utility.$(SolutionName).$([System.Version]::Parse(%(myAssemblyInfo.Version)).ToString(3)).nupkg --no-msi --no-delta --icon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --setupicon $(SolutionDir)$(SolutionName).wpf\ProfileChanger.ico --releaseDir $(ProjectDir)profiles.package\$(Configuration)" />
     <!-- <Copy SourceFiles=" $(ProjectDir)Releases\*.*" DestinationFolder="\\volta\Eng_Lab\Software Updates\metering\" /> -->
   </Target>
   <PropertyGroup>

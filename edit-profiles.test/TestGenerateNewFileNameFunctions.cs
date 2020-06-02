@@ -11,13 +11,11 @@ namespace EditProfilesTest
     [TestClass]
     public class TestGenerateNewFileNameFunctions
     {
-        string FileNameWithPath = $@"C:\Users\TBircek\Desktop\Test Profile Test\actual test files\m6200a\M-6200A P1 Forward Power Bandwidth Test 60Hz Rev1.occ";
-        string ExpectedTestName = $"Bandwidth";
-
-        string FileNameWithoutRevision = $"M-6200A P1 Forward Power Bandwidth Test 60Hz";
-        string ExpectedKeywords = $"M-6200B_AD_60Hz";
-
-        string ExpectedSubFolderName = $"Runup";
+        private readonly string FileNameWithPath = $@"C:\Users\msutterfield\Desktop\EditProfiles\NC1\LPS\zM-6280A Neutral Current (LPS) LVL 1 Alarm (Classic) .occ";
+        private readonly string ExpectedTestName = $"Bandwidth";
+        private readonly string FileNameWithoutRevision = $"M-6200A P1 Forward Power Bandwidth Test 60Hz";
+        private readonly string ExpectedKeywords = $"M-6200B_AD_60Hz";
+        private readonly string ExpectedSubFolderName = $"Runup";
 
         [TestMethod]
         public void CheckTestName()

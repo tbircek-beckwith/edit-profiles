@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Beckwith.Test.Utility.$id$</id>
+    <id>beckwith.lab.utility.$id$</id>
     <version>$version$-rc</version>
     <title>$id$</title> <!-- $title$ == edit-profile.package-->
     <authors>Turgay Bircek</authors>
@@ -11,8 +11,7 @@
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A modification tool to change various Omicron Test Module parameters</description>
-    <releaseNotes>The first .nuget package release. 
-    Adds functionality to read .csv file to automate conversion of m-6200a to m-6200b.
+    <releaseNotes>Adds support to non-M6200A test files.
     </releaseNotes>
     <copyright>Copyright 2016-2020 Beckwith Electric Co. Inc.</copyright>
     <tags>omicron execute ramping beckwith electric turgay bircek</tags>

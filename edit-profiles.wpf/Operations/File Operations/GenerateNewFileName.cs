@@ -95,19 +95,29 @@ namespace EditProfiles.Operations
             // words[0]: ProductName, words[1]: P1, words[2]: PowerScheme, words[3]: Frequency
             List<string> words = new List<string>(keywords.Split('_').ToList());
 
+
             // regulator
-            string regulatorFolderName = $"regulator {regulator}";
+            string regulatorFolderName = words.Count < 4 ? string.Empty : $"regulator {regulator}";
 
             // split replacement words to insert test file name and new short name for "Regulator #" in the file name, also append file extension.
             string modifiedFolderName = Path.Combine(path1: MyResources.Strings_ModifedFolderName.ToLower(),
                                                      path2: regulatorFolderName);
 
             // generate new values 
-            string profileFolderName = activeProfile > 0 ? $"profile {activeProfile}" : string.Empty;
-            words[1] = $"P{activeProfile}";
+            string profileFolderName = words.Count > 1 ? (activeProfile > 0 ? $"profile {activeProfile}" : string.Empty) : string.Empty;
+
+            if (words.Count > 1)
+            {
+                words[1] = $"P{activeProfile}";
+            }
 
             // temp storage to keep replacement words.
-            string testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
+            string testSubFolderName = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(keywords))
+            {
+                testSubFolderName = new AnalyzeValues().Replace(input: testName, pattern: new AnalyzeValues().TestFolderNamePatterns, keywords: new AnalyzeValues().FolderNameKeywords);
+            }            
 
             // test folder
             string testFolderName = Path.Combine(path1: modifiedFolderName,
@@ -115,13 +125,14 @@ namespace EditProfiles.Operations
                                                  path3: profileFolderName);
 
             // new file name
-            string fileNameWithExtension = $"{words[0]}_{testName}_Reg {regulator}_{words[1]}_{words[2]}_{words[3]}{Path.GetExtension(FileNameWithPath)}";
+            string fileNameWithExtension = string.IsNullOrWhiteSpace(keywords) ? $"{testName}{Path.GetExtension(FileNameWithPath)}": words.Count < 4 ? $"{words[0]}{Path.GetExtension(FileNameWithPath)}" : $"{words[0]}_{testName}_Reg {regulator}_{words[1]}_{words[2]}_{words[3]}{Path.GetExtension(FileNameWithPath)}";
+
 
             // new filename with path
             string fileNamePathWithExtension = Path.Combine(path1: Path.GetDirectoryName(FileNameWithPath),
                                               path2: testFolderName,
                                               path3: fileNameWithExtension);
-                       
+
             // let's limit file name length > MaxFileNameLength omicron test universe fails to save modified files.
             // just add a sub folder named "modified files" with original file name
             // do not modify anything else
