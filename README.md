@@ -3,7 +3,7 @@
 The most of my work projects use [Omicron Test Universe](https://www.omicronenergy.com/en/products/test-universe/) as main test tool.  
 However modifying, or correcting the test files manually is cumbersome.  
 Edit Profiles can automate this process (for now only for ExeCute modules).  
-> Current version is v2.0.2
+> Current version is v2.0.1
 
 ### Usage: ###
 
