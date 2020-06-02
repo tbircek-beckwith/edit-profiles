@@ -11,8 +11,7 @@
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A modification tool to change various Omicron Test Module parameters</description>
-    <releaseNotes>Adds support to non-M6200A test files.
-    </releaseNotes>
+    <releaseNotes>Adds support to only update parameters.</releaseNotes>
     <copyright>Copyright 2016-2020 Beckwith Electric Co. Inc.</copyright>
     <tags>omicron execute ramping beckwith electric turgay bircek</tags>
     <dependencies/>
